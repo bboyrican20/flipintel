@@ -4,6 +4,7 @@ from app.db.database import engine, Base
 
 # Import models so SQLAlchemy knows them
 from app.models.product import Product
+from app.models.deal_analysis import DealAnalysis
 
 from app.api.products import router as products_router
 from app.api.analysis import router as analysis_router
