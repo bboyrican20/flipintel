@@ -2,12 +2,12 @@ from fastapi import FastAPI
 
 from app.db.database import engine, Base
 
-# Import models so SQLAlchemy knows them
 from app.models.product import Product
 from app.models.deal_analysis import DealAnalysis
 
-from app.api.products import router as products_router
+from app.api.products import router as product_router
 from app.api.analysis import router as analysis_router
+from app.api.reports import router as reports_router
 
 
 # Create database tables
@@ -21,9 +21,14 @@ app = FastAPI(
 )
 
 
-# Register API routes
-app.include_router(products_router)
+# Routers
+
+app.include_router(product_router)
+
 app.include_router(analysis_router)
+
+app.include_router(reports_router)
+
 
 
 @app.get("/")
@@ -33,6 +38,7 @@ def home():
         "status": "online",
         "version": "0.1.0"
     }
+
 
 
 @app.get("/health")
