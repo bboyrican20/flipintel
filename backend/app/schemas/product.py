@@ -13,6 +13,8 @@ class ProductCreate(BaseModel):
     buy_price: float
     sell_price: Optional[float] = None
 
+    status: Optional[str] = "WATCHING"
+
 
 class ProductResponse(ProductCreate):
     id: int

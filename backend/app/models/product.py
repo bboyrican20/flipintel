@@ -22,7 +22,18 @@ class Product(Base):
     profit = Column(Float, nullable=True)
     roi = Column(Float, nullable=True)
 
+    status = Column(
+        String,
+        default="WATCHING"
+    )
+
     created_at = Column(
         DateTime,
         default=datetime.utcnow
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
     )
