@@ -8,9 +8,9 @@ from app.models.deal_analysis import DealAnalysis
 from app.api.products import router as product_router
 from app.api.analysis import router as analysis_router
 from app.api.reports import router as reports_router
+from app.api.opportunities import router as opportunities_router
 
 
-# Create database tables
 Base.metadata.create_all(bind=engine)
 
 
@@ -21,13 +21,13 @@ app = FastAPI(
 )
 
 
-# Routers
-
 app.include_router(product_router)
 
 app.include_router(analysis_router)
 
 app.include_router(reports_router)
+
+app.include_router(opportunities_router)
 
 
 
