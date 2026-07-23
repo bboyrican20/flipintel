@@ -1,15 +1,6 @@
 from typing import Dict
 
-
-PREMIUM_BRANDS = [
-    "dewalt",
-    "milwaukee",
-    "makita",
-    "bosch",
-    "apple",
-    "sony",
-    "lego"
-]
+from app.core.settings import settings
 
 
 def analyze_product(product) -> Dict:
@@ -19,12 +10,14 @@ def analyze_product(product) -> Dict:
     # Profit scoring
     profit = product.profit or 0
 
-    if profit >= 100:
+    if profit >= settings.HIGH_PROFIT_THRESHOLD:
         score += 30
         reasons.append("High profit opportunity")
-    elif profit >= 50:
+
+    elif profit >= settings.MEDIUM_PROFIT_THRESHOLD:
         score += 20
         reasons.append("Good profit margin")
+
     elif profit > 0:
         score += 10
         reasons.append("Positive profit")
@@ -33,13 +26,15 @@ def analyze_product(product) -> Dict:
     # ROI scoring
     roi = product.roi or 0
 
-    if roi >= 100:
+    if roi >= settings.EXCELLENT_ROI_THRESHOLD:
         score += 40
         reasons.append("Excellent ROI")
-    elif roi >= 50:
+
+    elif roi >= settings.STRONG_ROI_THRESHOLD:
         score += 30
         reasons.append("Strong ROI")
-    elif roi >= 25:
+
+    elif roi >= settings.ACCEPTABLE_ROI_THRESHOLD:
         score += 20
         reasons.append("Acceptable ROI")
 
@@ -47,25 +42,32 @@ def analyze_product(product) -> Dict:
     # Brand scoring
     name = product.name.lower()
 
-    for brand in PREMIUM_BRANDS:
+    for brand in settings.PREMIUM_BRANDS:
         if brand in name:
             score += 20
-            reasons.append(f"Strong brand: {brand.title()}")
+            reasons.append(
+                f"Strong brand: {brand.title()}"
+            )
             break
 
 
     # Category confidence
     score += 10
-    reasons.append("Resale market analysis passed")
+    reasons.append(
+        "Resale market analysis passed"
+    )
 
 
     # Recommendation
     if score >= 85:
         recommendation = "STRONG BUY"
+
     elif score >= 70:
         recommendation = "BUY"
+
     elif score >= 50:
         recommendation = "WATCH"
+
     else:
         recommendation = "PASS"
 
