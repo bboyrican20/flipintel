@@ -12,6 +12,7 @@ from app.services.deal_analyzer import analyze_product
 from app.services.product_repository import ProductRepository
 from app.services.historical_comparison import HistoricalComparison
 from app.services.deal_explainer import DealExplainer
+from app.services.decision_engine import DecisionEngine
 
 
 router = APIRouter(
@@ -24,6 +25,8 @@ historical_comparison = HistoricalComparison()
 
 deal_explainer = DealExplainer()
 
+decision_engine = DecisionEngine()
+
 
 
 @router.post("/barcode")
@@ -32,9 +35,11 @@ def scan_barcode(
     db: Session = Depends(get_db)
 ):
 
+
     barcode = product_data["barcode"]
     buy_price = product_data["buy_price"]
     retailer = product_data["retailer"]
+
 
 
     lookup = lookup_barcode(barcode)
@@ -48,10 +53,13 @@ def scan_barcode(
         )
 
 
+
     repo = ProductRepository(db)
 
 
+
     product = repo.get_by_barcode(barcode)
+
 
     existing_product = product is not None
 
@@ -146,21 +154,33 @@ def scan_barcode(
 
 
 
+    decision = decision_engine.evaluate(
+
+        product,
+
+        analysis,
+
+        confidence,
+
+        historical
+
+    )
+
+
+
     explanation = deal_explainer.explain(
 
-        product=product,
+        product,
 
-        profit=product.profit,
+        product.profit,
 
-        roi=product.roi,
+        product.roi,
 
-        demand=100,
+        100,
 
-        confidence=confidence["confidence"],
+        confidence["confidence"],
 
-        action=analysis["recommendation"],
-
-        historical=historical
+        analysis["recommendation"]
 
     )
 
@@ -194,39 +214,59 @@ def scan_barcode(
     return {
 
 
-        "product_id": product.id,
-
-        "existing_product": existing_product,
-
-
-        "product": product.name,
-
-        "brand": product.brand,
-
-        "category": product.category,
+        "product_id":
+            product.id,
 
 
-        "market_price": product.market_price,
+        "existing_product":
+            existing_product,
 
 
-        "profit": product.profit,
-
-        "roi": product.roi,
-
-
-        "analysis": analysis,
+        "product":
+            product.name,
 
 
-        "confidence": confidence,
+        "brand":
+            product.brand,
 
 
-        "historical_comparison": historical,
+        "category":
+            product.category,
 
 
-        "deal_explanation": explanation,
+        "market_price":
+            product.market_price,
 
 
-        "scan_history_id": scan.id
+        "profit":
+            product.profit,
 
+
+        "roi":
+            product.roi,
+
+
+        "analysis":
+            analysis,
+
+
+        "confidence":
+            confidence,
+
+
+        "historical_comparison":
+            historical,
+
+
+        "decision":
+            decision,
+
+
+        "deal_explanation":
+            explanation,
+
+
+        "scan_history_id":
+            scan.id
 
     }
