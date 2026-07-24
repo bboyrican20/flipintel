@@ -10,12 +10,17 @@ from app.services.barcode_lookup import lookup_barcode
 from app.services.confidence_engine import calculate_confidence
 from app.services.deal_analyzer import analyze_product
 from app.services.product_repository import ProductRepository
+from app.services.historical_comparison import HistoricalComparison
 
 
 router = APIRouter(
     prefix="/scanner",
     tags=["Scanner"]
 )
+
+
+historical_comparison = HistoricalComparison()
+
 
 
 @router.post("/barcode")
@@ -28,7 +33,9 @@ def scan_barcode(
     buy_price = product_data["buy_price"]
     retailer = product_data["retailer"]
 
+
     lookup = lookup_barcode(barcode)
+
 
     if lookup is None:
         raise HTTPException(
@@ -36,15 +43,18 @@ def scan_barcode(
             detail="Barcode not found"
         )
 
+
     repo = ProductRepository(db)
 
-    ####################################################################
+
+    #
     # CREATE OR UPDATE PRODUCT
-    ####################################################################
+    #
 
     product = repo.get_by_barcode(barcode)
 
     existing_product = product is not None
+
 
     if existing_product:
 
@@ -58,6 +68,7 @@ def scan_barcode(
         db.commit()
         db.refresh(product)
 
+
     else:
 
         product = repo.create_product(
@@ -66,9 +77,10 @@ def scan_barcode(
             retailer
         )
 
-    ####################################################################
+
+    #
     # MARKET SNAPSHOT
-    ####################################################################
+    #
 
     market = MarketData(
 
@@ -88,24 +100,61 @@ def scan_barcode(
 
     )
 
+
     db.add(market)
+
     db.commit()
+
     db.refresh(market)
 
-    ####################################################################
-    # ANALYSIS
-    ####################################################################
+
+
+    #
+    # DEAL ANALYSIS
+    #
 
     analysis = analyze_product(product)
+
 
     confidence = calculate_confidence(
         product,
         market
     )
 
-    ####################################################################
-    # SCAN HISTORY
-    ####################################################################
+
+
+    #
+    # HISTORICAL COMPARISON
+    #
+
+    previous_history = (
+
+        db.query(ScanHistory)
+
+        .filter(
+            ScanHistory.product_id == product.id
+        )
+
+        .all()
+
+    )
+
+
+    historical = historical_comparison.compare(
+
+        current_buy_price=product.buy_price,
+
+        current_roi=product.roi,
+
+        history=previous_history
+
+    )
+
+
+
+    #
+    # SAVE SCAN
+    #
 
     scan = ScanHistory(
 
@@ -123,13 +172,14 @@ def scan_barcode(
 
     )
 
+
     db.add(scan)
+
     db.commit()
+
     db.refresh(scan)
 
-    ####################################################################
-    # RESPONSE
-    ####################################################################
+
 
     return {
 
@@ -152,6 +202,8 @@ def scan_barcode(
         "analysis": analysis,
 
         "confidence": confidence,
+
+        "historical_comparison": historical,
 
         "scan_history_id": scan.id
 
