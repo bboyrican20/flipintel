@@ -10,6 +10,7 @@ from app.models.scan_history import ScanHistory
 from app.services.deal_analyzer import analyze_product
 from app.services.barcode_lookup import lookup_barcode
 from app.services.confidence_engine import calculate_confidence
+from app.services.product_matcher import find_existing_product
 
 
 router = APIRouter(
@@ -31,10 +32,12 @@ def scan_barcode(
 
 
     if lookup is None:
+
         raise HTTPException(
             status_code=404,
             detail="Barcode not found"
         )
+
 
 
     buy_price = product_data["buy_price"]
@@ -52,38 +55,75 @@ def scan_barcode(
     )
 
 
-    product = Product(
 
-        name=lookup["name"],
+    # CHECK IF PRODUCT ALREADY EXISTS
 
-        brand=lookup["brand"],
-
-        category=lookup["category"],
-
-        barcode=barcode,
-
-        retailer=product_data["retailer"],
-
-        buy_price=buy_price,
-
-        sell_price=market_price,
-
-        market_price=market_price,
-
-        profit=profit,
-
-        roi=roi,
-
-        sales_velocity="HIGH"
-
+    product = find_existing_product(
+        db,
+        barcode=barcode
     )
 
 
-    db.add(product)
 
-    db.commit()
+    if product:
 
-    db.refresh(product)
+
+        product.buy_price = buy_price
+
+        product.sell_price = market_price
+
+        product.market_price = market_price
+
+        product.profit = profit
+
+        product.roi = roi
+
+        product.retailer = product_data["retailer"]
+
+
+
+        db.commit()
+
+        db.refresh(product)
+
+
+
+    else:
+
+
+        product = Product(
+
+            name=lookup["name"],
+
+            brand=lookup["brand"],
+
+            category=lookup["category"],
+
+            barcode=barcode,
+
+            retailer=product_data["retailer"],
+
+            buy_price=buy_price,
+
+            sell_price=market_price,
+
+            market_price=market_price,
+
+            profit=profit,
+
+            roi=roi,
+
+            sales_velocity="HIGH"
+
+        )
+
+
+        db.add(product)
+
+        db.commit()
+
+        db.refresh(product)
+
 
 
 
@@ -115,6 +155,7 @@ def scan_barcode(
 
 
     analysis = analyze_product(product)
+
 
 
     confidence = calculate_confidence(
@@ -151,7 +192,12 @@ def scan_barcode(
 
     return {
 
+
         "product_id": product.id,
+
+        "existing_product":
+            True if product else False,
+
 
         "product": product.name,
 
