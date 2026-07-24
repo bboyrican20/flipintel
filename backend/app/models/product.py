@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy.orm import relationship
 from datetime import datetime
 
 from app.db.database import Base
@@ -116,4 +117,12 @@ class Product(Base):
         DateTime,
         default=datetime.utcnow,
         onupdate=datetime.utcnow
+    )
+
+
+    # Market intelligence relationship
+    market_data = relationship(
+        "MarketData",
+        back_populates="product",
+        cascade="all, delete-orphan"
     )
