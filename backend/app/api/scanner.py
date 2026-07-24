@@ -1,9 +1,15 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
+
 from app.models.product import Product
+from app.models.market_data import MarketData
+from app.models.scan_history import ScanHistory
+
 from app.services.deal_analyzer import analyze_product
+from app.services.barcode_lookup import lookup_barcode
+from app.services.confidence_engine import calculate_confidence
 
 
 router = APIRouter(
@@ -12,17 +18,32 @@ router = APIRouter(
 )
 
 
-@router.post("/analyze")
-def scan_product(
+@router.post("/barcode")
+def scan_barcode(
     product_data: dict,
     db: Session = Depends(get_db)
 ):
 
+    barcode = product_data["barcode"]
+
+
+    lookup = lookup_barcode(barcode)
+
+
+    if lookup is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Barcode not found"
+        )
+
+
     buy_price = product_data["buy_price"]
-    market_price = product_data["market_price"]
+
+    market_price = lookup["market_price"]
 
 
     profit = market_price - buy_price
+
 
     roi = (
         profit / buy_price * 100
@@ -33,13 +54,13 @@ def scan_product(
 
     product = Product(
 
-        name=product_data["name"],
+        name=lookup["name"],
 
-        brand=product_data.get("brand"),
+        brand=lookup["brand"],
 
-        category=product_data.get("category"),
+        category=lookup["category"],
 
-        barcode=product_data.get("barcode"),
+        barcode=barcode,
 
         retailer=product_data["retailer"],
 
@@ -65,7 +86,67 @@ def scan_product(
     db.refresh(product)
 
 
+
+    market = MarketData(
+
+        product_id=product.id,
+
+        source="Barcode Lookup",
+
+        marketplace="Internal Market Database",
+
+        price=market_price,
+
+        average_price=market_price,
+
+        sold_count=25,
+
+        condition="New"
+
+    )
+
+
+    db.add(market)
+
+    db.commit()
+
+    db.refresh(market)
+
+
+
     analysis = analyze_product(product)
+
+
+    confidence = calculate_confidence(
+        product,
+        market
+    )
+
+
+
+    scan = ScanHistory(
+
+        product_id=product.id,
+
+        recommendation=analysis["recommendation"],
+
+        flipintel_score=analysis["flipintel_score"],
+
+        confidence_score=confidence["confidence"],
+
+        profit=profit,
+
+        roi=roi
+
+    )
+
+
+    db.add(scan)
+
+    db.commit()
+
+    db.refresh(scan)
+
 
 
     return {
@@ -74,17 +155,20 @@ def scan_product(
 
         "product": product.name,
 
+        "brand": product.brand,
+
+        "category": product.category,
+
+        "market_price": market_price,
+
         "profit": profit,
 
         "roi": roi,
 
-        "flipintel_score":
-            analysis["flipintel_score"],
+        "analysis": analysis,
 
-        "recommendation":
-            analysis["recommendation"],
+        "confidence": confidence,
 
-        "reasons":
-            analysis["reasons"]
+        "scan_history_id": scan.id
 
     }
