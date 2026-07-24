@@ -11,6 +11,7 @@ from app.services.confidence_engine import calculate_confidence
 from app.services.deal_analyzer import analyze_product
 from app.services.product_repository import ProductRepository
 from app.services.historical_comparison import HistoricalComparison
+from app.services.deal_explainer import DealExplainer
 
 
 router = APIRouter(
@@ -20,6 +21,8 @@ router = APIRouter(
 
 
 historical_comparison = HistoricalComparison()
+
+deal_explainer = DealExplainer()
 
 
 
@@ -38,6 +41,7 @@ def scan_barcode(
 
 
     if lookup is None:
+
         raise HTTPException(
             status_code=404,
             detail="Barcode not found"
@@ -47,16 +51,14 @@ def scan_barcode(
     repo = ProductRepository(db)
 
 
-    #
-    # CREATE OR UPDATE PRODUCT
-    #
-
     product = repo.get_by_barcode(barcode)
 
     existing_product = product is not None
 
 
+
     if existing_product:
+
 
         product = repo.update_existing_product(
             product,
@@ -71,6 +73,7 @@ def scan_barcode(
 
     else:
 
+
         product = repo.create_product(
             lookup,
             buy_price,
@@ -78,9 +81,6 @@ def scan_barcode(
         )
 
 
-    #
-    # MARKET SNAPSHOT
-    #
 
     market = MarketData(
 
@@ -109,11 +109,8 @@ def scan_barcode(
 
 
 
-    #
-    # DEAL ANALYSIS
-    #
-
     analysis = analyze_product(product)
+
 
 
     confidence = calculate_confidence(
@@ -122,10 +119,6 @@ def scan_barcode(
     )
 
 
-
-    #
-    # HISTORICAL COMPARISON
-    #
 
     previous_history = (
 
@@ -140,6 +133,7 @@ def scan_barcode(
     )
 
 
+
     historical = historical_comparison.compare(
 
         current_buy_price=product.buy_price,
@@ -152,9 +146,25 @@ def scan_barcode(
 
 
 
-    #
-    # SAVE SCAN
-    #
+    explanation = deal_explainer.explain(
+
+        product=product,
+
+        profit=product.profit,
+
+        roi=product.roi,
+
+        demand=100,
+
+        confidence=confidence["confidence"],
+
+        action=analysis["recommendation"],
+
+        historical=historical
+
+    )
+
+
 
     scan = ScanHistory(
 
@@ -183,9 +193,11 @@ def scan_barcode(
 
     return {
 
+
         "product_id": product.id,
 
         "existing_product": existing_product,
+
 
         "product": product.name,
 
@@ -193,18 +205,28 @@ def scan_barcode(
 
         "category": product.category,
 
+
         "market_price": product.market_price,
+
 
         "profit": product.profit,
 
         "roi": product.roi,
 
+
         "analysis": analysis,
+
 
         "confidence": confidence,
 
+
         "historical_comparison": historical,
 
+
+        "deal_explanation": explanation,
+
+
         "scan_history_id": scan.id
+
 
     }
