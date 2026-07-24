@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from app.db.database import get_db
+
 from app.models.product import Product
 from app.models.scan_history import ScanHistory
 
@@ -11,6 +12,7 @@ router = APIRouter(
     prefix="/dashboard",
     tags=["Dashboard"]
 )
+
 
 
 @router.get("/summary")
@@ -55,24 +57,122 @@ def dashboard_summary(
     )
 
 
+    invested_capital = (
+        db.query(
+            func.sum(Product.buy_price)
+        )
+        .scalar()
+    )
+
+
+    average_confidence = (
+        db.query(
+            func.avg(
+                ScanHistory.confidence_score
+            )
+        )
+        .scalar()
+    )
+
+
+    best_product = (
+        db.query(Product)
+        .order_by(
+            Product.profit.desc()
+        )
+        .first()
+    )
+
+
+    dashboard_score = 0
+
+
+    if strong_buys:
+        dashboard_score += 25
+
+
+    if average_roi and average_roi >= 100:
+        dashboard_score += 25
+
+
+    if total_profit and total_profit >= 500:
+        dashboard_score += 25
+
+
+    if average_confidence and average_confidence >= 80:
+        dashboard_score += 25
+
+
+
     return {
+
+        "dashboard_health_score":
+            dashboard_score,
+
 
         "total_products":
             total_products,
 
+
         "total_scans":
             total_scans,
 
-        "strong_buys":
+
+        "strong_buy_signals":
             strong_buys,
 
+
         "average_roi":
-            round(average_roi or 0, 2),
+            round(
+                average_roi or 0,
+                2
+            ),
+
 
         "total_profit_opportunity":
-            round(total_profit or 0, 2)
+            round(
+                total_profit or 0,
+                2
+            ),
+
+
+        "capital_required":
+            round(
+                invested_capital or 0,
+                2
+            ),
+
+
+        "average_confidence":
+            round(
+                average_confidence or 0,
+                2
+            ),
+
+
+        "top_opportunity": {
+
+            "product":
+                best_product.name
+                if best_product
+                else None,
+
+
+            "profit":
+                best_product.profit
+                if best_product
+                else 0,
+
+
+            "roi":
+                best_product.roi
+                if best_product
+                else 0
+
+        }
 
     }
+
 
 
 
@@ -93,31 +193,35 @@ def brand_intelligence(
         .group_by(
             Product.brand
         )
+        .order_by(
+            func.avg(Product.roi).desc()
+        )
         .all()
     )
 
 
-    brands = []
-
-
-    for brand, avg_roi, count in results:
-
-        brands.append({
-
-            "brand": brand,
-
-            "average_roi":
-                round(avg_roi or 0, 2),
-
-            "products":
-                count
-
-        })
-
-
     return {
-        "top_brands": brands
+
+        "top_brands": [
+
+            {
+
+                "brand": brand,
+
+                "average_roi":
+                    round(avg_roi or 0,2),
+
+                "products":
+                    count
+
+            }
+
+            for brand, avg_roi, count in results
+
+        ]
+
     }
+
 
 
 
@@ -138,29 +242,32 @@ def category_intelligence(
         .group_by(
             Product.category
         )
+        .order_by(
+            func.avg(Product.roi).desc()
+        )
         .all()
     )
 
 
-    categories = []
-
-
-    for category, avg_roi, count in results:
-
-        categories.append({
-
-            "category":
-                category,
-
-            "average_roi":
-                round(avg_roi or 0, 2),
-
-            "products":
-                count
-
-        })
-
-
     return {
-        "categories": categories
+
+        "categories": [
+
+            {
+
+                "category":
+                    category,
+
+                "average_roi":
+                    round(avg_roi or 0,2),
+
+                "products":
+                    count
+
+            }
+
+            for category, avg_roi, count in results
+
+        ]
+
     }
