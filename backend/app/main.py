@@ -10,7 +10,7 @@ from app.api import dashboard
 from app.api import rankings
 from app.api import action_center
 from app.api import market_intelligence
-from app.api import product_history
+from app.api import history
 
 
 app = FastAPI(
@@ -22,7 +22,6 @@ app = FastAPI(
     version="1.0.0"
 
 )
-
 
 
 @app.get("/")
@@ -46,16 +45,6 @@ def root():
 
 app.include_router(
     products.router
-)
-
-
-
-#
-# Product Memory / History Engine
-#
-
-app.include_router(
-    product_history.router
 )
 
 
@@ -146,4 +135,14 @@ app.include_router(
 
 app.include_router(
     market_intelligence.router
+)
+
+
+
+#
+# Product History Intelligence
+#
+
+app.include_router(
+    history.router
 )
