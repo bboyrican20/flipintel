@@ -1,269 +1,121 @@
+from sqlalchemy.orm import Session
+
+from app.models.product import Product
+from app.services.flip_score_engine import FlipScoreEngine
+from app.services.buy_price_engine import BuyPriceEngine
+
+
 class OpportunityEngine:
 
 
-    def rank_product(
+    def __init__(self):
+
+        self.flip_engine = FlipScoreEngine()
+        self.buy_engine = BuyPriceEngine()
+
+
+
+    def get_opportunities(
         self,
-        product,
-        analysis,
-        history
+        db: Session
     ):
 
 
-        flipintel_score = analysis["flipintel_score"]
+        products = (
+            db.query(Product)
+            .all()
+        )
 
 
-        total_scans = len(history)
+        opportunities = []
 
 
-        profit = product.profit or 0
-
-        roi = product.roi or 0
+        for product in products:
 
 
-        average_roi = 0
-
-
-        if history:
-
-            valid_rois = [
-                scan.roi
-                for scan in history
-                if scan.roi is not None
-            ]
-
-            if valid_rois:
-
-                average_roi = (
-                    sum(valid_rois)
-                    /
-                    len(valid_rois)
+            flip_score = (
+                self.flip_engine.calculate_score(
+                    product.id,
+                    db
                 )
-
-
-
-        #
-        # OPPORTUNITY SCORE
-        #
-
-        opportunity_score = flipintel_score
-
-
-        reasons = []
-
-
-        #
-        # PROFIT INTELLIGENCE
-        #
-
-        if profit >= 250:
-
-            opportunity_score += 30
-
-            reasons.append(
-                "Exceptional profit opportunity"
             )
 
 
-        elif profit >= 200:
-
-            opportunity_score += 20
-
-            reasons.append(
-                "High profit opportunity"
-            )
-
-
-        elif profit >= 100:
-
-            opportunity_score += 10
-
-            reasons.append(
-                "Positive profit margin"
-            )
-
-
-
-        #
-        # ROI INTELLIGENCE
-        #
-
-        if roi >= 150:
-
-            opportunity_score += 30
-
-            reasons.append(
-                "Exceptional ROI"
-            )
-
-
-        elif roi >= 100:
-
-            opportunity_score += 20
-
-            reasons.append(
-                "Excellent ROI"
-            )
-
-
-        elif roi >= 50:
-
-            opportunity_score += 10
-
-            reasons.append(
-                "Acceptable ROI"
-            )
-
-
-
-        #
-        # HISTORY INTELLIGENCE
-        #
-
-        if total_scans >= 10:
-
-            opportunity_score += 20
-
-            reasons.append(
-                "Strong historical validation"
-            )
-
-
-        elif total_scans >= 5:
-
-            opportunity_score += 10
-
-            reasons.append(
-                "Product has scan history"
-            )
-
-
-
-        #
-        # PERFORMANCE MOMENTUM
-        #
-
-        improvement = 0
-
-
-        if average_roi and roi > average_roi:
-
-            improvement = roi - average_roi
-
-            opportunity_score += 15
-
-            reasons.append(
-                f"ROI improving +{improvement:.2f}%"
-            )
-
-
-
-        #
-        # ACTION RECOMMENDATION
-        #
-
-        if opportunity_score >= 150:
-
-            action = "BUY NOW"
-
-
-        elif opportunity_score >= 100:
-
-            action = "CONSIDER"
-
-
-        else:
-
-            action = "PASS"
-
-
-
-        #
-        # PRICE INTELLIGENCE
-        #
-
-        price_signal = None
-
-
-        if product.market_price:
-
-            recommended_buy = (
-                product.market_price / 1.75
-            )
-
-
-            if product.buy_price <= recommended_buy:
-
-                opportunity_score += 10
-
-                price_signal = (
-                    "Buying below recommended acquisition price"
+            buy_price = (
+                self.buy_engine.calculate(
+                    product.id,
+                    db
                 )
-
-                reasons.append(
-                    price_signal
-                )
+            )
 
 
+            if "error" in flip_score:
+                continue
 
-        #
-        # FINAL OUTPUT
-        #
+
+            if "error" in buy_price:
+                continue
+
+
+
+            if flip_score["decision"] in [
+                "BUY NOW",
+                "CONSIDER"
+            ]:
+
+
+                opportunities.append({
+
+                    "product_id":
+                        product.id,
+
+                    "product":
+                        product.name,
+
+                    "retailer":
+                        product.retailer,
+
+                    "flip_score":
+                        flip_score["flip_score"],
+
+                    "decision":
+                        flip_score["decision"],
+
+                    "current_buy_price":
+                        buy_price["current_buy_price"],
+
+                    "max_buy_price":
+                        buy_price["max_buy_price"],
+
+                    "market_price":
+                        buy_price["market_price"],
+
+                    "expected_profit":
+                        buy_price["expected_profit"],
+
+                    "roi":
+                        flip_score["metrics"]["estimated_roi"]
+
+                })
+
+
+
+        opportunities.sort(
+            key=lambda x:
+                x["flip_score"],
+            reverse=True
+        )
+
 
         return {
 
 
-            "product_id":
-                product.id,
+            "total_opportunities":
+                len(opportunities),
 
 
-            "product":
-                product.name,
-
-
-            "brand":
-                product.brand,
-
-
-            "retailer":
-                product.retailer,
-
-
-            "profit":
-                product.profit,
-
-
-            "roi":
-                round(
-                    roi,
-                    2
-                ),
-
-
-            "score":
-                opportunity_score,
-
-
-            "action":
-                action,
-
-
-            "recommendation":
-                analysis["recommendation"],
-
-
-            "history_count":
-                total_scans,
-
-
-            "average_previous_roi":
-                round(
-                    average_roi,
-                    2
-                ),
-
-
-            "rank_reason":
-                reasons
+            "opportunities":
+                opportunities
 
         }
 

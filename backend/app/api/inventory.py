@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -27,15 +29,11 @@ def add_inventory(
     quantity = data.get("quantity", 1)
     purchase_price = data["purchase_price"]
 
-
     product = (
         db.query(Product)
-        .filter(
-            Product.id == product_id
-        )
+        .filter(Product.id == product_id)
         .first()
     )
-
 
     if not product:
         raise HTTPException(
@@ -43,19 +41,15 @@ def add_inventory(
             detail="Product not found"
         )
 
-
     expected_sale_price = (
         product.market_price
         or product.sell_price
         or 0
     )
 
-
     projected_profit = (
         expected_sale_price - purchase_price
     ) * quantity
-
-
 
     inventory = Inventory(
 
@@ -73,14 +67,9 @@ def add_inventory(
 
     )
 
-
     db.add(inventory)
-
     db.commit()
-
     db.refresh(inventory)
-
-
 
     return {
 
@@ -90,20 +79,85 @@ def add_inventory(
 
         "units_added": quantity,
 
-        "capital_invested":
-            purchase_price * quantity,
+        "capital_invested": purchase_price * quantity,
 
-        "expected_revenue":
-            expected_sale_price * quantity,
+        "expected_revenue": expected_sale_price * quantity,
 
-        "projected_profit":
-            projected_profit,
+        "projected_profit": projected_profit,
 
-        "status":
-            inventory.status
+        "status": inventory.status
 
     }
 
+
+#
+# SELL INVENTORY
+#
+
+@router.post("/sell/{inventory_id}")
+def sell_inventory(
+    inventory_id: int,
+    data: dict,
+    db: Session = Depends(get_db)
+):
+
+    item = (
+        db.query(Inventory)
+        .filter(Inventory.id == inventory_id)
+        .first()
+    )
+
+    if not item:
+        raise HTTPException(
+            status_code=404,
+            detail="Inventory item not found"
+        )
+
+    sale_price = data["sale_price"]
+
+    cost = item.purchase_price * item.quantity
+
+    revenue = sale_price * item.quantity
+
+    profit = revenue - cost
+
+    roi = 0
+
+    if cost > 0:
+        roi = (profit / cost) * 100
+
+    item.sale_price = sale_price
+    item.actual_profit = profit
+    item.actual_roi = round(roi, 2)
+    item.sold_at = datetime.utcnow()
+    item.status = "SOLD"
+
+    db.commit()
+    db.refresh(item)
+
+    product = (
+        db.query(Product)
+        .filter(Product.id == item.product_id)
+        .first()
+    )
+
+    return {
+
+        "inventory_id": item.id,
+
+        "product": product.name if product else None,
+
+        "status": item.status,
+
+        "sale_price": sale_price,
+
+        "actual_profit": item.actual_profit,
+
+        "actual_roi": item.actual_roi,
+
+        "sold_at": item.sold_at
+
+    }
 
 
 #
@@ -120,58 +174,47 @@ def get_inventory(
         .all()
     )
 
-
     results = []
-
 
     for item in inventory:
 
         product = (
             db.query(Product)
-            .filter(
-                Product.id == item.product_id
-            )
+            .filter(Product.id == item.product_id)
             .first()
         )
-
 
         results.append({
 
             "inventory_id": item.id,
 
-            "product":
-                product.name
-                if product
-                else None,
+            "product": product.name if product else None,
 
-            "quantity":
-                item.quantity,
+            "quantity": item.quantity,
 
-            "purchase_price":
-                item.purchase_price,
+            "purchase_price": item.purchase_price,
 
-            "expected_sale_price":
-                item.expected_sale_price,
+            "expected_sale_price": item.expected_sale_price,
 
-            "projected_profit":
-                item.projected_profit,
+            "sale_price": item.sale_price,
 
-            "status":
-                item.status
+            "projected_profit": item.projected_profit,
+
+            "actual_profit": item.actual_profit,
+
+            "actual_roi": item.actual_roi,
+
+            "status": item.status
 
         })
 
-
     return {
 
-        "total_items":
-            len(results),
+        "total_items": len(results),
 
-        "inventory":
-            results
+        "inventory": results
 
     }
-
 
 
 #
@@ -188,39 +231,37 @@ def portfolio(
         .all()
     )
 
-
     capital = sum(
-        item.purchase_price *
-        (item.quantity or 1)
+        item.purchase_price * (item.quantity or 1)
         for item in inventory
     )
 
-
-    revenue = sum(
-        item.expected_sale_price *
-        (item.quantity or 1)
+    projected_revenue = sum(
+        (item.expected_sale_price or 0)
+        * (item.quantity or 1)
         for item in inventory
     )
 
-
-    profit = sum(
+    projected_profit = sum(
         item.projected_profit or 0
         for item in inventory
     )
 
+    realized_profit = sum(
+        item.actual_profit or 0
+        for item in inventory
+    )
 
     return {
 
-        "inventory_count":
-            len(inventory),
+        "inventory_count": len(inventory),
 
-        "capital_invested":
-            capital,
+        "capital_invested": capital,
 
-        "projected_revenue":
-            revenue,
+        "projected_revenue": projected_revenue,
 
-        "projected_profit":
-            profit
+        "projected_profit": projected_profit,
+
+        "realized_profit": realized_profit
 
     }

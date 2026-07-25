@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import products
 from app.api import analysis
@@ -12,16 +13,27 @@ from app.api import action_center
 from app.api import market_intelligence
 from app.api import history
 from app.api import inventory
+from app.api import analytics
+from app.api import deals
+from app.api import alerts
 
 
 app = FastAPI(
-
     title="FlipIntel",
-
     description="AI Powered Product Flipping Intelligence Platform",
-
     version="1.0.0"
+)
 
+
+# Allow React frontend to communicate with FastAPI
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -29,15 +41,10 @@ app = FastAPI(
 def root():
 
     return {
-
         "app": "FlipIntel",
-
         "status": "running",
-
         "version": "1.0.0"
-
     }
-
 
 
 #
@@ -49,7 +56,6 @@ app.include_router(
 )
 
 
-
 #
 # Analysis Engine
 #
@@ -57,7 +63,6 @@ app.include_router(
 app.include_router(
     analysis.router
 )
-
 
 
 #
@@ -69,7 +74,6 @@ app.include_router(
 )
 
 
-
 #
 # Barcode Scanner
 #
@@ -77,7 +81,6 @@ app.include_router(
 app.include_router(
     scanner.router
 )
-
 
 
 #
@@ -89,7 +92,6 @@ app.include_router(
 )
 
 
-
 #
 # Opportunities
 #
@@ -97,7 +99,6 @@ app.include_router(
 app.include_router(
     opportunities.router
 )
-
 
 
 #
@@ -109,15 +110,13 @@ app.include_router(
 )
 
 
-
 #
-# Deal Rankings
+# Rankings
 #
 
 app.include_router(
     rankings.router
 )
-
 
 
 #
@@ -129,9 +128,8 @@ app.include_router(
 )
 
 
-
 #
-# Market Intelligence Engine
+# Market Intelligence
 #
 
 app.include_router(
@@ -139,9 +137,8 @@ app.include_router(
 )
 
 
-
 #
-# Product History Intelligence
+# Product History
 #
 
 app.include_router(
@@ -149,11 +146,37 @@ app.include_router(
 )
 
 
-
 #
-# Inventory Management
+# Inventory
 #
 
 app.include_router(
     inventory.router
+)
+
+
+#
+# Analytics
+#
+
+app.include_router(
+    analytics.router
+)
+
+
+#
+# Deals
+#
+
+app.include_router(
+    deals.router
+)
+
+
+#
+# Alerts
+#
+
+app.include_router(
+    alerts.router
 )
