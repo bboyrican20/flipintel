@@ -11,6 +11,7 @@ from app.api import rankings
 from app.api import action_center
 from app.api import market_intelligence
 from app.api import history
+from app.api import inventory
 
 
 app = FastAPI(
@@ -145,4 +146,14 @@ app.include_router(
 
 app.include_router(
     history.router
+)
+
+
+
+#
+# Inventory Management
+#
+
+app.include_router(
+    inventory.router
 )

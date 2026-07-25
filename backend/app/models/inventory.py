@@ -36,27 +36,36 @@ class Inventory(Base):
     )
 
 
-    purchase_date = Column(
-        DateTime,
-        default=datetime.utcnow
+    expected_sale_price = Column(
+        Float,
+        nullable=True
+    )
+
+
+    projected_profit = Column(
+        Float,
+        nullable=True
     )
 
 
     status = Column(
         String,
-        default="PURCHASED"
+        default="ACTIVE"
     )
 
 
-    notes = Column(
-        String,
-        nullable=True
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
     )
 
 
-    #
-    # PRODUCT RELATIONSHIP
-    #
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
 
     product = relationship(
         "Product",
