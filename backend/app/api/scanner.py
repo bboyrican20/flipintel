@@ -13,6 +13,7 @@ from app.services.product_repository import ProductRepository
 from app.services.historical_comparison import HistoricalComparison
 from app.services.deal_explainer import DealExplainer
 from app.services.decision_engine import DecisionEngine
+from app.services.product_memory import product_memory
 
 
 router = APIRouter(
@@ -20,13 +21,9 @@ router = APIRouter(
     tags=["Scanner"]
 )
 
-
 historical_comparison = HistoricalComparison()
-
-deal_explainer = DealExplainer()
-
 decision_engine = DecisionEngine()
-
+deal_explainer = DealExplainer()
 
 
 @router.post("/barcode")
@@ -35,38 +32,29 @@ def scan_barcode(
     db: Session = Depends(get_db)
 ):
 
-
     barcode = product_data["barcode"]
     buy_price = product_data["buy_price"]
     retailer = product_data["retailer"]
 
-
-
     lookup = lookup_barcode(barcode)
 
-
     if lookup is None:
-
         raise HTTPException(
             status_code=404,
             detail="Barcode not found"
         )
 
-
-
     repo = ProductRepository(db)
 
-
+    #
+    # CREATE OR UPDATE PRODUCT
+    #
 
     product = repo.get_by_barcode(barcode)
 
-
     existing_product = product is not None
 
-
-
     if existing_product:
-
 
         product = repo.update_existing_product(
             product,
@@ -78,9 +66,7 @@ def scan_barcode(
         db.commit()
         db.refresh(product)
 
-
     else:
-
 
         product = repo.create_product(
             lookup,
@@ -88,7 +74,9 @@ def scan_barcode(
             retailer
         )
 
-
+    #
+    # MARKET SNAPSHOT
+    #
 
     market = MarketData(
 
@@ -108,25 +96,24 @@ def scan_barcode(
 
     )
 
-
     db.add(market)
-
     db.commit()
-
     db.refresh(market)
 
-
+    #
+    # DEAL ANALYSIS
+    #
 
     analysis = analyze_product(product)
-
-
 
     confidence = calculate_confidence(
         product,
         market
     )
 
-
+    #
+    # PRODUCT HISTORY
+    #
 
     previous_history = (
 
@@ -140,8 +127,6 @@ def scan_barcode(
 
     )
 
-
-
     historical = historical_comparison.compare(
 
         current_buy_price=product.buy_price,
@@ -152,9 +137,23 @@ def scan_barcode(
 
     )
 
+    #
+    # PRODUCT MEMORY
+    #
 
+    memory = product_memory.summarize(
 
-    decision = decision_engine.evaluate(
+        product,
+
+        previous_history
+
+    )
+
+    #
+    # DECISION ENGINE
+    #
+
+    decision = decision_engine.decide(
 
         product,
 
@@ -166,25 +165,31 @@ def scan_barcode(
 
     )
 
-
+    #
+    # DEAL EXPLANATION
+    #
 
     explanation = deal_explainer.explain(
 
-        product,
+        product=product,
 
-        product.profit,
+        profit=product.profit,
 
-        product.roi,
+        roi=product.roi,
 
-        100,
+        demand=100,
 
-        confidence["confidence"],
+        confidence=confidence["confidence"],
 
-        analysis["recommendation"]
+        action=analysis["recommendation"]
 
     )
 
+    explanation["historical"] = historical
 
+    #
+    # SAVE SCAN
+    #
 
     scan = ScanHistory(
 
@@ -202,71 +207,44 @@ def scan_barcode(
 
     )
 
-
     db.add(scan)
-
     db.commit()
-
     db.refresh(scan)
 
-
+    #
+    # RESPONSE
+    #
 
     return {
 
+        "product_id": product.id,
 
-        "product_id":
-            product.id,
+        "existing_product": existing_product,
 
+        "product": product.name,
 
-        "existing_product":
-            existing_product,
+        "brand": product.brand,
 
+        "category": product.category,
 
-        "product":
-            product.name,
+        "market_price": product.market_price,
 
+        "profit": product.profit,
 
-        "brand":
-            product.brand,
+        "roi": product.roi,
 
+        "analysis": analysis,
 
-        "category":
-            product.category,
+        "confidence": confidence,
 
+        "historical_comparison": historical,
 
-        "market_price":
-            product.market_price,
+        "product_memory": memory,
 
+        "decision": decision,
 
-        "profit":
-            product.profit,
+        "deal_explanation": explanation,
 
-
-        "roi":
-            product.roi,
-
-
-        "analysis":
-            analysis,
-
-
-        "confidence":
-            confidence,
-
-
-        "historical_comparison":
-            historical,
-
-
-        "decision":
-            decision,
-
-
-        "deal_explanation":
-            explanation,
-
-
-        "scan_history_id":
-            scan.id
+        "scan_history_id": scan.id
 
     }

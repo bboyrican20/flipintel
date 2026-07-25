@@ -1,7 +1,6 @@
 class DecisionEngine:
 
-
-    def evaluate(
+    def decide(
         self,
         product,
         analysis,
@@ -9,20 +8,15 @@ class DecisionEngine:
         historical
     ):
 
-
         roi = product.roi or 0
         profit = product.profit or 0
         market_price = product.market_price or 0
 
-
         reasons = []
         warnings = []
 
-
         #
         # MAX BUY PRICE
-        #
-        # Target 75% ROI minimum
         #
 
         max_buy_price = round(
@@ -30,14 +24,11 @@ class DecisionEngine:
             2
         )
 
-
-
         #
-        # DEAL GRADE
+        # SCORE
         #
 
         score = 0
-
 
         if roi >= 150:
             score += 40
@@ -53,8 +44,9 @@ class DecisionEngine:
 
         elif roi >= 50:
             score += 20
-
-
+            reasons.append(
+                "Strong ROI"
+            )
 
         if profit >= 250:
             score += 30
@@ -68,33 +60,20 @@ class DecisionEngine:
                 "Strong profit potential"
             )
 
-
-
-        if confidence.get("confidence",0) >= 90:
+        if confidence.get("confidence", 0) >= 90:
             score += 20
             reasons.append(
                 "High confidence prediction"
             )
 
-
-
-        if historical:
-
-            if historical.get(
-                "roi_improvement",
-                0
-            ) > 0:
-
-                score += 10
-
-                reasons.append(
-                    "Historical performance improving"
-                )
-
-
+        if historical and historical.get("roi_improvement", 0) > 0:
+            score += 10
+            reasons.append(
+                "Historical performance improving"
+            )
 
         #
-        # ACTION
+        # DECISION
         #
 
         if score >= 85:
@@ -102,25 +81,20 @@ class DecisionEngine:
             action = "BUY"
             grade = "S-TIER"
 
-
         elif score >= 65:
 
             action = "BUY"
             grade = "A-TIER"
-
 
         elif score >= 45:
 
             action = "CONSIDER"
             grade = "B-TIER"
 
-
         else:
 
             action = "PASS"
             grade = "C-TIER"
-
-
 
         #
         # WARNINGS
@@ -132,50 +106,32 @@ class DecisionEngine:
                 "Current buy price exceeds recommended acquisition price"
             )
 
-
-
         if roi < 50:
 
             warnings.append(
                 "Low ROI margin"
             )
 
-
-
         return {
 
+            "action": action,
 
-            "action":
-                action,
+            "grade": grade,
 
+            "max_buy_price": max_buy_price,
 
-            "grade":
-                grade,
-
-
-            "max_buy_price":
-                max_buy_price,
-
-
-            "current_buy_price":
-                product.buy_price,
-
+            "current_buy_price": product.buy_price,
 
             "risk":
                 "LOW"
-                if confidence.get("confidence",0) >= 80
+                if confidence.get("confidence", 0) >= 80
                 else "MEDIUM",
 
+            "reasons": reasons,
 
-            "reasons":
-                reasons,
-
-
-            "warnings":
-                warnings
+            "warnings": warnings
 
         }
-
 
 
 decision_engine = DecisionEngine()

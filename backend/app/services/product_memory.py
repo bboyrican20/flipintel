@@ -1,114 +1,84 @@
-from statistics import mean
-
-
 class ProductMemory:
 
-
-    def analyze(
+    def summarize(
         self,
         product,
-        scans,
-        market_data
+        history
     ):
 
-
-        if not scans:
+        if not history:
 
             return {
-
-                "times_scanned": 0,
-
-                "average_buy_price": product.buy_price,
-
-                "best_buy_price": product.buy_price,
-
+                "status": "NEW_PRODUCT",
+                "times_seen": 0,
+                "best_buy_price": None,
+                "average_buy_price": None,
+                "highest_roi": 0,
                 "average_roi": 0,
-
-                "historical_performance": "NO DATA"
-
+                "buy_zone": None,
+                "message": "First time this product has been scanned."
             }
 
+        total = len(history)
 
+        rois = [
+            scan.roi
+            for scan in history
+            if scan.roi is not None
+        ]
 
-        buy_prices = []
+        average_roi = (
+            sum(rois) / len(rois)
+            if rois else 0
+        )
 
-        roi_values = []
+        highest_roi = (
+            max(rois)
+            if rois else 0
+        )
 
+        best_buy_price = product.market_price - highest_roi if product.market_price else product.buy_price
 
+        average_buy_price = (
+            product.market_price - average_roi
+            if product.market_price else product.buy_price
+        )
 
-        for scan in scans:
+        if average_roi >= 100:
+            buy_zone = "AGGRESSIVE BUY"
 
-
-            if scan.profit is not None:
-
-                buy_price = product.market_price - scan.profit
-
-                buy_prices.append(
-                    buy_price
-                )
-
-
-            if scan.roi is not None:
-
-                roi_values.append(
-                    scan.roi
-                )
-
-
-
-        average_buy = round(
-            mean(buy_prices),
-            2
-        ) if buy_prices else product.buy_price
-
-
-
-        best_buy = min(
-            buy_prices
-        ) if buy_prices else product.buy_price
-
-
-
-        average_roi = round(
-            mean(roi_values),
-            2
-        ) if roi_values else 0
-
-
-
-        if average_roi >= 75:
-
-            performance = "EXCELLENT"
-
-
+        elif average_roi >= 70:
+            buy_zone = "BUY"
 
         elif average_roi >= 40:
-
-            performance = "GOOD"
-
-
+            buy_zone = "WATCH"
 
         else:
-
-            performance = "WEAK"
-
-
+            buy_zone = "PASS"
 
         return {
 
+            "status": "KNOWN_PRODUCT",
 
-            "times_scanned": len(scans),
+            "times_seen": total,
 
+            "best_buy_price": round(best_buy_price, 2),
 
-            "average_buy_price": average_buy,
+            "average_buy_price": round(average_buy_price, 2),
 
+            "highest_roi": round(highest_roi, 2),
 
-            "best_buy_price": best_buy,
+            "average_roi": round(average_roi, 2),
 
+            "buy_zone": buy_zone,
 
-            "average_roi": average_roi,
-
-
-            "historical_performance": performance
+            "message": (
+                f"Scanned {total} times. "
+                f"Average ROI {average_roi:.1f}%. "
+                f"Best ROI {highest_roi:.1f}%."
+            )
 
         }
+
+
+product_memory = ProductMemory()
