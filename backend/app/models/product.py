@@ -120,9 +120,23 @@ class Product(Base):
     )
 
 
+        #
     # Market intelligence relationship
+    #
+
     market_data = relationship(
         "MarketData",
+        back_populates="product",
+        cascade="all, delete-orphan"
+    )
+
+
+    #
+    # Inventory relationship
+    #
+
+    inventory = relationship(
+        "Inventory",
         back_populates="product",
         cascade="all, delete-orphan"
     )
