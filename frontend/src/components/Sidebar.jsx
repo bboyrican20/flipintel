@@ -8,7 +8,8 @@ import {
   LayoutDashboard,
   ScanLine,
   Package,
-  BarChart3
+  BarChart3,
+  Trophy
 } from "lucide-react";
 
 
@@ -89,6 +90,18 @@ function Sidebar(){
           <BarChart3 />
 
           Analytics
+
+        </NavLink>
+
+
+
+
+
+        <NavLink to="/history">
+
+          <Trophy />
+
+          Flip History
 
         </NavLink>
 

@@ -3,6 +3,8 @@ import Scanner from "./pages/Scanner";
 import InventoryPage from "./pages/InventoryPage";
 import Analytics from "./pages/Analytics";
 import Deals from "./pages/Deals";
+import FlipHistory from "./pages/FlipHistory";
+
 
 import {
   Routes,
@@ -65,9 +67,16 @@ function App(){
 
 
           <Route
-  path="/deals"
-  element={<Deals />}
-/>
+            path="/deals"
+            element={<Deals />}
+          />
+
+
+
+          <Route
+            path="/history"
+            element={<FlipHistory />}
+          />
 
 
 

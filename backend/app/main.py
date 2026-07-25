@@ -16,6 +16,8 @@ from app.api import inventory
 from app.api import analytics
 from app.api import deals
 from app.api import alerts
+from app.api import sales
+
 
 
 app = FastAPI(
@@ -25,7 +27,9 @@ app = FastAPI(
 )
 
 
+
 # Allow React frontend to communicate with FastAPI
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -35,6 +39,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 @app.get("/")
@@ -47,6 +52,7 @@ def root():
     }
 
 
+
 #
 # Product Routes
 #
@@ -54,6 +60,7 @@ def root():
 app.include_router(
     products.router
 )
+
 
 
 #
@@ -65,6 +72,7 @@ app.include_router(
 )
 
 
+
 #
 # Market Data
 #
@@ -72,6 +80,7 @@ app.include_router(
 app.include_router(
     market_data.router
 )
+
 
 
 #
@@ -83,6 +92,7 @@ app.include_router(
 )
 
 
+
 #
 # Reports
 #
@@ -90,6 +100,7 @@ app.include_router(
 app.include_router(
     reports.router
 )
+
 
 
 #
@@ -101,6 +112,7 @@ app.include_router(
 )
 
 
+
 #
 # Dashboard
 #
@@ -108,6 +120,7 @@ app.include_router(
 app.include_router(
     dashboard.router
 )
+
 
 
 #
@@ -119,6 +132,7 @@ app.include_router(
 )
 
 
+
 #
 # Action Center
 #
@@ -126,6 +140,7 @@ app.include_router(
 app.include_router(
     action_center.router
 )
+
 
 
 #
@@ -137,6 +152,7 @@ app.include_router(
 )
 
 
+
 #
 # Product History
 #
@@ -144,6 +160,7 @@ app.include_router(
 app.include_router(
     history.router
 )
+
 
 
 #
@@ -155,6 +172,7 @@ app.include_router(
 )
 
 
+
 #
 # Analytics
 #
@@ -162,6 +180,7 @@ app.include_router(
 app.include_router(
     analytics.router
 )
+
 
 
 #
@@ -173,10 +192,21 @@ app.include_router(
 )
 
 
+
 #
 # Alerts
 #
 
 app.include_router(
     alerts.router
+)
+
+
+
+#
+# Sales Intelligence
+#
+
+app.include_router(
+    sales.router
 )
