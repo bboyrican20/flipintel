@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import {
-  Flame,
-  TrendingUp,
-  DollarSign,
-  ShieldCheck,
-  Clock
-} from "lucide-react";
-
 
 const API = "http://localhost:8000";
 
@@ -21,14 +13,10 @@ const [deals,setDeals] = useState([]);
 
 
 
-
 useEffect(()=>{
 
 
 async function loadDeals(){
-
-
-try{
 
 
 const response = await axios.get(
@@ -39,19 +27,6 @@ const response = await axios.get(
 setDeals(
 response.data.hot_deals || []
 );
-
-
-
-}catch(error){
-
-
-console.error(
-"Deals error:",
-error
-);
-
-
-}
 
 
 }
@@ -67,73 +42,109 @@ loadDeals();
 
 
 
+async function addInventory(deal){
+
+
+try{
+
+
+await axios.post(
+`${API}/inventory/`,
+{
+
+product:
+deal.product,
+
+
+retailer:
+deal.retailer,
+
+
+purchase_price:
+deal.buy_price,
+
+
+expected_sale_price:
+deal.market_price,
+
+
+projected_profit:
+deal.profit
+
+}
+
+);
+
+
+
+alert(
+"Added to Inventory ✅"
+);
+
+
+
+}catch(error){
+
+
+console.error(
+error
+);
+
+
+alert(
+"Could not add item"
+);
+
+
+}
+
+
+}
+
+
+
+
+
 
 return (
 
 <div className="deals-page">
 
 
-<header>
-
 <h1>
 
-<Flame/>
-
-Hot Deals
+🔥 Hot Deals
 
 </h1>
 
 
+
 <p>
 
-AI powered flipping opportunities
+AI ranked flipping opportunities
 
 </p>
 
 
-</header>
 
 
+<div className="deal-grid">
 
 
-
-
-<div className="deals-grid">
-
-
-
-{deals.map((deal)=>(
-
+{deals.map(deal=>(
 
 
 <div 
-className="deal-card"
+className="deal"
 key={deal.product_id}
 >
 
 
-
-
-<div className="deal-top">
-
-
-<span className="buy-badge">
+<div className="decision">
 
 {deal.decision}
 
-</span>
-
-
-<span className="score-badge">
-
-{deal.score}/100
-
-</span>
-
-
 </div>
-
-
 
 
 
@@ -144,8 +155,7 @@ key={deal.product_id}
 </h2>
 
 
-
-<p className="retailer">
+<p>
 
 🏪 {deal.retailer}
 
@@ -153,206 +163,57 @@ key={deal.product_id}
 
 
 
-
-
-
-<div className="money-grid">
-
-
-<div>
-
-<small>
-Buy Price
-</small>
-
-<strong>
-
-${deal.buy_price}
-
-</strong>
-
-</div>
-
-
-
-
-
-<div>
-
-<small>
-Market Value
-</small>
-
-<strong>
-
-${deal.market_price}
-
-</strong>
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div className="profit-box">
-
-
-<TrendingUp/>
-
-
-<div>
-
-<small>
-Expected Profit
-</small>
-
-
-<h2>
-
-+${deal.profit}
-
-</h2>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div className="stats-row">
-
-
-
-<div>
-
-<DollarSign/>
-
-<p>
-ROI
-</p>
-
-<strong>
-
-{deal.roi}%
-
-</strong>
-
-
-</div>
-
-
-
-
-
-
-<div>
-
-<ShieldCheck/>
-
-<p>
-Risk
-</p>
-
-
-<strong>
-
-LOW
-
-</strong>
-
-
-</div>
-
-
-
-
-
-
-<div>
-
-<Clock/>
-
-<p>
-Window
-
-</p>
-
-
-<strong>
-
-3-7 Days
-
-</strong>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-<div className="ai-box">
-
-
 <h3>
-FlipIntel AI Analysis
+
+Flip Score:
+{deal.score}/100
+
 </h3>
 
 
+
 <p>
 
-Recommendation:
+Buy:
+${deal.buy_price}
 
 </p>
-
-
-<strong>
-
-🟢 {deal.decision}
-
-</strong>
 
 
 
 <p>
 
-Strong ROI opportunity detected.
-
-Market value exceeds purchase price.
+Market:
+${deal.market_price}
 
 </p>
 
 
-</div>
+
+<p className="profit">
+
+Profit:
++${deal.profit}
+
+</p>
+
+
+
+<p>
+
+ROI:
+{deal.roi}%
+
+</p>
 
 
 
 
+<button
+onClick={() => addInventory(deal)}
+>
 
-<button>
-
-Analyze Deal
+📦 Add To Inventory
 
 </button>
 
@@ -364,12 +225,12 @@ Analyze Deal
 ))}
 
 
-</div>
-
-
 
 </div>
 
+
+
+</div>
 
 );
 

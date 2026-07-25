@@ -1,12 +1,8 @@
-from datetime import datetime
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-
-from app.db.database import get_db
-
+from app.db.database import SessionLocal
 from app.models.inventory import Inventory
-from app.models.product import Product
 
 
 router = APIRouter(
@@ -15,253 +11,252 @@ router = APIRouter(
 )
 
 
-#
-# ADD INVENTORY
-#
 
-@router.post("/add")
-def add_inventory(
-    data: dict,
-    db: Session = Depends(get_db)
-):
+class InventoryCreate(BaseModel):
 
-    product_id = data["product_id"]
-    quantity = data.get("quantity", 1)
-    purchase_price = data["purchase_price"]
-
-    product = (
-        db.query(Product)
-        .filter(Product.id == product_id)
-        .first()
-    )
-
-    if not product:
-        raise HTTPException(
-            status_code=404,
-            detail="Product not found"
-        )
-
-    expected_sale_price = (
-        product.market_price
-        or product.sell_price
-        or 0
-    )
-
-    projected_profit = (
-        expected_sale_price - purchase_price
-    ) * quantity
-
-    inventory = Inventory(
-
-        product_id=product.id,
-
-        quantity=quantity,
-
-        purchase_price=purchase_price,
-
-        expected_sale_price=expected_sale_price,
-
-        projected_profit=projected_profit,
-
-        status="ACTIVE"
-
-    )
-
-    db.add(inventory)
-    db.commit()
-    db.refresh(inventory)
-
-    return {
-
-        "inventory_id": inventory.id,
-
-        "product": product.name,
-
-        "units_added": quantity,
-
-        "capital_invested": purchase_price * quantity,
-
-        "expected_revenue": expected_sale_price * quantity,
-
-        "projected_profit": projected_profit,
-
-        "status": inventory.status
-
-    }
+    product: str
+    retailer: str
+    purchase_price: float
+    expected_sale_price: float
+    projected_profit: float
 
 
-#
-# SELL INVENTORY
-#
-
-@router.post("/sell/{inventory_id}")
-def sell_inventory(
-    inventory_id: int,
-    data: dict,
-    db: Session = Depends(get_db)
-):
-
-    item = (
-        db.query(Inventory)
-        .filter(Inventory.id == inventory_id)
-        .first()
-    )
-
-    if not item:
-        raise HTTPException(
-            status_code=404,
-            detail="Inventory item not found"
-        )
-
-    sale_price = data["sale_price"]
-
-    cost = item.purchase_price * item.quantity
-
-    revenue = sale_price * item.quantity
-
-    profit = revenue - cost
-
-    roi = 0
-
-    if cost > 0:
-        roi = (profit / cost) * 100
-
-    item.sale_price = sale_price
-    item.actual_profit = profit
-    item.actual_roi = round(roi, 2)
-    item.sold_at = datetime.utcnow()
-    item.status = "SOLD"
-
-    db.commit()
-    db.refresh(item)
-
-    product = (
-        db.query(Product)
-        .filter(Product.id == item.product_id)
-        .first()
-    )
-
-    return {
-
-        "inventory_id": item.id,
-
-        "product": product.name if product else None,
-
-        "status": item.status,
-
-        "sale_price": sale_price,
-
-        "actual_profit": item.actual_profit,
-
-        "actual_roi": item.actual_roi,
-
-        "sold_at": item.sold_at
-
-    }
 
 
-#
-# GET INVENTORY
-#
+
+class InventorySale(BaseModel):
+
+    sale_price: float
+
+
+
+
 
 @router.get("/")
-def get_inventory(
-    db: Session = Depends(get_db)
-):
+def get_inventory():
 
-    inventory = (
-        db.query(Inventory)
-        .all()
-    )
 
-    results = []
+    db = SessionLocal()
 
-    for item in inventory:
 
-        product = (
-            db.query(Product)
-            .filter(Product.id == item.product_id)
-            .first()
-        )
+    items = db.query(Inventory).all()
 
-        results.append({
+
+    result = []
+
+
+
+    for item in items:
+
+
+        result.append({
+
 
             "inventory_id": item.id,
 
-            "product": product.name if product else None,
 
-            "quantity": item.quantity,
+            "product": item.product,
+
 
             "purchase_price": item.purchase_price,
 
+
             "expected_sale_price": item.expected_sale_price,
 
-            "sale_price": item.sale_price,
 
             "projected_profit": item.projected_profit,
 
-            "actual_profit": item.actual_profit,
 
-            "actual_roi": item.actual_roi,
+            "status": getattr(
+                item,
+                "status",
+                "AVAILABLE"
+            )
 
-            "status": item.status
 
         })
 
+
+
+    db.close()
+
+
+
     return {
 
-        "total_items": len(results),
 
-        "inventory": results
+        "total_items": len(result),
+
+
+        "inventory": result
+
 
     }
 
 
-#
-# PORTFOLIO SUMMARY
-#
 
-@router.get("/portfolio")
-def portfolio(
-    db: Session = Depends(get_db)
+
+
+
+
+
+@router.post("/")
+def add_inventory(
+    item: InventoryCreate
 ):
 
-    inventory = (
-        db.query(Inventory)
-        .all()
+
+    db = SessionLocal()
+
+
+
+    new_item = Inventory(
+
+
+        product=item.product,
+
+
+        purchase_price=item.purchase_price,
+
+
+        expected_sale_price=item.expected_sale_price,
+
+
+        projected_profit=item.projected_profit
+
+
     )
 
-    capital = sum(
-        item.purchase_price * (item.quantity or 1)
-        for item in inventory
-    )
 
-    projected_revenue = sum(
-        (item.expected_sale_price or 0)
-        * (item.quantity or 1)
-        for item in inventory
-    )
 
-    projected_profit = sum(
-        item.projected_profit or 0
-        for item in inventory
-    )
+    db.add(new_item)
 
-    realized_profit = sum(
-        item.actual_profit or 0
-        for item in inventory
-    )
+
+    db.commit()
+
+
+    db.refresh(new_item)
+
+
+    db.close()
+
+
 
     return {
 
-        "inventory_count": len(inventory),
 
-        "capital_invested": capital,
+        "message":
+        "Added to inventory",
 
-        "projected_revenue": projected_revenue,
 
-        "projected_profit": projected_profit,
+        "inventory_id":
+        new_item.id
 
-        "realized_profit": realized_profit
+
+    }
+
+
+
+
+
+
+
+
+
+
+@router.post("/{inventory_id}/sell")
+def sell_inventory(
+
+    inventory_id: int,
+
+    sale: InventorySale
+
+):
+
+
+    db = SessionLocal()
+
+
+
+    item = db.query(Inventory).filter(
+
+        Inventory.id == inventory_id
+
+    ).first()
+
+
+
+    if not item:
+
+
+        db.close()
+
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="Inventory item not found"
+
+        )
+
+
+
+
+    item.status = "SOLD"
+
+
+
+    item.sale_price = sale.sale_price
+
+
+
+
+    item.actual_profit = (
+
+        sale.sale_price -
+
+        item.purchase_price
+
+    )
+
+
+
+
+    db.commit()
+
+
+
+    db.refresh(item)
+
+
+
+    db.close()
+
+
+
+
+    return {
+
+
+        "message":
+        "Inventory item sold",
+
+
+        "inventory_id":
+        inventory_id,
+
+
+        "sale_price":
+        sale.sale_price,
+
+
+        "profit":
+        item.actual_profit,
+
+
+        "status":
+        item.status
+
 
     }
