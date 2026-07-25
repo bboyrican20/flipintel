@@ -10,6 +10,10 @@ from app.models.market_data import MarketData
 from app.services.market_intelligence import MarketIntelligence
 from app.services.deal_intelligence import DealIntelligence
 from app.services.deal_explainer import DealExplainer
+from app.services.decision_engine import DecisionEngine
+from app.services.opportunity_engine import opportunity_engine
+from app.services.deal_analyzer import analyze_product
+
 
 
 router = APIRouter(
@@ -24,6 +28,8 @@ deal_engine = DealIntelligence()
 
 explainer = DealExplainer()
 
+decision_engine = DecisionEngine()
+
 
 
 @router.get("/action-center")
@@ -31,24 +37,30 @@ def action_center(
     db: Session = Depends(get_db)
 ):
 
+
     products = (
         db.query(Product)
         .all()
     )
 
 
-    buy_now = []
-
-    watch = []
-
-    avoid = []
+    actions = []
 
 
 
     for product in products:
 
 
-        scan = (
+        history = (
+            db.query(ScanHistory)
+            .filter(
+                ScanHistory.product_id == product.id
+            )
+            .all()
+        )
+
+
+        latest_scan = (
             db.query(ScanHistory)
             .filter(
                 ScanHistory.product_id == product.id
@@ -60,8 +72,12 @@ def action_center(
         )
 
 
-        if not scan:
+        if not latest_scan:
             continue
+
+
+
+        analysis = analyze_product(product)
 
 
 
@@ -74,19 +90,16 @@ def action_center(
         )
 
 
+        market_data = [
 
-        market_data = []
-
-
-        for row in market_rows:
-
-            market_data.append({
-
+            {
                 "price": row.price,
-
                 "sold_count": row.sold_count
+            }
 
-            })
+            for row in market_rows
+
+        ]
 
 
 
@@ -106,7 +119,7 @@ def action_center(
 
             product.roi,
 
-            scan.confidence_score,
+            latest_scan.confidence_score,
 
             intelligence["demand_score"],
 
@@ -119,6 +132,35 @@ def action_center(
         recommendation = deal_engine.recommendation(
 
             deal_score
+
+        )
+
+
+
+        decision = decision_engine.decide(
+
+            product,
+
+            analysis,
+
+            {
+                "confidence":
+                    latest_scan.confidence_score
+            },
+
+            {}
+
+        )
+
+
+
+        ranked = opportunity_engine.rank_product(
+
+            product,
+
+            analysis,
+
+            history
 
         )
 
@@ -142,96 +184,77 @@ def action_center(
 
 
 
-        deal = {
+        actions.append({
 
 
-            "product_id": product.id,
+            "product_id":
+                product.id,
 
 
-            "product": product.name,
+            "product":
+                product.name,
 
 
-            "brand": product.brand,
+            "brand":
+                product.brand,
 
 
-            "profit": product.profit,
+            "retailer":
+                product.retailer,
 
 
-            "roi": product.roi,
+            "priority":
+                ranked["action"],
 
 
-            "confidence": scan.confidence_score,
+            "score":
+                ranked["score"],
 
 
-            "market_demand": intelligence["demand_score"],
+            "deal_score":
+                deal_score,
 
 
-            "market_confidence": intelligence["market_confidence"],
+            "profit":
+                product.profit,
 
 
-            "market_value": intelligence["market_value"],
+            "roi":
+                round(product.roi,2),
 
 
-            "deal_score": deal_score,
+            "max_buy_price":
+                decision["max_buy_price"],
 
 
-            "action": recommendation,
+            "current_buy_price":
+                product.buy_price,
 
 
-            "explanation": explanation["explanation"],
+            "expected_return":
+                product.profit,
 
 
-            "signals": explanation["signals"]
-
-        }
-
+            "confidence":
+                latest_scan.confidence_score,
 
 
-        if recommendation in [
-
-            "STRONG BUY",
-
-            "BUY"
-
-        ]:
-
-            buy_now.append(deal)
+            "reasons":
+                ranked["rank_reason"],
 
 
-
-        elif recommendation == "WATCH":
-
-            watch.append(deal)
+            "explanation":
+                explanation["explanation"]
 
 
-
-        else:
-
-            avoid.append(deal)
+        })
 
 
 
-    buy_now.sort(
+    actions.sort(
 
-        key=lambda x: x["deal_score"],
-
-        reverse=True
-
-    )
-
-
-    watch.sort(
-
-        key=lambda x: x["deal_score"],
-
-        reverse=True
-
-    )
-
-
-    avoid.sort(
-
-        key=lambda x: x["deal_score"],
+        key=lambda x:
+            x["score"],
 
         reverse=True
 
@@ -242,12 +265,17 @@ def action_center(
     return {
 
 
-        "buy_now": buy_now,
+        "total_actions":
+            len(actions),
 
 
-        "watch": watch,
+        "top_action":
+            actions[0]
+            if actions
+            else None,
 
 
-        "avoid": avoid
+        "actions":
+            actions
 
     }
