@@ -3,22 +3,30 @@ from typing import Optional
 
 MOCK_PRODUCTS = {
     "885911406123": {
+        "barcode": "885911406123",
         "name": "DeWalt 20V Max Drill Kit",
         "brand": "DeWalt",
         "category": "Power Tools",
         "market_price": 179.00,
+        "image": "https://via.placeholder.com/400",
     },
+
     "045242637285": {
+        "barcode": "045242637285",
         "name": "Milwaukee M18 Fuel Combo Kit",
         "brand": "Milwaukee",
         "category": "Power Tools",
         "market_price": 499.00,
+        "image": "https://via.placeholder.com/400",
     },
+
     "088381234567": {
+        "barcode": "088381234567",
         "name": "Makita 18V LXT Combo Kit",
         "brand": "Makita",
         "category": "Power Tools",
         "market_price": 399.00,
+        "image": "https://via.placeholder.com/400",
     },
 }
 

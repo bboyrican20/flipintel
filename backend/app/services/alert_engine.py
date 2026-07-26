@@ -66,16 +66,21 @@ class AlertEngine:
 
 
 
+            #
+            # HOT DEAL
+            #
+
             if (
-                score >= 85
-                and profit >= 200
-                and roi >= 100
+                score >= 75
+                and profit >= 50
+                and roi >= 75
             ):
+
 
                 alerts.append({
 
                     "type":
-                        "HOT_DEAL",
+                        "HOT DEAL",
 
                     "priority":
                         "HIGH",
@@ -87,7 +92,7 @@ class AlertEngine:
                         product.name,
 
                     "message":
-                        f"BUY NOW - ${round(profit,2)} profit opportunity at {round(roi,2)}% ROI",
+                        f"🔥 Strong flip opportunity - ${round(profit,2)} projected profit at {round(roi,2)}% ROI",
 
                     "score":
                         score,
@@ -102,7 +107,11 @@ class AlertEngine:
 
 
 
-            elif score >= 65:
+            #
+            # WATCH LIST
+            #
+
+            elif score >= 55:
 
 
                 alerts.append({
@@ -120,7 +129,7 @@ class AlertEngine:
                         product.name,
 
                     "message":
-                        "Opportunity worth monitoring",
+                        f"Monitor {product.name} - {round(roi,2)}% ROI opportunity",
 
                     "score":
                         score,
@@ -138,7 +147,7 @@ class AlertEngine:
         alerts.sort(
 
             key=lambda x:
-                x["score"],
+            x["score"],
 
             reverse=True
 

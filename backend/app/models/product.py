@@ -5,11 +5,9 @@ from datetime import datetime
 from app.db.database import Base
 
 
-
 class Product(Base):
 
     __tablename__ = "products"
-
 
 
     id = Column(
@@ -19,12 +17,10 @@ class Product(Base):
     )
 
 
-
     name = Column(
         String,
         nullable=False
     )
-
 
 
     brand = Column(
@@ -33,12 +29,10 @@ class Product(Base):
     )
 
 
-
     category = Column(
         String,
         nullable=True
     )
-
 
 
     sku = Column(
@@ -47,12 +41,10 @@ class Product(Base):
     )
 
 
-
     upc = Column(
         String,
         nullable=True
     )
-
 
 
     barcode = Column(
@@ -61,12 +53,10 @@ class Product(Base):
     )
 
 
-
     retailer = Column(
         String,
         nullable=False
     )
-
 
 
     url = Column(
@@ -75,12 +65,16 @@ class Product(Base):
     )
 
 
+    image = Column(
+        String,
+        nullable=True
+    )
+
 
     buy_price = Column(
         Float,
         nullable=False
     )
-
 
 
     sell_price = Column(
@@ -89,12 +83,10 @@ class Product(Base):
     )
 
 
-
     market_price = Column(
         Float,
         nullable=True
     )
-
 
 
     profit = Column(
@@ -103,12 +95,10 @@ class Product(Base):
     )
 
 
-
     roi = Column(
         Float,
         nullable=True
     )
-
 
 
     sales_velocity = Column(
@@ -117,19 +107,16 @@ class Product(Base):
     )
 
 
-
     status = Column(
         String,
         default="active"
     )
 
 
-
     created_at = Column(
         DateTime,
         default=datetime.utcnow
     )
-
 
 
     updated_at = Column(

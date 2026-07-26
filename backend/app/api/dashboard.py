@@ -15,10 +15,13 @@ router = APIRouter(
 
 
 
+
+
 @router.get("/summary")
 def dashboard_summary(
     db: Session = Depends(get_db)
 ):
+
 
     total_products = (
         db.query(Product)
@@ -75,6 +78,7 @@ def dashboard_summary(
     )
 
 
+
     best_product = (
         db.query(Product)
         .order_by(
@@ -82,6 +86,7 @@ def dashboard_summary(
         )
         .first()
     )
+
 
 
     dashboard_score = 0
@@ -105,6 +110,7 @@ def dashboard_summary(
 
 
     return {
+
 
         "dashboard_health_score":
             dashboard_score,
@@ -150,7 +156,9 @@ def dashboard_summary(
             ),
 
 
+
         "top_opportunity": {
+
 
             "product":
                 best_product.name
@@ -176,51 +184,197 @@ def dashboard_summary(
 
 
 
+
+
+
+
+
+@router.get("/top-deals")
+def top_deals(
+    db: Session = Depends(get_db)
+):
+
+
+    products = (
+
+        db.query(Product)
+
+        .order_by(
+            Product.profit.desc()
+        )
+
+        .limit(5)
+
+        .all()
+
+    )
+
+
+
+    deals = []
+
+
+
+    for product in products:
+
+
+        deals.append({
+
+            "product_id":
+                product.id,
+
+
+            "product":
+                product.name,
+
+
+            "brand":
+                product.brand,
+
+
+            "category":
+                product.category,
+
+
+            "buy_price":
+                product.buy_price,
+
+
+            "market_price":
+                product.market_price,
+
+
+            "profit":
+                product.profit,
+
+
+            "roi":
+                product.roi,
+
+
+            "recommendation":
+
+                "STRONG BUY"
+
+                if product.roi >= 100
+
+                else "WATCH",
+
+
+
+            "flipintel_score":
+
+                min(
+                    100,
+                    int(product.roi / 2)
+                )
+
+        })
+
+
+
+    return {
+
+
+        "total_deals":
+
+            len(deals),
+
+
+        "top_deals":
+
+            deals
+
+    }
+
+
+
+
+
+
+
+
+
 @router.get("/brands")
 def brand_intelligence(
     db: Session = Depends(get_db)
 ):
 
+
     results = (
+
         db.query(
+
             Product.brand,
+
             func.avg(Product.roi),
+
             func.count(Product.id)
+
         )
+
         .filter(
+
             Product.brand != None
+
         )
+
         .group_by(
+
             Product.brand
+
         )
+
         .order_by(
+
             func.avg(Product.roi).desc()
+
         )
+
         .all()
+
     )
+
 
 
     return {
 
+
         "top_brands": [
+
 
             {
 
-                "brand": brand,
+
+                "brand":
+                    brand,
+
 
                 "average_roi":
-                    round(avg_roi or 0,2),
+                    round(
+                        avg_roi or 0,
+                        2
+                    ),
+
 
                 "products":
                     count
 
+
             }
 
+
             for brand, avg_roi, count in results
+
 
         ]
 
     }
+
+
+
+
+
 
 
 
@@ -230,43 +384,72 @@ def category_intelligence(
     db: Session = Depends(get_db)
 ):
 
+
     results = (
+
         db.query(
+
             Product.category,
+
             func.avg(Product.roi),
+
             func.count(Product.id)
+
         )
+
         .filter(
+
             Product.category != None
+
         )
+
         .group_by(
+
             Product.category
+
         )
+
         .order_by(
+
             func.avg(Product.roi).desc()
+
         )
+
         .all()
+
     )
+
 
 
     return {
 
+
         "categories": [
 
+
             {
+
 
                 "category":
                     category,
 
+
                 "average_roi":
-                    round(avg_roi or 0,2),
+                    round(
+                        avg_roi or 0,
+                        2
+                    ),
+
 
                 "products":
                     count
 
+
             }
 
+
             for category, avg_roi, count in results
+
 
         ]
 

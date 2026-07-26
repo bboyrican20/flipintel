@@ -1,5 +1,5 @@
 import {
-  useState
+    useState
 } from "react";
 
 
@@ -7,12 +7,13 @@ import axios from "axios";
 
 
 import {
-  ScanLine,
-  Activity,
-  Zap,
-  Search,
-  PackagePlus
+    ScanLine,
+    Activity,
+    Zap
 } from "lucide-react";
+
+
+import ScannerResult from "../components/ui/ScannerResult";
 
 
 
@@ -23,181 +24,264 @@ const API = "http://localhost:8000";
 function Scanner(){
 
 
-const [barcode,setBarcode] = useState("");
+    const [barcode,setBarcode] = useState("");
 
-const [buyPrice,setBuyPrice] = useState("");
+    const [buyPrice,setBuyPrice] = useState("");
 
-const [retailer,setRetailer] = useState("");
+    const [retailer,setRetailer] = useState("");
 
+    const [result,setResult] = useState(null);
 
-const [result,setResult] = useState(null);
+    const [loading,setLoading] = useState(false);
 
-const [loading,setLoading] = useState(false);
-
-const [adding,setAdding] = useState(false);
-
+    const [adding,setAdding] = useState(false);
 
 
 
 
-async function scanProduct(){
+
+    async function scanProduct(){
 
 
-try{
+        try{
 
 
-setLoading(true);
+            setLoading(true);
 
 
 
-const response = await axios.post(
+            const response = await axios.post(
 
-`${API}/scanner/barcode`,
+                `${API}/scanner/barcode`,
 
-{
+                {
 
-barcode,
+                    barcode,
 
-buy_price:Number(buyPrice),
+                    buy_price:Number(buyPrice),
 
-retailer
+                    retailer
 
-}
+                }
+
+            );
+
+
+
+            setResult(response.data);
+
+
+
+        }
+        catch(error){
+
+
+            console.error(
+                "Scanner error:",
+                error
+            );
+
+
+            alert(
+                "Product scan failed"
+            );
+
+
+        }
+        finally{
+
+
+            setLoading(false);
+
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+    async function addInventory(){
+
+
+        try{
+
+
+            setAdding(true);
+
+
+
+            await axios.post(
+
+    `${API}/inventory/`,
+
+    {
+
+        product_id:
+        result.product_id,
+
+
+        product:
+        result.product,
+
+
+        retailer,
+
+
+        purchase_price:
+        Number(buyPrice),
+
+
+        expected_sale_price:
+        result.market_price,
+
+
+        projected_profit:
+        result.profit
+
+    }
 
 );
 
 
 
-setResult(response.data);
+            alert(
+                "Added to Inventory!"
+            );
 
 
 
-}
-catch(error){
+        }
+        catch(error){
 
 
-console.error(
+            console.error(
 
-"Scanner error:",
+                "Inventory error:",
+                error
 
-error
+            );
 
-);
 
+            alert(
+                "Failed adding inventory"
+            );
 
-alert(
 
-"Product scan failed"
+        }
+        finally{
 
-);
 
+            setAdding(false);
 
-}
-finally{
 
+        }
 
-setLoading(false);
 
+    }
 
-}
 
 
-}
 
 
 
 
 
+    return (
 
 
+        <div className="scanner-page">
 
 
-async function addInventory(){
 
+            <header>
 
-try{
+                <h1>
+                    🤖 FlipIntel Scanner
+                </h1>
 
 
-setAdding(true);
+                <p>
+                    Real-time product intelligence engine
+                </p>
 
 
+            </header>
 
-await axios.post(
 
-`${API}/inventory/`,
 
-{
 
-product:
 
-result.product,
 
 
-retailer:
+            <section className="scanner-box">
 
-retailer,
 
+                <h2>
 
-purchase_price:
+                    <ScanLine/>
 
-Number(buyPrice),
+                    Scan Product
 
+                </h2>
 
-expected_sale_price:
 
-result.market_price,
 
 
-projected_profit:
 
-result.profit
+                <input
 
+                    placeholder="Barcode"
 
-}
+                    value={barcode}
 
-);
+                    onChange={(e)=>
 
+                        setBarcode(e.target.value)
 
+                    }
 
-alert(
+                />
 
-"Added to Inventory!"
 
-);
 
 
 
-}
-catch(error){
+                <input
 
+                    placeholder="Purchase Price"
 
-console.error(
+                    value={buyPrice}
 
-"Inventory error:",
+                    onChange={(e)=>
 
-error
+                        setBuyPrice(e.target.value)
 
-);
+                    }
 
+                />
 
-alert(
 
-"Failed adding inventory"
 
-);
 
 
-}
-finally{
+                <input
 
+                    placeholder="Retailer"
 
-setAdding(false);
+                    value={retailer}
 
+                    onChange={(e)=>
 
-}
+                        setRetailer(e.target.value)
 
+                    }
 
-}
+                />
 
 
 
@@ -205,33 +289,37 @@ setAdding(false);
 
 
 
+                <button
 
+                    className="primary-button"
 
-return (
+                    onClick={scanProduct}
 
+                    disabled={loading}
 
-<div className="scanner-page">
+                >
 
+                    {
 
+                    loading
 
-<header>
+                    ?
 
+                    "Analyzing AI Data..."
 
-<h1>
+                    :
 
-📡 FlipIntel Scanner
+                    "🚀 Analyze Product"
 
-</h1>
+                    }
 
 
-<p>
+                </button>
 
-Real-time product intelligence engine
 
-</p>
 
+            </section>
 
-</header>
 
 
 
@@ -239,390 +327,125 @@ Real-time product intelligence engine
 
 
 
-<section className="scanner-box">
+            {
+                result &&
 
 
-<h2>
+                <ScannerResult
 
-<ScanLine/>
+                    result={result}
 
-Scan Product
+                    addInventory={addInventory}
 
-</h2>
+                    adding={adding}
 
+                />
 
+            }
 
 
-<input
 
-placeholder="Barcode"
 
-value={barcode}
 
-onChange={(e)=>
 
-setBarcode(e.target.value)
 
-}
 
-/>
 
+            <section className="scanner-grid">
 
 
 
+                <div className="scanner-box">
 
-<input
 
-placeholder="Purchase Price"
+                    <ScanLine/>
 
-value={buyPrice}
 
-onChange={(e)=>
+                    <h3>
 
-setBuyPrice(e.target.value)
+                        Scanner Engine
 
-}
+                    </h3>
 
-/>
 
+                    <strong>
 
+                        ONLINE
 
+                    </strong>
 
 
-<input
+                </div>
 
-placeholder="Retailer"
 
-value={retailer}
 
-onChange={(e)=>
 
-setRetailer(e.target.value)
 
-}
 
-/>
+                <div className="scanner-box">
 
 
+                    <Activity/>
 
 
+                    <h3>
 
+                        AI Analysis
 
-<button
+                    </h3>
 
-onClick={scanProduct}
 
-disabled={loading}
+                    <strong>
 
->
+                        ACTIVE
 
+                    </strong>
 
-{
 
-loading
+                </div>
 
-?
 
-"Analyzing..."
 
-:
 
-"🚀 Analyze Product"
 
-}
 
 
-</button>
+                <div className="scanner-box">
 
 
+                    <Zap/>
 
-</section>
 
+                    <h3>
 
+                        Decision Engine
 
+                    </h3>
 
 
+                    <strong>
 
+                        READY
 
+                    </strong>
 
 
+                </div>
 
-{
 
-result &&
 
 
-<section className="scanner-result">
+            </section>
 
 
-<h2>
 
-<Search/>
 
-Analysis Result
 
-</h2>
 
+        </div>
 
 
-
-
-<h3>
-
-{result.product}
-
-</h3>
-
-
-
-
-
-<p>
-
-Brand:
-
-<strong>
-
-{" "}{result.brand}
-
-</strong>
-
-</p>
-
-
-
-
-
-<p>
-
-Category:
-
-<strong>
-
-{" "}{result.category}
-
-</strong>
-
-</p>
-
-
-
-
-
-<p>
-
-Market Price:
-
-<strong>
-
-${result.market_price}
-
-</strong>
-
-</p>
-
-
-
-
-
-<p>
-
-Profit:
-
-<strong className="profit">
-
-+${result.profit}
-
-</strong>
-
-</p>
-
-
-
-
-
-<p>
-
-ROI:
-
-<strong>
-
-{result.roi.toFixed(2)}%
-
-</strong>
-
-</p>
-
-
-
-
-
-
-<h2>
-
-{result.analysis?.recommendation}
-
-</h2>
-
-
-
-
-
-<p>
-
-{result.deal_explanation?.summary}
-
-</p>
-
-
-
-
-
-
-<button
-
-className="inventory-button"
-
-onClick={addInventory}
-
-disabled={adding}
-
->
-
-
-<PackagePlus/>
-
-
-{
-
-adding
-
-?
-
-"Adding..."
-
-:
-
-"Add To Inventory"
-
-}
-
-
-</button>
-
-
-
-
-
-</section>
-
-
-}
-
-
-
-
-
-
-
-
-
-
-<section className="scanner-grid">
-
-
-
-<div className="scanner-box">
-
-
-<ScanLine/>
-
-
-<h3>
-
-Scanner Engine
-
-</h3>
-
-
-<strong>
-
-ONLINE
-
-</strong>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="scanner-box">
-
-
-<Activity/>
-
-
-<h3>
-
-AI Analysis
-
-</h3>
-
-
-<strong>
-
-ACTIVE
-
-</strong>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="scanner-box">
-
-
-<Zap/>
-
-
-<h3>
-
-Decision Engine
-
-</h3>
-
-
-<strong>
-
-READY
-
-</strong>
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-</div>
-
-
-);
+    );
 
 
 }

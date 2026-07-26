@@ -1,238 +1,116 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import HotDealCard from "../components/ui/HotDealCard";
+
 
 const API = "http://localhost:8000";
 
 
+function Deals() {
 
-function Deals(){
 
+    const [deals,setDeals] = useState([]);
 
-const [deals,setDeals] = useState([]);
 
 
+    useEffect(()=>{
 
-useEffect(()=>{
 
+        async function loadDeals(){
 
-async function loadDeals(){
 
+            try{
 
-const response = await axios.get(
-`${API}/deals/feed`
-);
 
+                const response = await axios.get(
+                    `${API}/dashboard/top-deals`
+                );
 
-setDeals(
-response.data.hot_deals || []
-);
 
+                setDeals(
+                    response.data.top_deals || []
+                );
 
-}
 
+            }
+            catch(error){
 
-loadDeals();
 
+                console.error(
+                    "Failed loading deals:",
+                    error
+                );
 
-},[]);
 
+            }
 
 
+        }
 
 
+        loadDeals();
 
-async function addInventory(deal){
 
+    },[]);
 
-try{
 
 
-await axios.post(
-`${API}/inventory/`,
-{
 
-product:
-deal.product,
 
+    return (
 
-retailer:
-deal.retailer,
 
+        <div className="deals-page">
 
-purchase_price:
-deal.buy_price,
 
+            <header>
 
-expected_sale_price:
-deal.market_price,
 
+                <h1>
+                    🔥 Hot Deals
+                </h1>
 
-projected_profit:
-deal.profit
 
-}
+                <p>
+                    AI ranked flipping opportunities
+                </p>
 
-);
 
+            </header>
 
 
-alert(
-"Added to Inventory ✅"
-);
 
 
 
-}catch(error){
+            <div className="deals-grid">
 
 
-console.error(
-error
-);
+                {
+                deals.map((deal)=>(
 
 
-alert(
-"Could not add item"
-);
+                    <HotDealCard
 
+                        key={deal.product_id}
 
-}
+                        product={deal}
 
+                    />
 
-}
 
+                ))
 
+                }
 
 
+            </div>
 
 
-return (
+        </div>
 
-<div className="deals-page">
 
-
-<h1>
-
-🔥 Hot Deals
-
-</h1>
-
-
-
-<p>
-
-AI ranked flipping opportunities
-
-</p>
-
-
-
-
-<div className="deal-grid">
-
-
-{deals.map(deal=>(
-
-
-<div 
-className="deal"
-key={deal.product_id}
->
-
-
-<div className="decision">
-
-{deal.decision}
-
-</div>
-
-
-
-<h2>
-
-{deal.product}
-
-</h2>
-
-
-<p>
-
-🏪 {deal.retailer}
-
-</p>
-
-
-
-<h3>
-
-Flip Score:
-{deal.score}/100
-
-</h3>
-
-
-
-<p>
-
-Buy:
-${deal.buy_price}
-
-</p>
-
-
-
-<p>
-
-Market:
-${deal.market_price}
-
-</p>
-
-
-
-<p className="profit">
-
-Profit:
-+${deal.profit}
-
-</p>
-
-
-
-<p>
-
-ROI:
-{deal.roi}%
-
-</p>
-
-
-
-
-<button
-onClick={() => addInventory(deal)}
->
-
-📦 Add To Inventory
-
-</button>
-
-
-
-</div>
-
-
-))}
-
-
-
-</div>
-
-
-
-</div>
-
-);
+    );
 
 
 }

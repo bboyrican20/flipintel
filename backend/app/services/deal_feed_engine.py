@@ -121,6 +121,10 @@ class DealFeedEngine:
                     product.retailer,
 
 
+                "image":
+                    product.image,
+
+
                 "score":
                     score,
 

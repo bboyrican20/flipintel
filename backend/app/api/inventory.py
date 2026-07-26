@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from app.db.database import SessionLocal
 
 from app.models.inventory import Inventory
+from app.models.product import Product
 
 
 router = APIRouter(
@@ -14,6 +15,8 @@ router = APIRouter(
 
 
 class InventoryCreate(BaseModel):
+
+    product_id: int | None = None
 
     product: str
 
@@ -44,17 +47,38 @@ def get_inventory():
     for item in items:
 
 
+        product = (
+            db.query(Product)
+            .filter(
+                Product.id == item.product_id
+            )
+            .first()
+        )
+
+
         result.append({
 
             "inventory_id": item.id,
 
-            "product": item.product,
+            "product": product.name if product else "Unknown",
+
+            "brand": product.brand if product else None,
+
+            "category": product.category if product else None,
+
+            "retailer": item.retailer or "Unknown",
 
             "purchase_price": item.purchase_price,
 
+            "buy_price": item.purchase_price,
+
             "expected_sale_price": item.expected_sale_price,
 
+            "market_price": item.expected_sale_price,
+
             "projected_profit": item.projected_profit,
+
+            "profit": item.projected_profit,
 
             "sale_price": item.sale_price,
 
@@ -86,7 +110,6 @@ def get_inventory():
 
 
 
-
 @router.post("/")
 def add_inventory(
     item: InventoryCreate
@@ -100,23 +123,41 @@ def add_inventory(
     # FIND PRODUCT
     #
 
-    from app.models.product import Product
+    if item.product_id:
 
 
+        product = (
 
-    product = (
+            db.query(Product)
 
-        db.query(Product)
+            .filter(
 
-        .filter(
+                Product.id == item.product_id
 
-            Product.name == item.product
+            )
+
+            .first()
 
         )
 
-        .first()
 
-    )
+    else:
+
+
+        product = (
+
+            db.query(Product)
+
+            .filter(
+
+                Product.name == item.product
+
+            )
+
+            .first()
+
+        )
+
 
 
 
@@ -143,27 +184,21 @@ def add_inventory(
     # CREATE INVENTORY ITEM
     #
 
-
     new_item = Inventory(
-
 
         product_id=product.id,
 
+        retailer=item.retailer,
 
         purchase_price=item.purchase_price,
 
-
         expected_sale_price=item.expected_sale_price,
-
 
         projected_profit=item.projected_profit,
 
-
         status="ACTIVE"
 
-
     )
-
 
 
 
@@ -178,8 +213,6 @@ def add_inventory(
 
 
     db.close()
-
-
 
 
 
