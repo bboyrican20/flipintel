@@ -17,7 +17,8 @@ from app.api import analytics
 from app.api import deals
 from app.api import alerts
 from app.api import sales
-
+from app.api import ai_analysis
+from app.api import deal_ai
 
 
 app = FastAPI(
@@ -209,4 +210,24 @@ app.include_router(
 
 app.include_router(
     sales.router
+)
+
+
+
+#
+# AI Analysis
+#
+
+app.include_router(
+    ai_analysis.router
+)
+
+
+
+#
+# Deal AI
+#
+
+app.include_router(
+    deal_ai.router
 )

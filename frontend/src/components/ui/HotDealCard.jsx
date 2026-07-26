@@ -1,4 +1,5 @@
 import ROIBadge from "./ROIBadge";
+import DealAI from "./DealAI";
 
 
 function HotDealCard({ product, onBuy }) {
@@ -41,7 +42,7 @@ function HotDealCard({ product, onBuy }) {
 
                 <strong>
                     {" "}
-                    {product.deal_score || 0}/100
+                    {product.deal_score || product.flipintel_score || 0}/100
                 </strong>
 
             </div>
@@ -93,6 +94,14 @@ function HotDealCard({ product, onBuy }) {
                 {product.recommendation}
 
             </div>
+
+
+
+            <DealAI
+
+                productId={product.product_id}
+
+            />
 
 
 

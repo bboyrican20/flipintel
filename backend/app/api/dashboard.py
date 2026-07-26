@@ -6,6 +6,7 @@ from app.db.database import get_db
 
 from app.models.product import Product
 from app.models.scan_history import ScanHistory
+from app.services.ai_analysis_engine import AIAnalysisEngine
 
 
 router = APIRouter(
@@ -454,3 +455,36 @@ def category_intelligence(
         ]
 
     }
+
+
+@router.get("/ai")
+def dashboard_ai(
+    db: Session = Depends(get_db)
+):
+
+
+    best_product = (
+        db.query(Product)
+        .order_by(
+            Product.profit.desc()
+        )
+        .first()
+    )
+
+
+    if not best_product:
+
+        return {
+            "error": "No products available"
+        }
+
+
+
+    ai_engine = AIAnalysisEngine()
+
+
+
+    return ai_engine.analyze(
+        best_product.id,
+        db
+    )

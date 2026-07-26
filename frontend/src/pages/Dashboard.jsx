@@ -35,6 +35,8 @@ function Dashboard(){
 
     const [alerts,setAlerts] = useState([]);
 
+    const [aiAnalysis,setAiAnalysis] = useState(null);
+
 
 
     useEffect(()=>{
@@ -52,7 +54,9 @@ function Dashboard(){
 
                     dealsRes,
 
-                    alertsRes
+                    alertsRes,
+
+                    aiRes
 
 
                 ] = await Promise.all([
@@ -70,6 +74,11 @@ function Dashboard(){
 
                     axios.get(
                         `${API}/alerts/`
+                    ),
+
+
+                    axios.get(
+                        `${API}/dashboard/ai`
                     )
 
 
@@ -89,6 +98,11 @@ function Dashboard(){
 
                 setAlerts(
                     alertsRes.data.alerts || []
+                );
+
+
+                setAiAnalysis(
+                    aiRes.data
                 );
 
 
@@ -290,7 +304,6 @@ function Dashboard(){
 
 
 
-
             <section className="feature-grid">
 
 
@@ -387,8 +400,10 @@ function Dashboard(){
 
                     <h3>
 
-                        🟢 
+                        🟢
+
                         {
+                        aiAnalysis?.recommendation ||
                         bestDeal?.recommendation ||
                         "MONITOR INVENTORY"
                         }
@@ -408,11 +423,18 @@ function Dashboard(){
 
 
                         <strong>
-                            LOW
+
+                            {
+                            aiAnalysis?.risk ||
+                            "LOW"
+                            }
+
                         </strong>
 
 
                     </div>
+
+
 
 
 
@@ -428,7 +450,12 @@ function Dashboard(){
 
 
                         <strong>
-                            3-7 Days
+
+                            {
+                            aiAnalysis?.flip_window ||
+                            "3-7 Days"
+                            }
+
                         </strong>
 
 
@@ -453,40 +480,54 @@ function Dashboard(){
             <section className="ai-section">
 
 
-                <AIScore
+    <AIScore
 
 
-                    score={
-                        bestDeal?.flipintel_score ||
-                        0
-                    }
+        score={
 
+            aiAnalysis?.confidence ||
 
-                    reasons={[
+            bestDeal?.flipintel_score ||
 
-                        "Inventory tracked",
+            0
 
-                        "ROI calculated",
-
-                        "Sales performance monitored"
-
-                    ]}
+        }
 
 
 
-                    recommendation={
+        reasons={
 
-                        bestDeal?.recommendation ||
+            aiAnalysis?.reasons ||
 
-                        "WAITING"
+            [
 
-                    }
+                "Inventory tracked",
+
+                "ROI calculated",
+
+                "Sales performance monitored"
+
+            ]
+
+        }
 
 
-                />
+
+        recommendation={
+
+            aiAnalysis?.recommendation ||
+
+            bestDeal?.recommendation ||
+
+            "WAITING"
+
+        }
 
 
-            </section>
+    />
+
+
+</section>
 
 
 
