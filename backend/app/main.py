@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+
 from app.api import products
 from app.api import analysis
 from app.api import market_data
@@ -18,39 +19,67 @@ from app.api import deals
 from app.api import alerts
 from app.api import sales
 from app.api import ai_analysis
+from app.api import flip_strategy
 from app.api import deal_ai
 
 
+
 app = FastAPI(
+
     title="FlipIntel",
+
     description="AI Powered Product Flipping Intelligence Platform",
+
     version="1.0.0"
+
 )
+
+
 
 
 
 # Allow React frontend to communicate with FastAPI
 
 app.add_middleware(
+
     CORSMiddleware,
+
     allow_origins=[
+
         "http://localhost:5173"
+
     ],
+
     allow_credentials=True,
+
     allow_methods=["*"],
+
     allow_headers=["*"],
+
 )
 
 
 
+
+
 @app.get("/")
+
 def root():
 
+
     return {
+
         "app": "FlipIntel",
+
         "status": "running",
+
         "version": "1.0.0"
+
     }
+
+
+
+
 
 
 
@@ -64,6 +93,8 @@ app.include_router(
 
 
 
+
+
 #
 # Analysis Engine
 #
@@ -71,6 +102,8 @@ app.include_router(
 app.include_router(
     analysis.router
 )
+
+
 
 
 
@@ -84,6 +117,8 @@ app.include_router(
 
 
 
+
+
 #
 # Barcode Scanner
 #
@@ -91,6 +126,8 @@ app.include_router(
 app.include_router(
     scanner.router
 )
+
+
 
 
 
@@ -104,6 +141,8 @@ app.include_router(
 
 
 
+
+
 #
 # Opportunities
 #
@@ -111,6 +150,8 @@ app.include_router(
 app.include_router(
     opportunities.router
 )
+
+
 
 
 
@@ -124,6 +165,8 @@ app.include_router(
 
 
 
+
+
 #
 # Rankings
 #
@@ -131,6 +174,8 @@ app.include_router(
 app.include_router(
     rankings.router
 )
+
+
 
 
 
@@ -144,6 +189,8 @@ app.include_router(
 
 
 
+
+
 #
 # Market Intelligence
 #
@@ -151,6 +198,8 @@ app.include_router(
 app.include_router(
     market_intelligence.router
 )
+
+
 
 
 
@@ -164,6 +213,8 @@ app.include_router(
 
 
 
+
+
 #
 # Inventory
 #
@@ -171,6 +222,8 @@ app.include_router(
 app.include_router(
     inventory.router
 )
+
+
 
 
 
@@ -184,6 +237,8 @@ app.include_router(
 
 
 
+
+
 #
 # Deals
 #
@@ -191,6 +246,8 @@ app.include_router(
 app.include_router(
     deals.router
 )
+
+
 
 
 
@@ -204,6 +261,8 @@ app.include_router(
 
 
 
+
+
 #
 # Sales Intelligence
 #
@@ -211,6 +270,8 @@ app.include_router(
 app.include_router(
     sales.router
 )
+
+
 
 
 
@@ -224,8 +285,22 @@ app.include_router(
 
 
 
+
+
 #
-# Deal AI
+# Flip Strategy Engine
+#
+
+app.include_router(
+    flip_strategy.router
+)
+
+
+
+
+
+#
+# Deal AI Engine
 #
 
 app.include_router(

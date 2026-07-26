@@ -5,6 +5,13 @@ import DealAI from "./DealAI";
 function HotDealCard({ product, onBuy }) {
 
 
+    console.log(
+        "HOT DEAL PRODUCT:",
+        product
+    );
+
+
+
     return (
 
         <div className="hot-deal-card">
@@ -14,38 +21,61 @@ function HotDealCard({ product, onBuy }) {
 
 
                 <span className="deal-fire">
+
                     🔥 HOT DEAL
+
                 </span>
 
 
                 <ROIBadge
+
                     roi={product.roi}
+
                 />
 
 
             </div>
 
 
+
+
+
             <h2>
+
                 {product.product}
+
             </h2>
 
 
+
+
+
             <p className="retailer">
+
                 🏪 {product.retailer || "Retailer"}
+
             </p>
+
+
+
 
 
             <div className="deal-score">
 
+
                 AI Deal Score:
 
+
                 <strong>
-                    {" "}
+
                     {product.deal_score || product.flipintel_score || 0}/100
+
                 </strong>
 
+
             </div>
+
+
 
 
 
@@ -69,6 +99,8 @@ function HotDealCard({ product, onBuy }) {
 
 
 
+
+
                 <div>
 
                     <span>
@@ -89,6 +121,8 @@ function HotDealCard({ product, onBuy }) {
 
 
 
+
+
             <div className="recommendation">
 
                 {product.recommendation}
@@ -97,11 +131,17 @@ function HotDealCard({ product, onBuy }) {
 
 
 
+
+
             <DealAI
 
-                productId={product.product_id}
+    productId={
+        product.id || product.product_id
+    }
 
-            />
+/>
+
+
 
 
 
@@ -116,6 +156,7 @@ function HotDealCard({ product, onBuy }) {
                 🛒 BUY NOW
 
             </button>
+
 
 
         </div>

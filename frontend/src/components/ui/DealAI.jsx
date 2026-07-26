@@ -1,33 +1,46 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import FlipStrategy from "./FlipStrategy";
+
+
 const API = "http://localhost:8000";
+
 
 
 function DealAI({ productId }) {
 
 
-    const [analysis, setAnalysis] = useState(null);
+    const [analysis,setAnalysis] = useState(null);
 
 
 
-    useEffect(() => {
+    useEffect(()=>{
 
 
-        if (!productId) return;
+        async function loadAI(){
 
 
-        async function loadAI() {
+            try{
 
 
-            try {
+                console.log(
+                    "AI Product ID:",
+                    productId
+                );
 
 
                 const response = await axios.get(
 
-                    `${API}/deal-ai/${productId}`
+    `${API}/deal-ai/${productId}`
 
-                );
+);
+
+
+console.log(
+    "DEAL AI RESPONSE:",
+    response.data
+);
 
 
                 setAnalysis(
@@ -36,12 +49,15 @@ function DealAI({ productId }) {
 
 
             }
-            catch(error) {
+            catch(error){
 
 
                 console.error(
-                    "AI Analysis Error:",
+
+                    "AI Loading Error:",
+
                     error
+
                 );
 
 
@@ -51,27 +67,34 @@ function DealAI({ productId }) {
         }
 
 
-        loadAI();
+
+        if(productId){
+
+            loadAI();
+
+        }
 
 
-    }, [productId]);
+
+    },[productId]);
 
 
 
 
 
-    if (!analysis) {
+    if(!analysis){
 
 
         return (
 
-            <div className="deal-ai-card loading">
+            <div className="deal-ai-card">
 
                 🤖 Analyzing Deal...
 
             </div>
 
         );
+
 
     }
 
@@ -84,31 +107,26 @@ function DealAI({ productId }) {
         <div className="deal-ai-card">
 
 
+            <h3>
 
-            <div className="deal-ai-header">
+                🤖 FlipIntel Verdict
 
-
-                <h3>
-                    🤖 FlipIntel Verdict
-                </h3>
-
-
-            </div>
+            </h3>
 
 
 
 
 
-            <div className="ai-confidence">
+            <div>
 
 
-                <span>
-                    AI Confidence
-                </span>
+                AI Confidence:
 
 
                 <strong>
+
                     {analysis.confidence}/100
+
                 </strong>
 
 
@@ -118,66 +136,27 @@ function DealAI({ productId }) {
 
 
 
-            <div className="confidence-bar">
-
-
-                <div
-
-                    className="confidence-fill"
-
-                    style={{
-                        width: `${analysis.confidence}%`
-                    }}
-
-                />
-
-
-            </div>
-
-
-
-
-
-            <div className="ai-recommendation">
-
+            <h2>
 
                 🟢 {analysis.recommendation}
 
-
-            </div>
-
+            </h2>
 
 
 
 
-            <div className="ai-details">
+
+            <div>
 
 
-                <div>
-
-                    <span>
-                        Risk
-                    </span>
-
-                    <strong>
-                        {analysis.risk}
-                    </strong>
-
-                </div>
+                Risk:
 
 
+                <strong>
 
-                <div>
+                    {analysis.risk}
 
-                    <span>
-                        Flip Window
-                    </span>
-
-                    <strong>
-                        {analysis.flip_window}
-                    </strong>
-
-                </div>
+                </strong>
 
 
             </div>
@@ -186,11 +165,32 @@ function DealAI({ productId }) {
 
 
 
-            <div className="ai-reasons">
+            <div>
+
+
+                Flip Window:
+
+
+                <strong>
+
+                    {analysis.flip_window}
+
+                </strong>
+
+
+            </div>
+
+
+
+
+
+            <div>
 
 
                 <h4>
+
                     Why FlipIntel Likes This
+
                 </h4>
 
 
@@ -220,11 +220,23 @@ function DealAI({ productId }) {
 
 
 
+
+
+            <FlipStrategy
+
+                productId={productId}
+
+            />
+
+
+
         </div>
 
     );
 
+
 }
+
 
 
 export default DealAI;

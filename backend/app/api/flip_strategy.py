@@ -2,48 +2,84 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
+
 from app.models.product import Product
-from app.services.ai_analysis_engine import AIAnalysisEngine
+
+from app.services.flip_strategy_engine import FlipStrategyEngine
+
 
 
 router = APIRouter(
-    prefix="/deal-ai",
-    tags=["Deal AI"]
+
+    prefix="/flip-strategy",
+
+    tags=["Flip Strategy"]
+
 )
 
 
 
+
+
 @router.get("/{product_id}")
-def analyze_deal(
+
+def get_flip_strategy(
+
     product_id: int,
+
     db: Session = Depends(get_db)
+
 ):
 
 
     product = (
+
         db.query(Product)
+
         .filter(
             Product.id == product_id
         )
+
         .first()
+
     )
+
 
 
     if not product:
 
+
         return {
+
             "error": "Product not found"
+
         }
 
 
 
-    engine = AIAnalysisEngine()
+
+    engine = FlipStrategyEngine()
 
 
-    result = engine.analyze(
-        product.id,
-        db
+
+    strategy = engine.generate_strategy(
+
+        product
+
     )
 
 
-    return result
+
+    return {
+
+
+        "product":
+
+            product.name,
+
+
+        "strategy":
+
+            strategy
+
+    }
