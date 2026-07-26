@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import {
+    useEffect,
+    useState
+} from "react";
 
-import FlipStrategy from "./FlipStrategy";
+import axios from "axios";
 
 
 const API = "http://localhost:8000";
@@ -32,15 +34,9 @@ function DealAI({ productId }) {
 
                 const response = await axios.get(
 
-    `${API}/deal-ai/${productId}`
+                    `${API}/deal-ai/${productId}`
 
-);
-
-
-console.log(
-    "DEAL AI RESPONSE:",
-    response.data
-);
+                );
 
 
                 setAnalysis(
@@ -75,7 +71,6 @@ console.log(
         }
 
 
-
     },[productId]);
 
 
@@ -87,9 +82,11 @@ console.log(
 
         return (
 
-            <div className="deal-ai-card">
+            <div className="deal-ai">
+
 
                 🤖 Analyzing Deal...
+
 
             </div>
 
@@ -102,9 +99,13 @@ console.log(
 
 
 
+
+
     return (
 
-        <div className="deal-ai-card">
+
+        <div className="deal-ai">
+
 
 
             <h3>
@@ -136,11 +137,17 @@ console.log(
 
 
 
+
+
             <h2>
+
 
                 🟢 {analysis.recommendation}
 
+
             </h2>
+
+
 
 
 
@@ -165,6 +172,8 @@ console.log(
 
 
 
+
+
             <div>
 
 
@@ -184,53 +193,52 @@ console.log(
 
 
 
-            <div>
-
-
-                <h4>
-
-                    Why FlipIntel Likes This
-
-                </h4>
 
 
 
-                {
+            <h4>
 
-                analysis.reasons?.map(
+                Why FlipIntel Likes This
 
-                    (reason,index)=>(
-
-
-                        <p key={index}>
-
-                            ✅ {reason}
-
-                        </p>
+            </h4>
 
 
-                    )
+
+
+
+            {
+
+
+            analysis.reasons &&
+
+            analysis.reasons.map(
+
+                (reason,index)=>(
+
+
+                    <p key={index}>
+
+
+                        ✅ {reason}
+
+
+                    </p>
+
 
                 )
 
-                }
+            )
 
 
-            </div>
-
-
+            }
 
 
 
-            <FlipStrategy
-
-                productId={productId}
-
-            />
 
 
 
         </div>
+
 
     );
 

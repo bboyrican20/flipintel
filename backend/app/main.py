@@ -21,6 +21,7 @@ from app.api import sales
 from app.api import ai_analysis
 from app.api import flip_strategy
 from app.api import deal_ai
+from app.api import marketplace
 
 
 
@@ -37,8 +38,6 @@ app = FastAPI(
 
 
 
-
-# Allow React frontend to communicate with FastAPI
 
 app.add_middleware(
 
@@ -66,7 +65,6 @@ app.add_middleware(
 
 def root():
 
-
     return {
 
         "app": "FlipIntel",
@@ -76,8 +74,6 @@ def root():
         "version": "1.0.0"
 
     }
-
-
 
 
 
@@ -93,8 +89,6 @@ app.include_router(
 
 
 
-
-
 #
 # Analysis Engine
 #
@@ -102,8 +96,6 @@ app.include_router(
 app.include_router(
     analysis.router
 )
-
-
 
 
 
@@ -117,8 +109,6 @@ app.include_router(
 
 
 
-
-
 #
 # Barcode Scanner
 #
@@ -126,8 +116,6 @@ app.include_router(
 app.include_router(
     scanner.router
 )
-
-
 
 
 
@@ -141,8 +129,6 @@ app.include_router(
 
 
 
-
-
 #
 # Opportunities
 #
@@ -150,8 +136,6 @@ app.include_router(
 app.include_router(
     opportunities.router
 )
-
-
 
 
 
@@ -165,8 +149,6 @@ app.include_router(
 
 
 
-
-
 #
 # Rankings
 #
@@ -174,8 +156,6 @@ app.include_router(
 app.include_router(
     rankings.router
 )
-
-
 
 
 
@@ -189,8 +169,6 @@ app.include_router(
 
 
 
-
-
 #
 # Market Intelligence
 #
@@ -198,8 +176,6 @@ app.include_router(
 app.include_router(
     market_intelligence.router
 )
-
-
 
 
 
@@ -213,8 +189,6 @@ app.include_router(
 
 
 
-
-
 #
 # Inventory
 #
@@ -222,8 +196,6 @@ app.include_router(
 app.include_router(
     inventory.router
 )
-
-
 
 
 
@@ -237,8 +209,6 @@ app.include_router(
 
 
 
-
-
 #
 # Deals
 #
@@ -246,8 +216,6 @@ app.include_router(
 app.include_router(
     deals.router
 )
-
-
 
 
 
@@ -261,8 +229,6 @@ app.include_router(
 
 
 
-
-
 #
 # Sales Intelligence
 #
@@ -270,8 +236,6 @@ app.include_router(
 app.include_router(
     sales.router
 )
-
-
 
 
 
@@ -285,8 +249,6 @@ app.include_router(
 
 
 
-
-
 #
 # Flip Strategy Engine
 #
@@ -297,12 +259,20 @@ app.include_router(
 
 
 
-
-
 #
 # Deal AI Engine
 #
 
 app.include_router(
     deal_ai.router
+)
+
+
+
+#
+# Marketplace Intelligence
+#
+
+app.include_router(
+    marketplace.router
 )
