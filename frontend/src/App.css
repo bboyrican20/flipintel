@@ -6012,3 +6012,550 @@ color:#94a3b8;
     }
 
 }
+
+
+
+/* =========================================
+   AI GRADE CARD
+========================================= */
+
+
+.ai-grade-card {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(30,41,59,.95),
+            rgba(15,23,42,.95)
+        );
+
+
+    border:
+
+        1px solid rgba(250,204,21,.25);
+
+
+    border-radius:
+
+        22px;
+
+
+    padding:
+
+        24px;
+
+
+    margin-top:
+
+        18px;
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+
+
+.ai-grade-header {
+
+    font-size:
+
+        22px;
+
+
+    font-weight:
+
+        800;
+
+
+    color:
+
+        #f8fafc;
+
+
+    margin-bottom:
+
+        18px;
+
+}
+
+
+
+
+
+.grade-content {
+
+    display:
+
+        flex;
+
+
+    align-items:
+
+        center;
+
+
+    gap:
+
+        20px;
+
+}
+
+
+
+
+
+.grade-letter {
+
+    width:
+
+        85px;
+
+
+    height:
+
+        85px;
+
+
+    display:
+
+        flex;
+
+
+    align-items:
+
+        center;
+
+
+    justify-content:
+
+        center;
+
+
+    border-radius:
+
+        20px;
+
+
+    font-size:
+
+        42px;
+
+
+    font-weight:
+
+        900;
+
+
+    background:
+
+        rgba(250,204,21,.15);
+
+
+    border:
+
+        1px solid rgba(250,204,21,.35);
+
+
+    color:
+
+        #fde047;
+
+}
+
+
+
+
+
+.grade-info strong {
+
+    display:
+
+        block;
+
+
+    font-size:
+
+        20px;
+
+
+    color:
+
+        #f8fafc;
+
+
+    margin-bottom:
+
+        8px;
+
+}
+
+
+
+
+
+.grade-info p {
+
+    color:
+
+        #94a3b8;
+
+
+    margin:
+
+        0;
+
+
+    line-height:
+
+        1.5;
+
+}
+
+
+
+
+
+
+
+
+
+/* =========================================
+   RISK ANALYSIS CARD
+========================================= */
+
+
+.risk-analysis-card {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(30,41,59,.95),
+            rgba(15,23,42,.95)
+        );
+
+
+    border:
+
+        1px solid rgba(239,68,68,.25);
+
+
+    border-radius:
+
+        22px;
+
+
+    padding:
+
+        24px;
+
+
+    margin-top:
+
+        18px;
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+
+
+.risk-header {
+
+    font-size:
+
+        22px;
+
+
+    font-weight:
+
+        800;
+
+
+    color:
+
+        #f8fafc;
+
+
+    margin-bottom:
+
+        18px;
+
+}
+
+
+
+
+
+.risk-level {
+
+    display:
+
+        flex;
+
+
+    justify-content:
+
+        space-between;
+
+
+    align-items:
+
+        center;
+
+
+    padding:
+
+        16px;
+
+
+    border-radius:
+
+        14px;
+
+
+    background:
+
+        rgba(34,197,94,.08);
+
+
+    border:
+
+        1px solid rgba(34,197,94,.2);
+
+
+    margin-bottom:
+
+        16px;
+
+}
+
+
+
+
+
+.risk-level span {
+
+    color:
+
+        #94a3b8;
+
+}
+
+
+
+
+
+.risk-level strong {
+
+    color:
+
+        #4ade80;
+
+
+    font-size:
+
+        20px;
+
+}
+
+
+
+
+
+.risk-warnings {
+
+    display:
+
+        flex;
+
+
+    flex-direction:
+
+        column;
+
+
+    gap:
+
+        10px;
+
+}
+
+
+
+
+
+.risk-item {
+
+    padding:
+
+        12px 16px;
+
+
+    border-radius:
+
+        12px;
+
+
+    background:
+
+        rgba(239,68,68,.08);
+
+
+    border:
+
+        1px solid rgba(239,68,68,.2);
+
+
+    color:
+
+        #e2e8f0;
+
+}
+
+
+
+/* =========================================
+   FLIPINTEL AI SUMMARY CARD
+========================================= */
+
+
+.ai-summary-card {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(30,41,59,.95),
+            rgba(15,23,42,.98)
+        );
+
+
+    border:
+
+        1px solid rgba(56,189,248,.25);
+
+
+    border-radius:
+
+        22px;
+
+
+    padding:
+
+        24px;
+
+
+    margin-top:
+
+        18px;
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+
+
+.ai-summary-header {
+
+    display:
+
+        flex;
+
+
+    align-items:
+
+        center;
+
+
+    gap:
+
+        10px;
+
+
+    font-size:
+
+        22px;
+
+
+    font-weight:
+
+        800;
+
+
+    color:
+
+        #f8fafc;
+
+
+    margin-bottom:
+
+        16px;
+
+}
+
+
+
+
+
+.ai-summary-card p {
+
+    margin:
+
+        0;
+
+
+    color:
+
+        #cbd5e1;
+
+
+    font-size:
+
+        16px;
+
+
+    line-height:
+
+        1.7;
+
+
+
+
+
+    padding:
+
+        18px;
+
+
+    border-radius:
+
+        16px;
+
+
+    background:
+
+        rgba(15,23,42,.65);
+
+
+    border:
+
+        1px solid rgba(148,163,184,.15);
+
+}

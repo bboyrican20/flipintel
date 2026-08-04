@@ -25,7 +25,6 @@ class AIAnalysisEngine:
         )
 
 
-
         if not product:
 
             return {
@@ -144,6 +143,8 @@ class AIAnalysisEngine:
 
 
 
+
+
         # ==============================
         # SCORE ENGINE
         # ==============================
@@ -153,14 +154,16 @@ class AIAnalysisEngine:
 
 
         if profit >= 150:
+
             profit_score = 95
 
         elif profit >= 75:
+
             profit_score = 85
 
         elif profit > 0:
-            profit_score = 70
 
+            profit_score = 70
 
 
 
@@ -170,12 +173,15 @@ class AIAnalysisEngine:
 
 
         if roi >= 200:
+
             roi_score = 100
 
         elif roi >= 100:
+
             roi_score = 90
 
         elif roi >= 50:
+
             roi_score = 75
 
 
@@ -186,8 +192,8 @@ class AIAnalysisEngine:
 
 
         if market_value >= buy_price * 2:
-            market_score = 92
 
+            market_score = 92
 
 
 
@@ -199,7 +205,6 @@ class AIAnalysisEngine:
         if product.sales_velocity == "HIGH":
 
             sell_speed_score = 95
-
 
 
 
@@ -220,6 +225,7 @@ class AIAnalysisEngine:
             ) / 4
 
         )
+
 
 
 
@@ -250,6 +256,13 @@ class AIAnalysisEngine:
 
 
 
+
+
+
+
+        # ==============================
+        # AI REASONING
+        # ==============================
 
 
         reasoning = [
@@ -292,8 +305,10 @@ class AIAnalysisEngine:
 
 
 
+
+
         # ==============================
-        # SELLER ACTION PLAN
+        # SELLER STRATEGY
         # ==============================
 
 
@@ -316,29 +331,27 @@ class AIAnalysisEngine:
 
 
 
-        strategy = {
 
+
+        strategy = {
 
             "buy_price": round(buy_price,2),
 
-
             "target_sale_price": round(market_value,2),
-
 
             "recommended_listing": recommended_listing,
 
-
             "minimum_offer": minimum_offer,
 
-
             "expected_profit": round(profit,2),
-
 
             "strategy":
 
                 "List slightly above market value and allow room for negotiation while protecting margin."
 
         }
+
+
 
 
 
@@ -353,7 +366,6 @@ class AIAnalysisEngine:
 
         marketplace = {
 
-
             "sources": {
 
                 "ebay": round(market_value * 1.02,2),
@@ -364,9 +376,7 @@ class AIAnalysisEngine:
 
             },
 
-
             "market_price": round(market_value,2),
-
 
             "spread": round(
 
@@ -376,10 +386,161 @@ class AIAnalysisEngine:
 
             ),
 
-
             "confidence": confidence
 
         }
+
+
+
+
+
+
+
+
+
+        # ==============================
+        # AI GRADE
+        # ==============================
+
+
+        if confidence >= 95:
+
+            grade_letter = "A+"
+
+            grade_title = "Exceptional Flip Opportunity"
+
+
+        elif confidence >= 85:
+
+            grade_letter = "A"
+
+            grade_title = "High Confidence Flip"
+
+
+        elif confidence >= 75:
+
+            grade_letter = "B"
+
+            grade_title = "Solid Flip Opportunity"
+
+
+        else:
+
+            grade_letter = "C"
+
+            grade_title = "Proceed With Caution"
+
+
+
+
+
+        grade = {
+
+            "letter": grade_letter,
+
+            "title": grade_title,
+
+            "reason":
+
+                f"{product.brand or 'Product'} shows strong margin potential with {confidence}% AI confidence."
+
+        }
+
+
+
+
+
+
+
+
+
+        # ==============================
+        # RISK ANALYSIS
+        # ==============================
+
+
+        if risk == "LOW":
+
+            warnings = [
+
+                "Verify product condition",
+
+                "Monitor competing listings"
+
+            ]
+
+
+        elif risk == "MEDIUM":
+
+            warnings = [
+
+                "Check current competition",
+
+                "Confirm resale pricing"
+
+            ]
+
+
+        else:
+
+            warnings = [
+
+                "High uncertainty detected",
+
+                "Avoid overpaying inventory"
+
+            ]
+
+
+
+
+
+        risk_analysis = {
+
+            "level": risk,
+
+            "warnings": warnings
+
+        }
+
+
+
+
+
+
+
+
+
+        # ==============================
+        # AI SUMMARY
+        # ==============================
+
+
+        summary = (
+
+            f"FlipIntel identified {product.name} as a "
+
+            f"{recommendation.lower()} opportunity. "
+
+            f"The product can be acquired for "
+
+            f"${round(buy_price,2)} with an estimated resale "
+
+            f"value of ${round(market_value,2)}. "
+
+            f"This creates a projected profit of "
+
+            f"${round(profit,2)} and a {round(roi,2)}% ROI. "
+
+            f"{product.brand or 'This product'} shows "
+
+            f"strong resale potential with "
+
+            f"{risk.lower()} risk."
+
+        )
+
+
 
 
 
@@ -409,6 +570,8 @@ class AIAnalysisEngine:
 
 
 
+
+
             "scores": {
 
                 "profit": profit_score,
@@ -420,6 +583,8 @@ class AIAnalysisEngine:
                 "sell_speed": sell_speed_score
 
             },
+
+
 
 
 
@@ -437,6 +602,8 @@ class AIAnalysisEngine:
 
 
 
+
+
             "reasoning": reasoning,
 
 
@@ -446,7 +613,16 @@ class AIAnalysisEngine:
             "strategy": strategy,
 
 
-            "marketplace": marketplace
+            "marketplace": marketplace,
+
+
+            "grade": grade,
+
+
+            "risk_analysis": risk_analysis,
+
+
+            "summary": summary
 
 
         }

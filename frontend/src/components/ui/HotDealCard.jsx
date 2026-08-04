@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import DealAI from "./DealAI";
+import AISummary from "./AISummary";
+import AIGrade from "./AIGrade";
+import RiskAnalysis from "./RiskAnalysis";
 import FlipStrategy from "./FlipStrategy";
 import MarketplaceAI from "./MarketplaceAI";
 import ProductHero from "./ProductHero";
@@ -46,8 +49,8 @@ function HotDealCard({ product, onBuy }) {
                 setAiAnalysis(response.data);
 
 
-
             }
+
             catch(error) {
 
 
@@ -407,6 +410,30 @@ function HotDealCard({ product, onBuy }) {
 
 
 
+                    <AISummary
+
+                        summary={aiAnalysis?.summary}
+
+                    />
+
+
+
+
+
+
+
+                    <AIGrade
+
+                        grade={aiAnalysis?.grade}
+
+                    />
+
+
+
+
+
+
+
                     <FlipScoreBreakdown
 
                         product={product}
@@ -445,6 +472,18 @@ function HotDealCard({ product, onBuy }) {
 
 
 
+                    <MarketplaceAI
+
+                        marketplace={aiAnalysis?.marketplace}
+
+                    />
+
+
+
+
+
+
+
                     <AIReasoning
 
                         product={product}
@@ -459,9 +498,9 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-                    <FlipStrategy
+                    <RiskAnalysis
 
-                        strategy={aiAnalysis?.strategy}
+                        riskAnalysis={aiAnalysis?.risk_analysis}
 
                     />
 
@@ -471,9 +510,9 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-                    <MarketplaceAI
+                    <FlipStrategy
 
-                        marketplace={aiAnalysis?.marketplace}
+                        strategy={aiAnalysis?.strategy}
 
                     />
 
