@@ -1,21 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function ProductImage({ image, title }) {
+export default function ProductImage({ image, title, brand }) {
 
-  return (
-    <div className="product-image">
+    const [error, setError] = useState(false);
 
-      {image ? (
-        <img
-          src={image}
-          alt={title}
-        />
-      ) : (
-        <div className="image-placeholder">
-          No Image
+    const initials = title
+        ? title
+            .split(" ")
+            .slice(0, 2)
+            .map(word => word[0])
+            .join("")
+            .toUpperCase()
+        : "?";
+
+    return (
+
+        <div className="product-image">
+
+            {!image || error ? (
+
+                <div className="image-placeholder">
+
+                    <div className="placeholder-icon">
+                        📦
+                    </div>
+
+                    <div className="placeholder-title">
+                        {initials}
+                    </div>
+
+                    {brand && (
+                        <div className="placeholder-brand">
+                            {brand}
+                        </div>
+                    )}
+
+                </div>
+
+            ) : (
+
+                <img
+                    src={image}
+                    alt={title}
+                    loading="lazy"
+                    onError={() => setError(true)}
+                />
+
+            )}
+
         </div>
-      )}
 
-    </div>
-  );
+    );
+
 }

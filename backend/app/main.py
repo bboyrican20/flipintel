@@ -25,6 +25,7 @@ from app.api import marketplace
 
 
 
+
 app = FastAPI(
 
     title="FlipIntel",

@@ -1,141 +1,96 @@
+from statistics import mean
+
+
 class MarketplaceEngine:
 
+    def analyze(self, lookup: dict):
 
-    def analyze(
-        self,
-        product
-    ):
-
-
-        roi = product.roi or 0
-        profit = product.profit or 0
-        buy_price = product.buy_price or 0
-
-
+        market_price = float(
+            lookup.get("market_price", 0)
+        )
 
         #
-        # Determine expected sale price
+        # Temporary mock marketplace prices
+        # (Later these become live API calls.)
         #
 
-        if product.market_price:
+        ebay_price = round(
+            market_price * 1.03,
+            2
+        )
 
-            expected_sale = product.market_price
+        amazon_price = round(
+            market_price * 1.08,
+            2
+        )
 
-        else:
+        facebook_price = round(
+            market_price * 0.96,
+            2
+        )
 
-            expected_sale = buy_price + profit
+        average_price = round(
 
+            mean(
+                [
 
+                    ebay_price,
 
+                    amazon_price,
 
+                    facebook_price
 
-        if roi >= 100 and profit >= 50:
+                ]
 
-            best_marketplace = "Facebook Marketplace"
+            ),
 
-            sell_speed = "FAST"
+            2
 
-            confidence = 92
+        )
 
+        highest = max(
 
-        elif roi >= 50:
+            ebay_price,
 
-            best_marketplace = "eBay"
+            amazon_price,
 
-            sell_speed = "MEDIUM"
+            facebook_price
 
-            confidence = 82
+        )
 
+        lowest = min(
 
-        else:
+            ebay_price,
 
-            best_marketplace = "OfferUp"
+            amazon_price,
 
-            sell_speed = "SLOW"
+            facebook_price
 
-            confidence = 65
-
-
-
-
-
-        alternatives = [
-
-            {
-
-                "marketplace": "Facebook Marketplace",
-
-                "expected_price": round(
-                    expected_sale,
-                    2
-                ),
-
-                "sell_speed": "FAST"
-
-            },
-
-
-            {
-
-                "marketplace": "eBay",
-
-                "expected_price": round(
-                    expected_sale * 0.97,
-                    2
-                ),
-
-                "sell_speed": "MEDIUM"
-
-            },
-
-
-            {
-
-                "marketplace": "OfferUp",
-
-                "expected_price": round(
-                    expected_sale * 0.90,
-                    2
-                ),
-
-                "sell_speed": "FAST"
-
-            }
-
-        ]
-
-
-
-
+        )
 
         return {
 
+            "market_price": average_price,
 
-            "best_marketplace":
+            "sources": {
 
-                best_marketplace,
+                "ebay": ebay_price,
 
+                "amazon": amazon_price,
 
-            "expected_sale_price":
+                "facebook": facebook_price
 
-                round(
-                    expected_sale,
-                    2
-                ),
+            },
 
+            "highest": highest,
 
-            "sell_speed":
+            "lowest": lowest,
 
-                sell_speed,
+            "spread": round(
+                highest - lowest,
+                2
+            ),
 
-
-            "confidence":
-
-                confidence,
-
-
-            "alternatives":
-
-                alternatives
+            "confidence": 92
 
         }

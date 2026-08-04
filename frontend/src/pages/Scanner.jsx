@@ -2,26 +2,23 @@ import {
     useState
 } from "react";
 
-
 import axios from "axios";
-
 
 import {
     ScanLine,
     Activity,
-    Zap
+    Zap,
+    TrendingUp
 } from "lucide-react";
 
-
 import ScannerResult from "../components/ui/ScannerResult";
-
+import MarketplaceAI from "../components/ui/MarketplaceAI";
 
 
 const API = "http://localhost:8000";
 
 
-
-function Scanner(){
+function Scanner() {
 
 
     const [barcode,setBarcode] = useState("");
@@ -31,6 +28,8 @@ function Scanner(){
     const [retailer,setRetailer] = useState("");
 
     const [result,setResult] = useState(null);
+
+    const [marketplace,setMarketplace] = useState(null);
 
     const [loading,setLoading] = useState(false);
 
@@ -71,8 +70,13 @@ function Scanner(){
             setResult(response.data);
 
 
+            setMarketplace(
+                response.data.marketplace_intelligence
+            );
+
 
         }
+
         catch(error){
 
 
@@ -88,6 +92,7 @@ function Scanner(){
 
 
         }
+
         finally{
 
 
@@ -98,6 +103,7 @@ function Scanner(){
 
 
     }
+
 
 
 
@@ -117,35 +123,35 @@ function Scanner(){
 
             await axios.post(
 
-    `${API}/inventory/`,
+                `${API}/inventory/`,
 
-    {
+                {
 
-        product_id:
-        result.product_id,
-
-
-        product:
-        result.product,
+                    product_id:
+                        result.product_id,
 
 
-        retailer,
+                    product:
+                        result.product,
 
 
-        purchase_price:
-        Number(buyPrice),
+                    retailer,
 
 
-        expected_sale_price:
-        result.market_price,
+                    purchase_price:
+                        Number(buyPrice),
 
 
-        projected_profit:
-        result.profit
+                    expected_sale_price:
+                        result.market_price,
 
-    }
 
-);
+                    projected_profit:
+                        result.profit
+
+                }
+
+            );
 
 
 
@@ -154,8 +160,8 @@ function Scanner(){
             );
 
 
-
         }
+
         catch(error){
 
 
@@ -173,6 +179,7 @@ function Scanner(){
 
 
         }
+
         finally{
 
 
@@ -191,14 +198,15 @@ function Scanner(){
 
 
 
-    return (
 
+    return (
 
         <div className="scanner-page">
 
 
 
             <header>
+
 
                 <h1>
                     🤖 FlipIntel Scanner
@@ -218,12 +226,13 @@ function Scanner(){
 
 
 
+
             <section className="scanner-box">
 
 
                 <h2>
 
-                    <ScanLine/>
+                    <ScanLine />
 
                     Scan Product
 
@@ -251,6 +260,7 @@ function Scanner(){
 
 
 
+
                 <input
 
                     placeholder="Purchase Price"
@@ -264,6 +274,7 @@ function Scanner(){
                     }
 
                 />
+
 
 
 
@@ -301,15 +312,15 @@ function Scanner(){
 
                     {
 
-                    loading
+                        loading
 
-                    ?
+                        ?
 
-                    "Analyzing AI Data..."
+                        "Analyzing AI Data..."
 
-                    :
+                        :
 
-                    "🚀 Analyze Product"
+                        "🚀 Analyze Product"
 
                     }
 
@@ -327,19 +338,35 @@ function Scanner(){
 
 
 
+
             {
+
                 result &&
 
+                <>
 
-                <ScannerResult
 
-                    result={result}
+                    <ScannerResult
 
-                    addInventory={addInventory}
+                        result={result}
 
-                    adding={adding}
+                        addInventory={addInventory}
 
-                />
+                        adding={adding}
+
+                    />
+
+
+
+                    <MarketplaceAI
+
+                        marketplace={marketplace}
+
+                    />
+
+
+                </>
+
 
             }
 
@@ -351,58 +378,48 @@ function Scanner(){
 
 
 
-            <section className="scanner-grid">
+            {
+
+                result &&
+
+
+                <section className="scanner-grid">
 
 
 
-                <div className="scanner-box">
+                    <div className="scanner-box">
 
 
-                    <ScanLine/>
+                        <TrendingUp />
 
 
-                    <h3>
+                        <h3>
 
-                        Scanner Engine
+                            Historical Performance
 
-                    </h3>
-
-
-                    <strong>
-
-                        ONLINE
-
-                    </strong>
+                        </h3>
 
 
-                </div>
+                        <strong>
+
+                            {
+
+                                result.product_memory?.times_seen
+
+                                ||
+
+                                0
+
+                            }
+
+                            {" "}
+
+                            Scans
+
+                        </strong>
 
 
-
-
-
-
-                <div className="scanner-box">
-
-
-                    <Activity/>
-
-
-                    <h3>
-
-                        AI Analysis
-
-                    </h3>
-
-
-                    <strong>
-
-                        ACTIVE
-
-                    </strong>
-
-
-                </div>
+                    </div>
 
 
 
@@ -410,40 +427,92 @@ function Scanner(){
 
 
 
-                <div className="scanner-box">
+
+                    <div className="scanner-box">
 
 
-                    <Zap/>
+                        <Activity />
 
 
-                    <h3>
+                        <h3>
 
-                        Decision Engine
+                            Average ROI
 
-                    </h3>
-
-
-                    <strong>
-
-                        READY
-
-                    </strong>
+                        </h3>
 
 
-                </div>
+                        <strong>
+
+                            {
+
+                                result.product_memory?.average_roi
+
+                                ?
+
+                                `${result.product_memory.average_roi.toFixed(1)}%`
+
+                                :
+
+                                "N/A"
+
+                            }
+
+
+                        </strong>
+
+
+                    </div>
 
 
 
 
-            </section>
 
+
+
+
+                    <div className="scanner-box">
+
+
+                        <Zap />
+
+
+                        <h3>
+
+                            Buy Zone
+
+                        </h3>
+
+
+                        <strong>
+
+                            {
+
+                                result.product_memory?.buy_zone
+
+                                ||
+
+                                "UNKNOWN"
+
+                            }
+
+
+                        </strong>
+
+
+                    </div>
+
+
+
+                </section>
+
+
+            }
 
 
 
 
 
         </div>
-
 
     );
 

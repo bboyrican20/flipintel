@@ -1,7 +1,14 @@
 import {
-    Search,
-    PackagePlus
+    PackagePlus,
+    ShieldCheck,
+    TrendingUp,
+    Clock,
+    Brain,
+    Flame,
+    BarChart3
 } from "lucide-react";
+
+import ProductImage from "./ProductImage";
 
 
 function ScannerResult({
@@ -9,6 +16,47 @@ function ScannerResult({
     addInventory,
     adding
 }) {
+
+
+    const confidence =
+    result.confidence?.confidence
+    ??
+    0;
+
+
+    const marketplace =
+        result.marketplace_intelligence;
+
+
+    const flipDecision =
+    result.analysis?.recommendation
+    ||
+    result.decision?.action
+    ||
+    "RESEARCH";
+
+
+    const risk =
+        result.confidence?.risk ||
+        result.decision?.risk ||
+        "LOW";
+
+
+    const roi =
+    result.roi
+    ??
+    0;
+
+
+    const profit =
+    result.profit
+    ??
+    0;
+
+
+    const maxBuyPrice =
+        result.decision?.max_buy_price;
+
 
 
     return (
@@ -25,10 +73,7 @@ function ScannerResult({
 
                 <span className="confidence">
 
-                    {result.roi > 100
-                        ? "94%"
-                        : "78%"
-                    } Confidence
+                    {confidence}% Confidence
 
                 </span>
 
@@ -37,71 +82,99 @@ function ScannerResult({
 
 
 
-            <h2>
 
-                {result.product}
-
-            </h2>
+            <div className="scanner-product">
 
 
+                <ProductImage
 
+                    image={result.image}
 
-            <p className="category">
+                    title={result.product}
 
-                {result.brand} • {result.category}
+                    brand={result.brand}
 
-            </p>
-
+                />
 
 
 
+                <div className="scanner-product-info">
 
-            <div className="scanner-metrics">
+
+                    <h2>
+                        {result.product}
+                    </h2>
 
 
-                <div>
+                    <p className="category">
 
-                    <span>
-                        Market Value
-                    </span>
+                        {result.brand}
+                        {" • "}
+                        {result.category}
 
-                    <strong>
-                        ${result.market_price}
-                    </strong>
-
-                </div>
+                    </p>
 
 
 
 
-                <div>
-
-                    <span>
-                        Profit
-                    </span>
-
-                    <strong className="profit">
-
-                        +${result.profit}
-
-                    </strong>
-
-                </div>
+                    <div className="scanner-metrics">
 
 
+                        <div>
+
+                            <span>
+                                Market Value
+                            </span>
 
 
-                <div>
+                            <strong>
 
-                    <span>
-                        ROI
-                    </span>
+                                ${result.market_price?.toFixed(2)}
 
-                    <strong className="roi">
+                            </strong>
 
-                        {result.roi.toFixed(2)}%
+                        </div>
 
-                    </strong>
+
+
+
+                        <div>
+
+                            <span>
+                                Profit
+                            </span>
+
+
+                            <strong className="profit">
+
+                                +${profit.toFixed(2)}
+
+                            </strong>
+
+                        </div>
+
+
+
+
+                        <div>
+
+                            <span>
+                                ROI
+                            </span>
+
+
+                            <strong className="roi">
+
+                                {roi.toFixed(2)}%
+
+                            </strong>
+
+
+                        </div>
+
+
+                    </div>
+
 
                 </div>
 
@@ -113,24 +186,246 @@ function ScannerResult({
 
 
 
-            <div className="ai-recommendation">
+
+            <div className="decision-engine">
 
 
                 <h3>
 
-                    {result.analysis?.recommendation}
+                    🧠 FlipIntel Decision
 
                 </h3>
 
 
-                <p>
 
-                    {result.deal_explanation?.summary}
+                <div className="decision-grid">
 
-                </p>
+
+                    <div>
+
+                        <ShieldCheck size={18}/>
+
+                        <span>
+                            Decision
+                        </span>
+
+
+                        <strong>
+
+                            {flipDecision}
+
+                        </strong>
+
+
+                    </div>
+
+
+
+
+
+                    <div>
+
+                        <TrendingUp size={18}/>
+
+                        <span>
+                            Confidence
+                        </span>
+
+
+                        <strong>
+
+                            {confidence}%
+
+                        </strong>
+
+                    </div>
+
+
+
+
+
+                    <div>
+
+                        <Clock size={18}/>
+
+                        <span>
+                            Flip Window
+                        </span>
+
+
+                        <strong>
+
+                            3–7 Days
+
+                        </strong>
+
+                    </div>
+
+
+
+
+
+                    <div>
+
+                        <span>
+                            Risk
+                        </span>
+
+
+                        <strong>
+
+                            {risk}
+
+                        </strong>
+
+
+                    </div>
+
+
+                </div>
 
 
             </div>
+
+
+
+
+
+
+
+            <div className="ai-breakdown-card">
+
+
+                <h3>
+
+                    <Brain size={20}/>
+
+                    AI Deal Breakdown
+
+                </h3>
+
+
+
+
+                <div className="ai-breakdown-grid">
+
+
+                    <div>
+
+                        <BarChart3 size={18}/>
+
+                        <span>
+                            Profit Potential
+                        </span>
+
+
+                        <strong>
+                            {profit >= 100 ? "HIGH" : "MEDIUM"}
+                        </strong>
+
+                    </div>
+
+
+
+
+                    <div>
+
+                        <Flame size={18}/>
+
+                        <span>
+                            Market Demand
+                        </span>
+
+
+                        <strong>
+
+                            {
+                                marketplace?.confidence >= 90
+                                ?
+                                "HIGH"
+                                :
+                                "MEDIUM"
+                            }
+
+                        </strong>
+
+                    </div>
+
+
+
+
+                    <div>
+
+                        <span>
+                            🏷️ Brand Strength
+                        </span>
+
+
+                        <strong>
+
+                            {
+                                result.brand
+                                ?
+                                "STRONG"
+                                :
+                                "UNKNOWN"
+                            }
+
+                        </strong>
+
+
+                    </div>
+
+
+
+
+
+                    <div>
+
+                        <span>
+                            📦 Resale Speed
+                        </span>
+
+
+                        <strong>
+                            FAST
+                        </strong>
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+                {
+                    maxBuyPrice &&
+
+                    <div className="max-buy-price">
+
+                        <span>
+                            Maximum Buy Price
+                        </span>
+
+
+                        <strong>
+
+                            ${maxBuyPrice.toFixed(2)}
+
+                        </strong>
+
+                    </div>
+
+                }
+
+
+
+            </div>
+
 
 
 
@@ -151,17 +446,11 @@ function ScannerResult({
 
 
                 {
-
                     adding
-
                     ?
-
                     "Adding..."
-
                     :
-
                     "ADD TO INVENTORY"
-
                 }
 
 
@@ -171,8 +460,8 @@ function ScannerResult({
 
         </section>
 
-    );
 
+    );
 
 }
 

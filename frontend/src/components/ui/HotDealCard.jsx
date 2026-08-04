@@ -1,35 +1,128 @@
-import ROIBadge from "./ROIBadge";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import DealAI from "./DealAI";
 import FlipStrategy from "./FlipStrategy";
 import MarketplaceAI from "./MarketplaceAI";
+import ProductHero from "./ProductHero";
+import FlipScore from "./FlipScore";
+import ProfitOpportunity from "./ProfitOpportunity";
+import DealBreakdown from "./DealBreakdown";
+import AIReasoning from "./AIReasoning";
+import FlipScoreBreakdown from "./FlipScoreBreakdown";
+
+
+const API = "http://localhost:8000";
 
 
 
 function HotDealCard({ product, onBuy }) {
 
 
+    const [expanded, setExpanded] = useState(false);
+
+    const [aiAnalysis, setAiAnalysis] = useState(null);
+
+
+
+
+
+    useEffect(() => {
+
+
+        async function loadAI() {
+
+
+            try {
+
+
+                const response = await axios.get(
+
+                    `${API}/deal-ai/${product.product_id}`
+
+                );
+
+
+                setAiAnalysis(response.data);
+
+
+
+            }
+            catch(error) {
+
+
+                console.error(
+
+                    "AI Analysis Error:",
+
+                    error
+
+                );
+
+
+            }
+
+
+        }
+
+
+
+
+
+        if(product.product_id) {
+
+            loadAI();
+
+        }
+
+
+
+    }, [product.product_id]);
+
+
+
+
+
+
+
+    const score =
+
+        product.deal_score ??
+
+        product.flipintel_score ??
+
+        aiAnalysis?.score ??
+
+        61;
+
+
+
+
+
+
 
     return (
 
 
-        <div className="hot-deal-card">
+        <div className="hot-deal-card premium-deal-card">
 
 
 
-            <div className="deal-header">
 
 
-                <span className="deal-fire">
-
-                    🔥 HOT DEAL
-
-                </span>
+            <div className="deal-header-v2">
 
 
+                <ProductHero
 
-                <ROIBadge
+                    product={product}
 
-                    roi={product.roi}
+                />
+
+
+                <FlipScore
+
+                    score={score}
 
                 />
 
@@ -40,71 +133,32 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-            <h2>
-
-                {product.product}
-
-            </h2>
 
 
 
 
-            <p className="retailer">
-
-                🏪 {product.retailer || "Retailer"}
-
-            </p>
+            <div className="deal-prices premium-metrics">
 
 
 
+                <div className="metric-card">
 
 
-            <div className="deal-score">
-
-
-                AI Deal Score:
-
-
-                <strong>
-
-                    {" "}
-
-                    {product.deal_score ||
-
-                    product.flipintel_score ||
-
-                    0}
-
-                    /100
-
-                </strong>
-
-
-            </div>
-
-
-
-
-
-
-
-            <div className="deal-prices">
-
-
-
-                <div>
-
-
-                    <span>
-
-                        Profit
-
-                    </span>
+                    <span>💰 Profit</span>
 
 
                     <strong className="profit">
 
-                        +${product.profit || 0}
+                        +${
+
+                            product.profit ??
+
+                            aiAnalysis?.metrics?.profit ??
+
+                            0
+
+                        }
+
 
                     </strong>
 
@@ -115,19 +169,26 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-                <div>
 
 
-                    <span>
+                <div className="metric-card">
 
-                        ROI
 
-                    </span>
+                    <span>🏷 Buy Price</span>
 
 
                     <strong>
 
-                        {product.roi || 0}%
+                        ${
+
+                            product.buy_price ??
+
+                            aiAnalysis?.metrics?.purchase_price ??
+
+                            0
+
+                        }
+
 
                     </strong>
 
@@ -136,6 +197,68 @@ function HotDealCard({ product, onBuy }) {
 
 
 
+
+
+
+
+                <div className="metric-card">
+
+
+                    <span>🌎 Market Value</span>
+
+
+                    <strong>
+
+                        ${
+
+                            product.market_price ??
+
+                            aiAnalysis?.metrics?.expected_sale ??
+
+                            0
+
+                        }
+
+
+                    </strong>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div className="metric-card">
+
+
+                    <span>📈 ROI</span>
+
+
+                    <strong>
+
+                        {
+
+                            Number(
+
+                                product.roi ??
+
+                                aiAnalysis?.metrics?.roi ??
+
+                                0
+
+                            ).toFixed(2)
+
+                        }%
+
+                    </strong>
+
+
+                </div>
+
+
             </div>
 
 
@@ -145,11 +268,46 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-            <div className="recommendation">
+
+            <div className="premium-recommendation">
 
 
-                {product.recommendation}
+                <div className="recommendation-icon">
 
+                    🧠
+
+                </div>
+
+
+
+                <div className="recommendation-content">
+
+
+                    <strong>
+
+                        AI Recommendation
+
+                    </strong>
+
+
+
+                    <p>
+
+                        {
+
+                            aiAnalysis?.recommendation ??
+
+                            product.recommendation ??
+
+                            "Strong Buy"
+
+                        }
+
+
+                    </p>
+
+
+                </div>
 
 
             </div>
@@ -160,29 +318,23 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-            {/* AI Deal Analysis */}
 
 
-            <DealAI
-
-                productId={product.product_id}
-
-            />
+            <div className="deal-actions">
 
 
 
+                <button
 
+                    className="buy-button premium-buy"
 
+                    onClick={onBuy}
 
+                >
 
-            {/* Flip Strategy Engine */}
+                    🛒 BUY THIS DEAL
 
-
-            <FlipStrategy
-
-                productId={product.product_id}
-
-            />
+                </button>
 
 
 
@@ -190,15 +342,29 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-            {/* Marketplace Intelligence */}
+                <button
+
+                    className="analysis-toggle"
+
+                    onClick={() => setExpanded(!expanded)}
+
+                >
+
+                    {
+
+                        expanded
+
+                        ? "▲ HIDE ANALYSIS"
+
+                        : "▼ VIEW ANALYSIS"
+
+                    }
 
 
-            <MarketplaceAI
+                </button>
 
-                productId={product.product_id}
 
-            />
-
+            </div>
 
 
 
@@ -206,22 +372,120 @@ function HotDealCard({ product, onBuy }) {
 
 
 
-            <button
 
 
-                className="buy-button"
+            {expanded && (
 
 
-                onClick={onBuy}
+                <div className="deal-analysis">
 
 
-            >
+
+                    <div className="analysis-header">
 
 
-                🛒 BUY NOW
+                        🧠 FlipIntel AI Intelligence Report
 
 
-            </button>
+                    </div>
+
+
+
+
+
+
+
+                    <DealAI
+
+                        analysis={aiAnalysis}
+
+                    />
+
+
+
+
+
+
+
+                    <FlipScoreBreakdown
+
+                        product={product}
+
+                        analysis={aiAnalysis}
+
+                    />
+
+
+
+
+
+
+
+                    <ProfitOpportunity
+
+                        product={product}
+
+                    />
+
+
+
+
+
+
+
+                    <DealBreakdown
+
+                        product={product}
+
+                    />
+
+
+
+
+
+
+
+                    <AIReasoning
+
+                        product={product}
+
+                        analysis={aiAnalysis}
+
+                    />
+
+
+
+
+
+
+
+                    <FlipStrategy
+
+                        strategy={aiAnalysis?.strategy}
+
+                    />
+
+
+
+
+
+
+
+                    <MarketplaceAI
+
+                        marketplace={aiAnalysis?.marketplace}
+
+                    />
+
+
+
+
+
+                </div>
+
+
+            )}
+
 
 
 
@@ -234,7 +498,6 @@ function HotDealCard({ product, onBuy }) {
 
 
 }
-
 
 
 export default HotDealCard;

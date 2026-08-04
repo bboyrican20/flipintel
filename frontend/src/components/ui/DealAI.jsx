@@ -1,102 +1,19 @@
-import {
-    useEffect,
-    useState
-} from "react";
-
-import axios from "axios";
-
-
-const API = "http://localhost:8000";
-
-
-
-function DealAI({ productId }) {
-
-
-    const [analysis,setAnalysis] = useState(null);
-
-
-
-    useEffect(()=>{
-
-
-        async function loadAI(){
-
-
-            try{
-
-
-                console.log(
-                    "AI Product ID:",
-                    productId
-                );
-
-
-                const response = await axios.get(
-
-                    `${API}/deal-ai/${productId}`
-
-                );
-
-
-                setAnalysis(
-                    response.data
-                );
-
-
-            }
-            catch(error){
-
-
-                console.error(
-
-                    "AI Loading Error:",
-
-                    error
-
-                );
-
-
-            }
-
-
-        }
-
-
-
-        if(productId){
-
-            loadAI();
-
-        }
-
-
-    },[productId]);
-
-
-
+function DealAI({ analysis }) {
 
 
     if(!analysis){
-
 
         return (
 
             <div className="deal-ai">
 
-
                 🤖 Analyzing Deal...
-
 
             </div>
 
         );
 
-
     }
-
-
-
 
 
 
@@ -104,31 +21,103 @@ function DealAI({ productId }) {
     return (
 
 
-        <div className="deal-ai">
+        <div className="deal-ai premium-verdict-card">
 
 
 
-            <h3>
-
-                🤖 FlipIntel Verdict
-
-            </h3>
+            <div className="verdict-header">
 
 
+                <h3>
+
+                    🤖 FlipIntel Verdict
+
+                </h3>
+
+
+            </div>
 
 
 
-            <div>
 
 
-                AI Confidence:
+
+            <div className="verdict-grid">
 
 
-                <strong>
 
-                    {analysis.confidence}/100
 
-                </strong>
+
+                <div className="verdict-stat">
+
+
+                    <span>
+
+                        AI Confidence
+
+                    </span>
+
+
+                    <strong className="confidence-value">
+
+                        {analysis.confidence}/100
+
+                    </strong>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div className="verdict-stat">
+
+
+                    <span>
+
+                        Risk
+
+                    </span>
+
+
+                    <strong className="risk-value">
+
+                        {analysis.risk}
+
+                    </strong>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div className="verdict-stat">
+
+
+                    <span>
+
+                        Flip Window
+
+                    </span>
+
+
+                    <strong>
+
+                        {analysis.flip_window}
+
+                    </strong>
+
+
+                </div>
+
+
 
 
             </div>
@@ -139,98 +128,29 @@ function DealAI({ productId }) {
 
 
 
-            <h2>
 
-
-                🟢 {analysis.recommendation}
-
-
-            </h2>
+            <div className="recommendation-banner">
 
 
 
+                <span className="recommendation-dot">
+
+                    🟢
+
+                </span>
 
 
-
-
-            <div>
-
-
-                Risk:
 
 
                 <strong>
 
-                    {analysis.risk}
+                    {analysis.recommendation}
 
                 </strong>
 
 
-            </div>
-
-
-
-
-
-
-
-            <div>
-
-
-                Flip Window:
-
-
-                <strong>
-
-                    {analysis.flip_window}
-
-                </strong>
-
 
             </div>
-
-
-
-
-
-
-
-
-            <h4>
-
-                Why FlipIntel Likes This
-
-            </h4>
-
-
-
-
-
-            {
-
-
-            analysis.reasons &&
-
-            analysis.reasons.map(
-
-                (reason,index)=>(
-
-
-                    <p key={index}>
-
-
-                        ✅ {reason}
-
-
-                    </p>
-
-
-                )
-
-            )
-
-
-            }
 
 
 
@@ -244,7 +164,6 @@ function DealAI({ productId }) {
 
 
 }
-
 
 
 export default DealAI;

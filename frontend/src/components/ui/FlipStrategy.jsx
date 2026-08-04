@@ -1,84 +1,11 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-
-
-const API = "http://localhost:8000";
-
-
-
-function FlipStrategy({ productId }) {
-
-
-    const [strategy, setStrategy] = useState(null);
-
-
-
-    useEffect(() => {
-
-
-        if (!productId) return;
-
-
-
-        async function loadStrategy() {
-
-
-            try {
-
-
-                const response = await axios.get(
-
-                    `${API}/flip-strategy/${productId}`
-
-                );
-
-
-                setStrategy(
-
-                    response.data.strategy
-
-                );
-
-
-            }
-            catch(error) {
-
-
-                console.error(
-
-                    "Flip Strategy Error:",
-
-                    error
-
-                );
-
-
-            }
-
-
-        }
-
-
-
-        loadStrategy();
-
-
-
-    }, [productId]);
-
-
-
+function FlipStrategy({ strategy }) {
 
 
     if (!strategy) {
 
-
         return null;
 
-
     }
-
-
 
 
 
@@ -87,72 +14,130 @@ function FlipStrategy({ productId }) {
         <div className="flip-strategy-card">
 
 
+
+
+
             <h3>
-                💡 Flip Strategy
+
+                🚀 Seller Action Plan
+
             </h3>
+
+
+
+
 
 
 
             <div className="strategy-grid">
 
 
+
+
+
                 <div>
 
+
                     <span>
-                        Buy Price
+
+                        BUY AT
+
                     </span>
 
+
                     <strong>
+
                         ${strategy.buy_price}
+
                     </strong>
+
 
                 </div>
 
 
 
+
+
+
+
                 <div>
 
+
                     <span>
-                        Target Sale
+
+                        TARGET SALE
+
                     </span>
 
+
                     <strong>
+
                         ${strategy.target_sale_price}
+
                     </strong>
+
 
                 </div>
 
 
 
+
+
+
+
                 <div>
 
+
                     <span>
-                        Recommended Listing
+
+                        RECOMMENDED LISTING
+
                     </span>
 
+
                     <strong>
+
                         ${strategy.recommended_listing}
+
                     </strong>
 
+
                 </div>
+
+
+
+
 
 
 
                 <div>
 
+
                     <span>
-                        Minimum Offer
+
+                        ACCEPT OFFER
+
                     </span>
 
+
                     <strong>
+
                         ${strategy.minimum_offer}
+
                     </strong>
 
+
                 </div>
+
+
 
 
 
             </div>
+
+
+
+
 
 
 
@@ -178,6 +163,10 @@ function FlipStrategy({ productId }) {
 
 
 
+
+
+
+
             <div className="strategy-advice">
 
 
@@ -187,7 +176,12 @@ function FlipStrategy({ productId }) {
                 {strategy.strategy}
 
 
+
             </div>
+
+
+
+
 
 
 
@@ -196,7 +190,6 @@ function FlipStrategy({ productId }) {
     );
 
 }
-
 
 
 export default FlipStrategy;

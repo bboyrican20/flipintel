@@ -1,16 +1,18 @@
 function ROIBadge({ roi }) {
 
+    const formattedROI =
+        Number(roi ?? 0).toFixed(2);
+
 
     return (
 
         <span className="roi-badge">
 
-            🚀 {roi}% ROI
+            🚀 {formattedROI}% ROI
 
         </span>
 
     );
-
 
 }
 

@@ -1,13 +1,33 @@
 from sqlalchemy.orm import Session
 
-from app.models.inventory import Inventory
 from app.models.product import Product
-from app.models.scan_history import ScanHistory
 
+from app.engines.profit_engine import ProfitEngine
+from app.engines.roi_engine import ROIEngine
+from app.engines.brand_engine import BrandEngine
+from app.engines.history_engine import HistoryEngine
+from app.engines.risk_engine import RiskEngine
+from app.engines.demand_engine import DemandEngine
+from app.engines.competition_engine import CompetitionEngine
+from app.engines.confidence_engine import ConfidenceEngine
+from app.engines.category_engine import CategoryEngine
 
 
 class FlipScoreEngine:
 
+    def __init__(self):
+
+        self.profit = ProfitEngine()
+        self.roi = ROIEngine()
+        self.brand = BrandEngine()
+        self.history = HistoryEngine()
+        self.risk = RiskEngine()
+
+        # Future AI engines
+        self.demand = DemandEngine()
+        self.competition = CompetitionEngine()
+        self.confidence = ConfidenceEngine()
+        self.category = CategoryEngine()
 
     def calculate_score(
         self,
@@ -15,184 +35,61 @@ class FlipScoreEngine:
         db: Session
     ):
 
-
         product = (
             db.query(Product)
-            .filter(
-                Product.id == product_id
-            )
+            .filter(Product.id == product_id)
             .first()
         )
-
 
         if not product:
 
             return {
-
-                "error":
-                    "Product not found"
-
+                "error": "Product not found"
             }
 
-
-
         #
-        # Profit Score
+        # Core Scoring Engines (100 Point Flip Score)
         #
 
-        profit_score = 0
+        profit_result = self.profit.score(product)
+        roi_result = self.roi.score(product)
+        brand_result = self.brand.score(product)
+        history_result = self.history.score(product_id, db)
+        risk_result = self.risk.score(history_result)
 
-        profit = (
-            product.market_price or 0
-        ) - (
-            product.buy_price or 0
+        #
+        # Future AI Insights
+        #
+
+        demand_result = self.demand.score(product)
+        competition_result = self.competition.score(product)
+        confidence_result = self.confidence.score(
+            product,
+            history_result
         )
-
-
-        if profit >= 200:
-
-            profit_score = 30
-
-        elif profit >= 100:
-
-            profit_score = 25
-
-        elif profit >= 50:
-
-            profit_score = 15
-
-        else:
-
-            profit_score = 5
-
-
+        category_result = self.category.score(product)
 
         #
-        # ROI Score
+        # Final Flip Score
         #
-
-        roi_score = 0
-
-
-        if product.buy_price:
-
-            roi = (
-                profit /
-                product.buy_price
-            ) * 100
-
-        else:
-
-            roi = 0
-
-
-
-        if roi >= 150:
-
-            roi_score = 25
-
-        elif roi >= 75:
-
-            roi_score = 20
-
-        elif roi >= 30:
-
-            roi_score = 12
-
-        else:
-
-            roi_score = 5
-
-
-
-        #
-        # Brand Score
-        #
-
-        brand_score = 10
-
-
-        brand = (
-            product.brand
-            or ""
-        ).lower()
-
-
-        premium_brands = [
-
-            "milwaukee",
-            "dewalt",
-            "makita",
-            "bosch",
-            "festool"
-
-        ]
-
-
-        if brand in premium_brands:
-
-            brand_score = 20
-
-
-
-        #
-        # History Score
-        #
-
-        history_score = 0
-
-
-        history = (
-            db.query(ScanHistory)
-            .filter(
-                ScanHistory.product_id == product_id
-            )
-            .count()
-        )
-
-
-        if history >= 10:
-
-            history_score = 15
-
-        elif history >= 5:
-
-            history_score = 10
-
-        elif history > 0:
-
-            history_score = 5
-
-
-
-        #
-        # Risk Score
-        #
-
-        risk_score = 10
-
-
-        if history == 0:
-
-            risk_score = 5
-
-
 
         total_score = (
 
-            profit_score +
+            profit_result["score"]
 
-            roi_score +
+            + roi_result["score"]
 
-            brand_score +
+            + brand_result["score"]
 
-            history_score +
+            + history_result["score"]
 
-            risk_score
+            + risk_result["score"]
 
         )
 
-
+        #
+        # Decision
+        #
 
         if total_score >= 85:
 
@@ -210,55 +107,75 @@ class FlipScoreEngine:
 
             decision = "PASS"
 
-
+        #
+        # Return (Backwards Compatible)
+        #
 
         return {
-
 
             "product":
                 product.name,
 
-
             "flip_score":
                 total_score,
-
 
             "decision":
                 decision,
 
-
             "breakdown":
+
                 {
 
                     "profit_score":
-                        profit_score,
+                        profit_result["score"],
 
                     "roi_score":
-                        roi_score,
+                        roi_result["score"],
 
                     "brand_score":
-                        brand_score,
+                        brand_result["score"],
 
                     "history_score":
-                        history_score,
+                        history_result["score"],
 
                     "risk_score":
-                        risk_score
+                        risk_result["score"]
 
                 },
 
-
             "metrics":
+
                 {
 
                     "estimated_profit":
-                        round(profit,2),
+                        profit_result["details"]["estimated_profit"],
 
                     "estimated_roi":
-                        round(roi,2)
+                        roi_result["details"]["estimated_roi"]
 
                 },
 
+            #
+            # New AI data (safe for frontend)
+            #
+
+            "ai_insights":
+
+                {
+
+                    "demand":
+                        demand_result,
+
+                    "competition":
+                        competition_result,
+
+                    "confidence":
+                        confidence_result,
+
+                    "category":
+                        category_result
+
+                },
 
             "recommendation":
 

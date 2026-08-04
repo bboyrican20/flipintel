@@ -7,6 +7,7 @@ from app.models.market_data import MarketData
 from app.models.scan_history import ScanHistory
 
 from app.services.barcode_lookup import lookup_barcode
+from app.services.marketplace_engine import MarketplaceEngine
 from app.services.confidence_engine import calculate_confidence
 from app.services.deal_analyzer import analyze_product
 from app.services.product_repository import ProductRepository
@@ -24,6 +25,7 @@ router = APIRouter(
 historical_comparison = HistoricalComparison()
 decision_engine = DecisionEngine()
 deal_explainer = DealExplainer()
+marketplace_engine = MarketplaceEngine()
 
 
 @router.post("/barcode")
@@ -44,6 +46,15 @@ def scan_barcode(
             detail="Barcode not found"
         )
 
+    #
+    # Marketplace Intelligence
+    #
+
+    marketplace = marketplace_engine.analyze(lookup)
+
+    # Use the AI-generated market average
+    lookup["market_price"] = marketplace["market_price"]
+
     repo = ProductRepository(db)
 
     #
@@ -58,6 +69,7 @@ def scan_barcode(
 
         product = repo.update_existing_product(
             product,
+            lookup,
             buy_price
         )
 
@@ -82,9 +94,9 @@ def scan_barcode(
 
         product_id=product.id,
 
-        source="Barcode Lookup",
+        source="Marketplace Engine",
 
-        marketplace="Internal Market Database",
+        marketplace="AI Market Average",
 
         price=product.market_price,
 
@@ -244,6 +256,8 @@ def scan_barcode(
         "decision": decision,
 
         "deal_explanation": explanation,
+
+        "marketplace_intelligence": marketplace,
 
         "scan_history_id": scan.id
 

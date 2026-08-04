@@ -308,72 +308,40 @@ function Dashboard(){
 
 
 
-                <div className="featured-deal">
+                <div className="featured-deal inventory-card">
 
+    <div className="inventory-header">
+        <h2>📦 Inventory Status</h2>
+        <span className="inventory-badge">Healthy</span>
+    </div>
 
-                    <h2>
-                        📦 Inventory Status
-                    </h2>
+    <div className="inventory-stat">
+        <span>Active Flips</span>
+        <strong>
+            {analytics?.portfolio?.active_inventory || 0}
+        </strong>
+    </div>
 
+    <div className="inventory-stat">
+        <span>Completed Flips</span>
+        <strong>
+            {analytics?.portfolio?.sold_flips || 0}
+        </strong>
+    </div>
 
+    <div className="inventory-stat">
+        <span>Projected Profit</span>
+        <strong className="profit">
+            +$
+            {analytics?.financials?.projected_profit || 0}
+        </strong>
+    </div>
 
-                    <h1>
+    <div className="inventory-footer">
+        🟢 Inventory performing well
+    </div>
 
-                        {
-                        analytics?.portfolio?.active_inventory || 0
-                        }
-
-                        {" "}
-                        Active Flips
-
-                    </h1>
-
-
-
-                    <p>
-
-                        Completed:
-
-                        {" "}
-
-                        {
-                        analytics?.portfolio?.sold_flips || 0
-                        }
-
-                        flips
-
-                    </p>
-
-
-
-
-
-
-                    <div className="big-profit">
-
-
-                        Projected Profit
-
-
-                        <h2 className="profit">
-
-
-                            +$
-
-                            {
-                            analytics?.financials?.projected_profit || 0
-                            }
-
-
-                        </h2>
-
-
-                    </div>
-
-
-
-
-                </div>
+</div>
 
 
 

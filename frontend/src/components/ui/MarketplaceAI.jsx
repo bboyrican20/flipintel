@@ -1,86 +1,22 @@
-import {
-    useEffect,
-    useState
-} from "react";
-
-import axios from "axios";
+function MarketplaceAI({ marketplace }) {
 
 
-const API = "http://localhost:8000";
+    if (!marketplace) {
 
-
-
-function MarketplaceAI({productId}) {
-
-
-    const [marketplace,setMarketplace] = useState(null);
-
-
-
-    useEffect(()=>{
-
-
-        async function loadMarketplace(){
-
-
-            try{
-
-
-                const response = await axios.get(
-
-                    `${API}/marketplace/${productId}`
-
-                );
-
-
-                setMarketplace(
-                    response.data.marketplace
-                );
-
-
-            }
-            catch(error){
-
-                console.error(
-                    "Marketplace AI Error:",
-                    error
-                );
-
-            }
-
-
-        }
-
-
-
-        if(productId){
-
-            loadMarketplace();
-
-        }
-
-
-    },[productId]);
-
-
-
-
-
-    if(!marketplace){
-
-        return (
-
-            <div className="marketplace-ai">
-
-                🌎 Analyzing Marketplace...
-
-            </div>
-
-        );
+        return null;
 
     }
 
 
+    const sources = marketplace.sources || {};
+
+
+    const bestMarketplace = Object.entries(sources).length
+
+        ? Object.entries(sources)
+            .reduce((a,b)=> a[1] > b[1] ? a : b)[0]
+
+        : "N/A";
 
 
 
@@ -89,49 +25,133 @@ function MarketplaceAI({productId}) {
         <div className="marketplace-ai">
 
 
-            <h3>
-                🌎 Best Marketplace
-            </h3>
+            <div className="marketplace-title">
 
-
-
-            <h2>
-                🥇 {marketplace.best_marketplace}
-            </h2>
-
-
-
-            <div className="marketplace-row">
-
-                💰 Expected Sale:
-
-                <strong>
-                    ${marketplace.expected_sale_price}
-                </strong>
+                🌎 Marketplace Intelligence
 
             </div>
 
 
 
-            <div className="marketplace-row">
+            <div className="marketplace-best">
 
-                ⚡ Sell Speed:
+
+                🏆 Best Selling Channel
+
 
                 <strong>
-                    {marketplace.sell_speed}
+
+                    {
+                        bestMarketplace
+                            .charAt(0)
+                            .toUpperCase()
+                        +
+                        bestMarketplace.slice(1)
+
+                    }
+
                 </strong>
+
 
             </div>
 
 
 
-            <div className="marketplace-row">
 
-                🎯 Confidence:
 
-                <strong>
-                    {marketplace.confidence}/100
-                </strong>
+            <div className="marketplace-prices">
+
+
+                <div>
+
+                    🛒 eBay
+
+                    <strong>
+
+                        ${sources.ebay?.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div>
+
+                    📦 Amazon
+
+                    <strong>
+
+                        ${sources.amazon?.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div>
+
+                    🏪 Facebook
+
+                    <strong>
+
+                        ${sources.facebook?.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div className="marketplace-stats">
+
+
+                <div>
+
+                    <span>
+                        📊 AI Average
+                    </span>
+
+                    <strong>
+                        ${marketplace.market_price?.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+
+                <div>
+
+                    <span>
+                        📈 Spread
+                    </span>
+
+                    <strong>
+                        ${marketplace.spread?.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+
+                <div>
+
+                    <span>
+                        🤖 Confidence
+                    </span>
+
+                    <strong>
+                        {marketplace.confidence}%
+                    </strong>
+
+                </div>
+
 
             </div>
 
@@ -139,7 +159,6 @@ function MarketplaceAI({productId}) {
         </div>
 
     );
-
 
 }
 

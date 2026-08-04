@@ -1844,3 +1844,4171 @@ font-size:18px;
 color:#94a3b8;
 
 }
+
+
+.product-hero {
+
+    display:flex;
+
+    gap:25px;
+
+    align-items:center;
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    border-radius:18px;
+
+}
+
+
+
+.product-image-box {
+
+    width:120px;
+
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:55px;
+
+    border-radius:20px;
+
+}
+
+
+
+.product-info {
+
+    flex:1;
+
+}
+
+
+
+.hero-top {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+
+
+.product-hero h1 {
+
+    margin:12px 0;
+
+    font-size:28px;
+
+}
+
+
+
+.brand {
+
+    opacity:.7;
+
+}
+
+
+
+.hero-metrics {
+
+    display:flex;
+
+    gap:35px;
+
+    margin-top:20px;
+
+}
+
+
+
+.metric {
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+.metric span {
+
+    font-size:13px;
+
+    opacity:.7;
+
+}
+
+
+
+.metric strong {
+
+    font-size:22px;
+
+}
+
+
+/* ==========================
+   PREMIUM AI DEAL CARD
+========================== */
+
+
+.hot-deal-card {
+
+    background:
+
+        rgba(255,255,255,0.06);
+
+    backdrop-filter:
+
+        blur(18px);
+
+    border:
+
+        1px solid rgba(255,255,255,0.12);
+
+    border-radius:
+
+        24px;
+
+    padding:
+
+        28px;
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+    transition:
+
+        .3s ease;
+
+}
+
+
+
+.hot-deal-card:hover {
+
+    transform:
+
+        translateY(-5px);
+
+    box-shadow:
+
+        0 25px 70px rgba(0,0,0,.5);
+
+}
+
+
+
+
+
+/* PRODUCT HERO */
+
+.product-hero {
+
+    background:
+
+        rgba(255,255,255,.04);
+
+    border-radius:
+
+        20px;
+
+    padding:
+
+        22px;
+
+    margin-bottom:
+
+        22px;
+
+}
+
+
+
+
+
+.product-image-box {
+
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.15),
+            rgba(255,255,255,.03)
+        );
+
+
+    border:
+
+        1px solid rgba(255,255,255,.15);
+
+
+}
+
+
+
+
+
+.product-hero h1 {
+
+
+    font-size:
+
+        30px;
+
+
+    font-weight:
+
+        700;
+
+
+}
+
+
+
+
+
+/* PROFIT GLOW */
+
+
+.profit {
+
+
+    color:
+
+        #4ade80;
+
+
+    text-shadow:
+
+
+        0 0 18px rgba(74,222,128,.45);
+
+
+}
+
+
+
+
+
+/* AI SCORE AREA */
+
+
+.deal-score {
+
+
+    margin-top:
+
+        20px;
+
+
+    padding:
+
+        14px 18px;
+
+
+    border-radius:
+
+        14px;
+
+
+    background:
+
+        rgba(0,255,140,.08);
+
+
+    display:
+
+        flex;
+
+
+    justify-content:
+
+        space-between;
+
+
+}
+
+
+
+
+
+.deal-score strong {
+
+
+    font-size:
+
+        22px;
+
+
+}
+
+
+
+
+
+
+/* AI SECTIONS */
+
+
+.deal-ai,
+
+.flip-strategy,
+
+.marketplace-ai {
+
+
+    margin-top:
+
+        22px;
+
+
+    padding:
+
+        20px;
+
+
+    border-radius:
+
+        18px;
+
+
+    background:
+
+        rgba(255,255,255,.05);
+
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+
+}
+
+
+
+
+
+.deal-ai h3,
+
+.flip-strategy h3,
+
+.marketplace-ai h3 {
+
+
+    margin-bottom:
+
+        12px;
+
+
+}
+
+
+
+
+
+
+/* MARKETPLACE BADGE */
+
+
+.marketplace-ai h2 {
+
+
+    display:
+
+        inline-block;
+
+
+    padding:
+
+        10px 18px;
+
+
+    border-radius:
+
+        999px;
+
+
+    background:
+
+        rgba(59,130,246,.15);
+
+
+    border:
+
+        1px solid rgba(59,130,246,.35);
+
+
+}
+
+
+
+
+
+
+/* BUTTON */
+
+
+.buy-button {
+
+
+    width:
+
+        100%;
+
+
+    margin-top:
+
+        25px;
+
+
+    padding:
+
+        16px;
+
+
+    border-radius:
+
+        16px;
+
+
+    font-size:
+
+        18px;
+
+
+    font-weight:
+
+        700;
+
+
+    cursor:
+
+        pointer;
+
+
+}
+
+
+/* ======================
+   FLIP SCORE
+====================== */
+
+.flip-score{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    gap:24px;
+
+    margin:24px 0;
+
+}
+
+.score-label{
+
+    display:flex;
+
+    align-items:center;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:var(--text-primary);
+
+}
+
+.score-circle{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(34,197,94,.15);
+
+    border:2px solid rgba(34,197,94,.5);
+
+    box-shadow:0 0 30px rgba(34,197,94,.30);
+
+    flex-shrink:0;
+
+}
+
+.score-circle strong{
+
+    font-size:34px;
+
+    line-height:1;
+
+    color:#fff;
+
+}
+
+.score-circle span{
+
+    margin-top:4px;
+
+    font-size:14px;
+
+    opacity:.75;
+
+    color:var(--text-secondary);
+
+}
+
+
+/* ======================
+   PROFIT OPPORTUNITY
+====================== */
+
+
+.profit-opportunity {
+
+    margin-top:22px;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.95),
+            rgba(7,11,20,.95)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.35);
+
+    backdrop-filter:
+        blur(18px);
+
+}
+
+
+
+.profit-opportunity h3 {
+
+    margin-bottom:0;
+
+    font-size:22px;
+
+}
+
+
+
+
+
+.price-row {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:18px;
+
+}
+
+
+
+
+
+.price-box {
+
+    flex:1;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    text-align:center;
+
+}
+
+
+
+
+
+.price-box span {
+
+    display:block;
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+    opacity:.7;
+
+    margin-bottom:8px;
+
+}
+
+
+
+
+
+.price-box strong {
+
+    font-size:32px;
+
+}
+
+
+
+
+
+.price-box.market {
+
+    background:
+        rgba(34,197,94,.08);
+
+    border:
+        1px solid rgba(34,197,94,.25);
+
+}
+
+
+
+
+
+.price-box.market strong {
+
+    color:#4ade80;
+
+}
+
+
+
+
+
+.arrow {
+
+    font-size:28px;
+
+    color:#64748b;
+
+}
+
+
+
+
+
+.profit-banner {
+
+    margin-top:20px;
+
+    padding:18px 22px;
+
+    border-radius:18px;
+
+    background:
+        rgba(34,197,94,.12);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:20px;
+
+}
+
+
+
+
+
+.profit-banner strong {
+
+    color:#4ade80;
+
+    font-size:30px;
+
+}
+
+
+
+
+
+.profit-opportunity p {
+
+    margin-top:15px;
+
+    opacity:.8;
+
+}
+
+
+
+/* =========================================
+   PROFIT OPPORTUNITY PREMIUM UPGRADE
+========================================= */
+
+
+.valuation-card {
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:18px;
+
+    margin-top:22px;
+
+}
+
+
+
+.valuation-text {
+
+    padding:18px;
+
+    border-radius:16px;
+
+    background:
+
+    rgba(255,255,255,.04);
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    color:#cbd5e1;
+
+    line-height:1.6;
+
+}
+
+
+
+.valuation-text strong {
+
+    color:#4ade80;
+
+    font-size:20px;
+
+}
+
+
+
+.upside-highlight {
+
+
+    padding:18px;
+
+    border-radius:16px;
+
+    background:
+
+    rgba(34,197,94,.12);
+
+
+    border:
+
+    1px solid rgba(34,197,94,.25);
+
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+
+
+.upside-highlight span {
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+}
+
+
+
+.upside-highlight strong {
+
+    color:#4ade80;
+
+    font-size:32px;
+
+}
+
+
+
+.signal-card {
+
+
+    margin-top:18px;
+
+
+    padding:18px;
+
+
+    border-radius:16px;
+
+
+    background:
+
+    rgba(34,197,94,.08);
+
+
+    border:
+
+    1px solid rgba(34,197,94,.2);
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+}
+
+
+
+.signal-card span {
+
+    color:#94a3b8;
+
+}
+
+
+
+.signal-card strong {
+
+    font-size:22px;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .valuation-card{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+
+/* =========================================
+   FLIPINTEL PREMIUM SaaS FINAL PASS
+========================================= */
+
+
+.premium-deal-card {
+
+    width:100%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,30,55,.95),
+            rgba(7,11,20,.98)
+        );
+
+    border:
+        1px solid rgba(0,255,136,.18);
+
+    border-radius:
+        28px;
+
+    padding:
+        32px;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.55);
+
+}
+
+
+
+
+
+/* =========================================
+   HOT DEAL HERO HEADER
+========================================= */
+
+
+.deal-header-v2 {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:30px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+
+
+.deal-header-badge {
+
+    display:inline-flex;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:
+        rgba(255,138,0,.15);
+
+    color:#ff8a00;
+
+    font-weight:800;
+
+    font-size:13px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+
+/* =========================================
+   PRODUCT HERO
+========================================= */
+
+
+.premium-product-hero {
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+
+
+.premium-image {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.15),
+            rgba(255,255,255,.03)
+        );
+
+}
+
+
+
+
+
+/* =========================================
+   DEAL METRICS
+========================================= */
+
+
+.premium-metrics {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:20px;
+
+    margin-top:30px;
+
+}
+
+
+
+
+
+.metric-card {
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.05),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    transition:.25s ease;
+
+}
+
+
+
+
+
+.metric-card:hover {
+
+    transform:translateY(-3px);
+
+    border-color:
+        rgba(34,197,94,.25);
+
+}
+
+
+
+
+
+.metric-card span {
+
+    display:block;
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+
+
+.metric-card strong {
+
+    display:block;
+
+    font-size:30px;
+
+    font-weight:800;
+
+    color:#f8fafc;
+
+}
+
+
+
+
+
+.metric-card .profit {
+
+    color:#7ee787;
+
+}
+
+
+
+
+
+/* =========================================
+   AI RECOMMENDATION
+========================================= */
+
+
+.premium-recommendation {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-top:30px;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+        rgba(34,197,94,.10);
+
+    border:
+        1px solid rgba(34,197,94,.25);
+
+}
+
+
+
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+
+.deal-actions {
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:16px;
+
+    margin-top:30px;
+
+    align-items:center;
+
+}
+
+
+
+.deal-actions button {
+
+    height:60px;
+
+    margin:0 !important;
+
+    padding:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    box-sizing:border-box;
+
+}
+
+
+
+
+
+.premium-buy {
+
+    height:60px;
+
+    border-radius:18px;
+
+    font-size:20px;
+
+    font-weight:800;
+
+}
+
+
+
+
+
+.analysis-toggle {
+
+    height:60px;
+
+    margin:0 !important;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.02);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    color:#cbd5e1;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+
+.analysis-toggle:hover {
+
+    background:
+
+        rgba(34,197,94,.08);
+
+    border-color:
+
+        rgba(34,197,94,.45);
+
+    color:#ffffff;
+
+}
+
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+
+@media(max-width:1000px){
+
+    .premium-metrics{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+    margin-top:24px;
+
+}
+
+}
+
+
+
+@media(max-width:700px){
+
+    .deal-header-v2 {
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+
+    .premium-metrics {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .deal-actions {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+
+/* =========================================
+   FLIPINTEL PREMIUM CARD SYSTEM
+========================================= */
+
+
+/* Universal AI Card Styling */
+
+.deal-ai,
+.profit-opportunity,
+.deal-breakdown,
+.flip-strategy-card,
+.marketplace-ai,
+.ai-analysis,
+.hot-deal-card {
+
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.92),
+            rgba(7,11,20,.96)
+        );
+
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+
+    border-radius:
+
+        22px;
+
+
+    padding:
+
+        24px;
+
+
+    margin-top:
+
+        18px;
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+
+    backdrop-filter:
+
+        blur(16px);
+
+
+    transition:
+
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+
+}
+
+
+
+/* Premium Hover Effect */
+
+
+.deal-ai:hover,
+.profit-opportunity:hover,
+.deal-breakdown:hover,
+.flip-strategy-card:hover,
+.marketplace-ai:hover,
+.ai-analysis:hover,
+.hot-deal-card:hover {
+
+
+    transform:
+
+        translateY(-4px);
+
+
+    border-color:
+
+        rgba(34,197,94,.35);
+
+
+    box-shadow:
+
+        0 25px 60px rgba(0,0,0,.45);
+
+}
+
+
+
+/* Card Titles */
+
+
+.deal-ai h2,
+.profit-opportunity h2,
+.deal-breakdown h2,
+.flip-strategy-card h2,
+.marketplace-ai h2,
+.ai-analysis h2 {
+
+
+    color:
+
+        var(--text-primary);
+
+
+    font-size:
+
+        22px;
+
+
+    font-weight:
+
+        700;
+
+
+    margin-bottom:
+
+        12px;
+
+}
+
+
+
+/* Secondary Text */
+
+
+.deal-ai p,
+.profit-opportunity p,
+.deal-breakdown p,
+.flip-strategy-card p,
+.marketplace-ai p {
+
+
+    color:
+
+        var(--text-secondary);
+
+
+    line-height:
+
+        1.6;
+
+}
+
+
+
+/* AI Highlight Numbers */
+
+
+.ai-number,
+.profit-number,
+.metric-highlight {
+
+
+    font-size:
+
+        32px;
+
+
+    font-weight:
+
+        800;
+
+
+    color:
+
+        #22c55e;
+
+
+    letter-spacing:
+
+        -.5px;
+
+}
+
+
+
+/* Intelligence Labels */
+
+
+.ai-label,
+.metric-label {
+
+
+    text-transform:
+
+        uppercase;
+
+
+    font-size:
+
+        12px;
+
+
+    letter-spacing:
+
+        1px;
+
+
+    color:
+
+        var(--text-secondary);
+
+
+    font-weight:
+
+        600;
+
+}
+
+
+
+/* Premium Badge Style */
+
+
+.ai-badge,
+.score-badge,
+.deal-badge {
+
+
+    display:
+
+        inline-flex;
+
+
+    align-items:
+
+        center;
+
+
+    gap:
+
+        6px;
+
+
+    padding:
+
+        6px 12px;
+
+
+    border-radius:
+
+        999px;
+
+
+    background:
+
+        rgba(34,197,94,.15);
+
+
+    border:
+
+        1px solid rgba(34,197,94,.35);
+
+
+    color:
+
+        #22c55e;
+
+
+    font-size:
+
+        13px;
+
+
+    font-weight:
+
+        700;
+
+}
+
+
+
+
+
+/* =========================================
+   Section Headings
+========================================= */
+
+
+.deal-ai h3,
+.deal-breakdown h3,
+.flip-strategy-card h3,
+.marketplace-ai h3 {
+
+    color:#f8fafc;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:14px;
+
+}
+
+
+
+/* =========================================
+   AI Highlights
+========================================= */
+
+
+.deal-ai strong,
+.marketplace-ai strong {
+
+    color:#4ade80;
+
+}
+
+
+
+/* =========================================
+   Marketplace Rows
+========================================= */
+
+
+.marketplace-row {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px 0;
+
+    border-bottom:
+
+        1px solid rgba(255,255,255,.06);
+
+}
+
+
+.marketplace-row:last-child {
+
+    border-bottom:none;
+
+}
+
+
+
+/* =========================================
+   Seller Action Plan Grid
+========================================= */
+
+
+.strategy-grid {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:14px;
+
+    margin-top:16px;
+
+}
+
+
+
+.strategy-grid div {
+
+    background:
+
+        rgba(255,255,255,.035);
+
+    border:
+
+        1px solid rgba(255,255,255,.07);
+
+    border-radius:16px;
+
+    padding:14px;
+
+    min-height:75px;
+
+}
+
+
+
+/* Labels */
+
+
+.strategy-grid span {
+
+    display:block;
+
+    color:#94a3b8;
+
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    margin-bottom:6px;
+
+}
+
+
+
+/* Values */
+
+
+.strategy-grid strong {
+
+    font-size:18px;
+
+    color:#f8fafc;
+
+}
+
+
+
+/* =========================================
+   Profit Highlight Box
+========================================= */
+
+
+.strategy-profit {
+
+    margin-top:16px;
+
+    padding:14px;
+
+    border-radius:16px;
+
+    background:
+
+        rgba(34,197,94,.10);
+
+    border:
+
+        1px solid rgba(34,197,94,.25);
+
+    font-size:14px;
+
+}
+
+
+
+.strategy-profit strong {
+
+    color:#4ade80;
+
+    font-size:22px;
+
+}
+
+
+
+/* =========================================
+   Buy Button Premium Upgrade
+========================================= */
+
+
+.buy-button {
+
+    margin-top:24px;
+
+    height:58px;
+
+    border-radius:18px;
+
+    font-size:17px;
+
+    font-weight:800;
+
+    letter-spacing:.4px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #16a34a
+        );
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+
+.buy-button:hover {
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 12px 30px rgba(34,197,94,.35);
+
+}
+
+
+
+/* =========================================
+   Hot Deal Container
+========================================= */
+
+
+.hot-deal-card {
+
+    width:100%;
+
+    max-width:none;
+
+    margin-left:0;
+
+    margin-right:0;
+
+}
+
+
+
+/* =========================================
+   Product Text Balance
+========================================= */
+
+
+.hot-deal-card h3 {
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+
+.hot-deal-card p {
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+}
+
+
+.hot-deal-card strong {
+
+    font-size:24px;
+
+}
+
+
+.hot-deal-card span {
+
+    font-size:14px;
+
+}
+
+
+
+/* =========================================
+   INVENTORY STATUS CARD
+========================================= */
+
+.inventory-card{
+
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+}
+
+.inventory-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.inventory-badge{
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:rgba(34,197,94,.15);
+
+    color:#22c55e;
+
+    border:1px solid rgba(34,197,94,.35);
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.inventory-stat{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:14px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.inventory-stat:last-of-type{
+
+    border-bottom:none;
+
+}
+
+.inventory-stat span{
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+}
+
+.inventory-stat strong{
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.inventory-footer{
+
+    margin-top:6px;
+
+    padding:14px;
+
+    text-align:center;
+
+    border-radius:12px;
+
+    background:rgba(34,197,94,.08);
+
+    color:#7ee787;
+
+    font-weight:600;
+
+}
+
+
+
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+
+.product-image{
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    background:#101827;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+}
+
+.product-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.image-placeholder{
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #182235,
+            #0d1526
+        );
+
+}
+
+.placeholder-icon{
+
+    font-size:30px;
+
+}
+
+.placeholder-title{
+
+    color:white;
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+.placeholder-brand{
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+}
+
+
+
+/* =========================================
+   SCANNER RESULT
+========================================= */
+
+.scanner-product{
+
+    display:flex;
+
+    gap:24px;
+
+    align-items:flex-start;
+
+    margin:24px 0;
+
+}
+
+.scanner-product-info{
+
+    flex:1;
+
+}
+
+.decision-engine{
+
+    margin-top:24px;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.decision-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin:20px 0;
+
+}
+
+.decision-grid div{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+}
+
+.decision-grid span{
+
+    color:var(--text-secondary);
+
+    font-size:13px;
+
+}
+
+.decision-grid strong{
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.decision-summary{
+
+    margin-top:12px;
+
+    color:var(--text-secondary);
+
+    line-height:1.6;
+
+}
+
+
+
+/* =========================================
+   FLIPINTEL PRODUCT CARD
+========================================= */
+
+.fi-product-card{
+
+    display:flex;
+
+    gap:24px;
+
+    padding:24px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.92),
+            rgba(7,11,20,.96)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+
+}
+
+.fi-product-card-content{
+
+    flex:1;
+
+}
+
+.fi-product-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:20px;
+
+}
+
+.fi-product-card-score{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+    color:#22c55e;
+
+    border:2px solid rgba(34,197,94,.4);
+
+    background:rgba(34,197,94,.12);
+
+}
+
+.fi-product-card-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin:20px 0;
+
+}
+
+.fi-product-card-grid span{
+
+    display:block;
+
+    color:var(--text-secondary);
+
+    font-size:12px;
+
+    margin-bottom:4px;
+
+}
+
+.fi-product-card-grid strong{
+
+    font-size:20px;
+
+}
+
+.fi-product-recommendation{
+
+    margin:20px 0;
+
+    padding:12px;
+
+    text-align:center;
+
+    border-radius:12px;
+
+    background:rgba(34,197,94,.12);
+
+    color:#22c55e;
+
+    font-weight:700;
+
+}
+
+
+
+/* =========================================
+   HOT DEAL CARD V2
+========================================= */
+
+.deal-header-v2{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:24px;
+
+    margin-bottom:24px;
+
+}
+
+.deal-header-v2 .product-hero{
+
+    flex:1;
+
+    margin:0;
+
+}
+
+
+
+/* =========================================
+   FLIP SCORE V2
+========================================= */
+
+.flip-score-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-shrink:0;
+
+}
+
+.flip-score-label{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    color:var(--text-secondary);
+
+    text-transform:uppercase;
+
+}
+
+.flip-score-circle{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(34,197,94,.15);
+
+    border:2px solid rgba(34,197,94,.45);
+
+    box-shadow:0 0 24px rgba(34,197,94,.25);
+
+}
+
+.flip-score-circle strong{
+
+    font-size:34px;
+
+    line-height:1;
+
+    color:#fff;
+
+}
+
+.flip-score-circle span{
+
+    margin-top:4px;
+
+    font-size:13px;
+
+    color:var(--text-secondary);
+
+}
+
+
+
+/* =========================================
+   AI RECOMMENDATION V2
+========================================= */
+
+.premium-recommendation{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin:24px 0;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    background:rgba(34,197,94,.10);
+
+    border:1px solid rgba(34,197,94,.25);
+
+}
+
+.recommendation-icon{
+
+    font-size:28px;
+
+    flex-shrink:0;
+
+}
+
+.recommendation-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+.recommendation-content strong{
+
+    color:#22c55e;
+
+    font-size:16px;
+
+}
+
+.recommendation-content p{
+
+    margin:0;
+
+    color:var(--text-secondary);
+
+}
+
+
+
+/* =========================================
+   MARKETPLACE AI INTELLIGENCE CARD
+========================================= */
+
+
+.marketplace-ai {
+
+    margin-top: 30px;
+
+    padding: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.95),
+            rgba(7,11,20,.95)
+        );
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 24px;
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+.marketplace-header {
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.marketplace-best {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px;
+
+    margin-bottom:20px;
+
+    background:
+
+        rgba(34,197,94,.12);
+
+    border:
+
+        1px solid rgba(34,197,94,.35);
+
+    border-radius:16px;
+
+    font-size:16px;
+
+}
+
+
+
+.marketplace-best strong {
+
+    font-size:24px;
+
+    color:#4ade80;
+
+}
+
+
+
+.marketplace-grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(3,1fr);
+
+    gap:15px;
+
+}
+
+
+
+.marketplace-row {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px;
+
+    background:
+
+        rgba(255,255,255,.04);
+
+    border-radius:14px;
+
+    border:
+
+        1px solid rgba(255,255,255,.06);
+
+}
+
+
+
+.marketplace-row span {
+
+    color:#94a3b8;
+
+}
+
+
+
+.marketplace-row strong {
+
+    color:#f8fafc;
+
+    font-size:18px;
+
+}
+
+
+
+.marketplace-summary {
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(3,1fr);
+
+    gap:20px;
+
+    margin-top:25px;
+
+}
+
+
+
+.marketplace-summary div {
+
+    padding:18px;
+
+    background:
+
+        rgba(59,130,246,.10);
+
+    border-radius:16px;
+
+    border:
+
+        1px solid rgba(59,130,246,.25);
+
+}
+
+
+
+.marketplace-summary span {
+
+    display:block;
+
+    color:#94a3b8;
+
+    margin-bottom:8px;
+
+}
+
+
+
+.marketplace-summary strong {
+
+    font-size:22px;
+
+    color:#60a5fa;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .marketplace-grid,
+    .marketplace-summary {
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+/* =========================================
+   MARKETPLACE AI INTELLIGENCE
+========================================= */
+
+
+.marketplace-ai {
+
+    margin-top: 30px;
+
+    padding: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.95),
+            rgba(7,11,20,.95)
+        );
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 24px;
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+.marketplace-title {
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    margin-bottom: 22px;
+
+    color: #f8fafc;
+
+}
+
+
+
+.marketplace-best {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px;
+
+    margin-bottom:24px;
+
+    background:
+
+        rgba(34,197,94,.12);
+
+    border:
+
+        1px solid rgba(34,197,94,.35);
+
+    border-radius:18px;
+
+    color:#cbd5e1;
+
+}
+
+
+
+.marketplace-best strong {
+
+    color:#4ade80;
+
+    font-size:26px;
+
+}
+
+
+
+.marketplace-prices {
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(3,1fr);
+
+    gap:18px;
+
+}
+
+
+
+.marketplace-prices div {
+
+    padding:20px;
+
+    background:
+
+        rgba(255,255,255,.04);
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+    border-radius:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    color:#94a3b8;
+
+}
+
+
+
+.marketplace-prices strong {
+
+    color:#ffffff;
+
+    font-size:24px;
+
+}
+
+
+
+.marketplace-stats {
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(3,1fr);
+
+    gap:18px;
+
+    margin-top:24px;
+
+}
+
+
+
+.marketplace-stats div {
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:
+
+        rgba(59,130,246,.10);
+
+    border:
+
+        1px solid rgba(59,130,246,.25);
+
+}
+
+
+
+.marketplace-stats span {
+
+    display:block;
+
+    color:#94a3b8;
+
+    margin-bottom:8px;
+
+}
+
+
+
+.marketplace-stats strong {
+
+    color:#60a5fa;
+
+    font-size:26px;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .marketplace-prices,
+    .marketplace-stats {
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+/* =========================================
+   AI DEAL BREAKDOWN CARD
+========================================= */
+
+
+.ai-breakdown-card {
+
+    margin-top:25px;
+
+    padding:25px;
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(18,27,49,.95),
+        rgba(7,11,20,.95)
+    );
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+}
+
+
+
+.ai-breakdown-card h3 {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:22px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.ai-breakdown-grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:18px;
+
+}
+
+
+
+.ai-breakdown-grid div {
+
+
+    background:
+
+    rgba(255,255,255,.04);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.06);
+
+
+    padding:18px;
+
+
+    border-radius:14px;
+
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+
+}
+
+
+
+.ai-breakdown-grid span {
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+
+
+.ai-breakdown-grid strong {
+
+    font-size:20px;
+
+    color:#4ade80;
+
+}
+
+
+
+
+
+.max-buy-price {
+
+
+    margin-top:20px;
+
+
+    padding:18px;
+
+
+    border-radius:14px;
+
+
+    background:
+
+    rgba(34,197,94,.12);
+
+
+    border:
+
+    1px solid rgba(34,197,94,.3);
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+}
+
+
+
+.max-buy-price span {
+
+    color:#94a3b8;
+
+}
+
+
+
+.max-buy-price strong {
+
+
+    font-size:28px;
+
+
+    color:#4ade80;
+
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+
+.ai-breakdown-grid {
+
+    grid-template-columns:
+
+    repeat(2,1fr);
+
+}
+
+
+}
+
+
+
+/* =========================================
+   SCANNER HISTORY INTELLIGENCE GRID
+========================================= */
+
+
+.scanner-grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:20px;
+
+    margin-top:30px;
+
+}
+
+
+
+.scanner-grid .scanner-box {
+
+    min-height:150px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+
+
+.scanner-grid h3 {
+
+    margin-top:15px;
+
+}
+
+
+
+.scanner-grid strong {
+
+    color:#4ade80;
+
+    font-size:22px;
+
+}
+
+
+
+
+@media(max-width:900px){
+
+    .scanner-grid {
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/* =========================================
+   HOT DEAL EXPANDED AI REPORT
+========================================= */
+
+
+.deal-analysis {
+
+    margin-top:35px;
+
+    padding-top:30px;
+
+    border-top:
+
+        1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+.analysis-header {
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#f8fafc;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.deal-analysis .deal-ai,
+.deal-analysis .profit-opportunity,
+.deal-analysis .deal-breakdown,
+.deal-analysis .flip-strategy-card,
+.deal-analysis .marketplace-ai {
+
+
+    border-radius:22px;
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+    .analysis-grid {
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+
+/* =========================================
+   HOT DEAL EXPANDED AI CARDS
+========================================= */
+
+
+/* FlipIntel Verdict */
+
+.deal-ai {
+
+    min-height:220px;
+
+}
+
+
+.deal-ai h3 {
+
+    font-size:22px;
+    margin-bottom:25px;
+
+}
+
+
+
+.deal-ai div {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 0;
+
+    font-size:16px;
+
+    color:#94a3b8;
+
+}
+
+
+
+.deal-ai strong {
+
+    color:#4ade80;
+
+    font-size:20px;
+
+}
+
+
+
+.deal-ai h2 {
+
+    margin:20px 0;
+
+    font-size:32px;
+
+    color:#4ade80;
+
+}
+
+
+
+/* =========================================
+   DEAL BREAKDOWN PREMIUM LAYOUT
+========================================= */
+
+
+.deal-breakdown {
+
+    min-height:auto;
+
+}
+
+
+
+.deal-breakdown .breakdown-title {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.deal-breakdown .breakdown-title h3 {
+
+    font-size:22px;
+
+    margin:0;
+
+}
+
+
+
+.deal-breakdown .breakdown-title p {
+
+    margin:5px 0 0;
+
+    color:#94a3b8;
+
+}
+
+
+
+
+.deal-breakdown .breakdown-item {
+
+    margin-bottom:20px;
+
+}
+
+
+
+.deal-breakdown .breakdown-header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:10px;
+
+}
+
+
+
+.deal-breakdown .breakdown-header span {
+
+    color:#cbd5e1;
+
+    font-size:16px;
+
+}
+
+
+
+.deal-breakdown .breakdown-header strong {
+
+    color:#4ade80;
+
+    font-size:22px;
+
+}
+
+
+
+.deal-breakdown .progress {
+
+    height:10px;
+
+    background:
+
+        rgba(255,255,255,.08);
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+}
+
+
+
+.deal-breakdown .progress-fill {
+
+    height:100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #22c55e,
+            #4ade80
+        );
+
+}
+
+
+
+
+.deal-breakdown .insight-grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(2,1fr);
+
+    gap:18px;
+
+    margin-top:20px;
+
+}
+
+
+
+.deal-breakdown .insight-box {
+
+    padding:18px;
+
+    border-radius:16px;
+
+    background:
+
+        rgba(255,255,255,.05);
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+.deal-breakdown .insight-box span {
+
+    display:block;
+
+    color:#94a3b8;
+
+    margin-bottom:8px;
+
+}
+
+
+
+.deal-breakdown .insight-box strong {
+
+    font-size:24px;
+
+}
+
+
+
+.deal-breakdown .positive {
+
+    color:#4ade80;
+
+}
+
+
+
+/* =========================================
+   PROFIT OPPORTUNITY CLEANUP
+========================================= */
+
+
+.profit-opportunity .valuation-message {
+
+    margin-top:20px;
+
+    padding:18px;
+
+    line-height:1.8;
+
+    color:#cbd5e1;
+
+    font-size:16px;
+
+}
+
+
+.profit-opportunity .valuation-message strong {
+
+    color:#4ade80;
+
+    margin:0 5px;
+
+}
+
+
+
+.profit-opportunity .insight-grid {
+
+    margin-top:20px;
+
+}
+
+
+
+.profit-opportunity .insight-box {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+
+
+.profit-opportunity .insight-box span {
+
+    color:#94a3b8;
+
+}
+
+
+
+.profit-opportunity .insight-box strong {
+
+    color:#4ade80;
+
+    font-size:22px;
+
+}
+
+
+
+/* =========================================
+   EXPANDED AI REPORT SPACING
+========================================= */
+
+.deal-analysis > * {
+
+    margin-bottom:28px;
+
+}
+
+
+/* =========================================
+   AI REASONING CARD
+========================================= */
+
+
+.ai-reasoning-card {
+
+    background:
+    rgba(18,27,49,.75);
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:28px;
+
+    margin-top:24px;
+
+}
+
+
+
+.ai-reasoning-header {
+
+    font-size:22px;
+
+    font-weight:800;
+
+    color:#f8fafc;
+
+    margin-bottom:6px;
+
+}
+
+
+
+.ai-reasoning-subtitle {
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+    margin-bottom:22px;
+
+}
+
+
+
+.reasoning-list {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+
+
+.reasoning-item {
+
+    padding:14px 18px;
+
+    background:
+
+    rgba(34,197,94,.08);
+
+    border:
+
+    1px solid rgba(34,197,94,.18);
+
+    border-radius:14px;
+
+    color:#e2e8f0;
+
+    font-size:15px;
+
+}
+
+
+
+/* =========================================
+   DEAL AI VERDICT CARD
+========================================= */
+
+
+.premium-verdict-card {
+
+    padding:28px;
+
+}
+
+
+
+.verdict-header {
+
+    margin-bottom:25px;
+
+}
+
+
+
+.verdict-header h3 {
+
+    margin:0;
+
+    font-size:22px;
+
+}
+
+
+
+/* STAT ROW */
+
+
+.verdict-grid {
+
+    display:flex;
+
+    gap:20px;
+
+    width:100%;
+
+}
+
+
+
+.verdict-stat {
+
+    flex:1;
+
+    background:
+
+    rgba(255,255,255,.04);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+
+    border-radius:16px;
+
+
+    padding:20px;
+
+
+    min-height:95px;
+
+
+    display:flex;
+
+
+    flex-direction:column;
+
+
+    justify-content:center;
+
+
+}
+
+
+
+.verdict-stat span {
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    margin-bottom:12px;
+
+}
+
+
+
+.verdict-stat strong {
+
+    font-size:26px;
+
+    color:#f8fafc;
+
+}
+
+
+
+.confidence-value,
+.risk-value {
+
+    color:#4ade80 !important;
+
+}
+
+
+
+/* =========================================
+   VERDICT RECOMMENDATION
+========================================= */
+
+
+.recommendation-banner {
+
+    margin-top:24px;
+
+    padding:18px 22px;
+
+    border-radius:16px;
+
+    background:
+    rgba(34,197,94,.10);
+
+    border:
+    1px solid rgba(34,197,94,.25);
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    gap:12px;
+
+}
+
+
+
+.recommendation-banner span {
+
+    font-size:20px;
+
+    line-height:1;
+
+}
+
+
+
+.recommendation-banner strong {
+
+    font-size:24px;
+
+    font-weight:800;
+
+    color:#4ade80;
+
+    line-height:1;
+
+}
+
+
+
+/* =========================================
+   FIX AI BREAKDOWN EMPTY SPACE
+========================================= */
+
+
+.deal-breakdown {
+
+    height:auto !important;
+
+    min-height:0 !important;
+
+}
+
+
+
+.deal-breakdown .insight-grid {
+
+    height:auto !important;
+
+    min-height:0 !important;
+
+    margin-top:20px !important;
+
+}
+
+
+
+.deal-breakdown .insight-box {
+
+    height:auto !important;
+
+    min-height:0 !important;
+
+}
+
+
+
+.deal-breakdown .breakdown-item {
+
+    height:auto !important;
+
+    margin-bottom:20px !important;
+
+}
+
+
+
+/* =========================================
+   FINAL STRONG BUY ALIGNMENT FIX
+========================================= */
+
+
+.recommendation-banner {
+
+    display:flex !important;
+
+    flex-direction:row !important;
+
+    justify-content:flex-start !important;
+
+    align-items:center !important;
+
+    gap:14px !important;
+
+}
+
+
+
+.recommendation-banner .recommendation-dot {
+
+    position:static !important;
+
+    margin:0 !important;
+
+    flex:none !important;
+
+}
+
+
+
+.recommendation-banner strong {
+
+    position:static !important;
+
+    margin:0 !important;
+
+    margin-left:0 !important;
+
+    transform:none !important;
+
+    flex:none !important;
+
+    width:auto !important;
+
+    text-align:left !important;
+
+}
+
+
+
+/* =========================================
+   AI REASONING CARD
+========================================= */
+
+
+.ai-reasoning-card {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.95),
+            rgba(7,11,20,.95)
+        );
+
+
+    border:
+
+        1px solid rgba(34,197,94,.18);
+
+
+    border-radius:
+
+        22px;
+
+
+    padding:
+
+        24px;
+
+
+    margin-top:
+
+        18px;
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+.ai-reasoning-header {
+
+    font-size:
+
+        22px;
+
+
+    font-weight:
+
+        800;
+
+
+    color:
+
+        #f8fafc;
+
+
+    margin-bottom:
+
+        6px;
+
+}
+
+
+
+.ai-reasoning-subtitle {
+
+    color:
+
+        #94a3b8;
+
+
+    font-size:
+
+        14px;
+
+
+    margin-bottom:
+
+        20px;
+
+}
+
+
+
+.reasoning-list {
+
+    display:
+
+        flex;
+
+
+    flex-direction:
+
+        column;
+
+
+    gap:
+
+        12px;
+
+}
+
+
+
+.reasoning-item {
+
+    padding:
+
+        14px 18px;
+
+
+    border-radius:
+
+        14px;
+
+
+    background:
+
+        rgba(34,197,94,.08);
+
+
+    border:
+
+        1px solid rgba(34,197,94,.18);
+
+
+    color:
+
+        #e2e8f0;
+
+
+    font-size:
+
+        15px;
+
+}
+
+
+
+/* =========================================
+   FLIPINTEL SCORE BREAKDOWN
+========================================= */
+
+
+.flip-score-breakdown {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.95),
+            rgba(7,11,20,.95)
+        );
+
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+
+    border-radius:
+
+        22px;
+
+
+    padding:
+
+        24px;
+
+
+    margin-top:
+
+        18px;
+
+
+    box-shadow:
+
+        0 20px 50px rgba(0,0,0,.35);
+
+}
+
+
+
+.flip-score-header {
+
+    font-size:
+
+        18px;
+
+
+    font-weight:
+
+        800;
+
+
+    color:
+
+        #f8fafc;
+
+
+    margin-bottom:
+
+        6px;
+
+}
+
+
+
+.flip-score-subtitle {
+
+    color:
+
+        #94a3b8;
+
+
+    font-size:
+
+        13px;
+
+
+    margin-bottom:
+
+        20px;
+
+}
+
+
+
+.score-grid {
+
+    display:
+
+        grid;
+
+
+    grid-template-columns:
+
+        repeat(2,1fr);
+
+
+    gap:
+
+        16px;
+
+}
+
+
+
+.score-item {
+
+    display:
+
+        flex;
+
+
+    justify-content:
+
+        space-between;
+
+
+    align-items:
+
+        center;
+
+
+    padding:
+
+        18px;
+
+
+    border-radius:
+
+        16px;
+
+
+    background:
+
+        rgba(255,255,255,.04);
+
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+.score-item span {
+
+    color:
+
+        #cbd5e1;
+
+
+    font-size:
+
+        14px;
+
+
+    font-weight:
+
+        600;
+
+}
+
+
+
+.score-item strong {
+
+    color:
+
+        #4ade80;
+
+
+    font-size:
+
+        22px;
+
+
+    font-weight:
+
+        800;
+
+}
+
+
+
+@media(max-width:800px){
+
+    .score-grid {
+
+        grid-template-columns:
+
+            1fr;
+
+    }
+
+}
