@@ -13,20 +13,19 @@ import {
 const API = "http://localhost:8000";
 
 
-
 function InventoryPage(){
 
 
     const [inventory,setInventory] = useState([]);
+
+    const [showHistory,setShowHistory] = useState(false);
 
 
 
 
     async function sellItem(item){
 
-
         try{
-
 
             const salePrice = prompt(
                 "Enter sale price:",
@@ -34,13 +33,9 @@ function InventoryPage(){
             );
 
 
-
             if(!salePrice){
-
                 return;
-
             }
-
 
 
             await axios.post(
@@ -54,20 +49,16 @@ function InventoryPage(){
             );
 
 
-
             alert(
                 "Item marked as sold!"
             );
 
 
-
             window.location.reload();
-
 
 
         }
         catch(error){
-
 
             console.error(
                 "Sell error:",
@@ -79,14 +70,9 @@ function InventoryPage(){
                 "Failed selling item"
             );
 
-
         }
 
-
     }
-
-
-
 
 
 
@@ -119,21 +105,15 @@ function InventoryPage(){
             }
             catch(error){
 
-
                 console.error(
-
                     "Inventory error:",
-
                     error
-
                 );
-
 
             }
 
 
         }
-
 
 
         loadInventory();
@@ -148,9 +128,7 @@ function InventoryPage(){
 
 
 
-
     const products = inventory.map(item=>({
-
 
         ...item,
 
@@ -166,7 +144,6 @@ function InventoryPage(){
 
         projected_profit:item.projected_profit
 
-
     }));
 
 
@@ -175,109 +152,50 @@ function InventoryPage(){
 
 
 
+    const activeProducts = products.filter(
 
+        item => item.status !== "SOLD"
 
-    const activeListings =
+    );
 
-        products.filter(
 
-            item =>
 
-            item.status !== "SOLD"
+    const soldProducts = products.filter(
 
-        ).length;
+        item => item.status === "SOLD"
 
+    );
 
 
 
 
 
 
-    const soldItems =
 
-        products.filter(
+    const inventoryValue = activeProducts.reduce(
 
-            item =>
+        (sum,item)=>
 
-            item.status === "SOLD"
+            sum + Number(item.expected_sale_price || 0),
 
-        ).length;
+        0
 
+    );
 
 
 
 
 
 
-    const invested =
+    const profit = activeProducts.reduce(
 
-        products.reduce(
+        (sum,item)=>
 
-            (sum,item)=>
+            sum + Number(item.projected_profit || 0),
 
-            sum +
+        0
 
-            Number(
-
-                item.purchase_price || 0
-
-            ),
-
-            0
-
-        );
-
-
-
-
-
-
-
-
-    const inventoryValue =
-
-        products.reduce(
-
-            (sum,item)=>
-
-            sum +
-
-            Number(
-
-                item.expected_sale_price || 0
-
-            ),
-
-            0
-
-        );
-
-
-
-
-
-
-
-
-    const profit =
-
-        products.reduce(
-
-            (sum,item)=>
-
-            sum +
-
-            Number(
-
-                item.projected_profit || 0
-
-            ),
-
-            0
-
-        );
-
-
+    );
 
 
 
@@ -287,13 +205,10 @@ function InventoryPage(){
 
     return (
 
-
         <div className="inventory-page">
 
 
-
             <header>
-
 
                 <h1>
 
@@ -321,26 +236,17 @@ function InventoryPage(){
             <section className="stats-grid">
 
 
-
                 <div className="stat-card">
-
 
                     <Package/>
 
-
                     <h3>
-
                         Active Listings
-
                     </h3>
 
-
                     <strong>
-
-                        {activeListings}
-
+                        {activeProducts.length}
                     </strong>
-
 
                 </div>
 
@@ -348,27 +254,17 @@ function InventoryPage(){
 
 
 
-
-
                 <div className="stat-card">
-
 
                     <CheckCircle/>
 
-
                     <h3>
-
                         Sold Items
-
                     </h3>
 
-
                     <strong>
-
-                        {soldItems}
-
+                        {soldProducts.length}
                     </strong>
-
 
                 </div>
 
@@ -376,27 +272,17 @@ function InventoryPage(){
 
 
 
-
-
                 <div className="stat-card">
-
 
                     <DollarSign/>
 
-
                     <h3>
-
                         Inventory Value
-
                     </h3>
 
-
                     <strong>
-
                         ${inventoryValue}
-
                     </strong>
-
 
                 </div>
 
@@ -404,20 +290,13 @@ function InventoryPage(){
 
 
 
-
-
                 <div className="stat-card">
-
 
                     <TrendingUp/>
 
-
                     <h3>
-
                         Projected Profit
-
                     </h3>
-
 
                     <strong className="profit">
 
@@ -425,10 +304,7 @@ function InventoryPage(){
 
                     </strong>
 
-
                 </div>
-
-
 
 
             </section>
@@ -441,202 +317,134 @@ function InventoryPage(){
 
 
 
-            <div className="inventory-grid">
 
+            <h2>
+
+                📦 Active Inventory
+
+            </h2>
+
+
+
+
+
+            <div className="inventory-grid">
 
 
             {
 
+                activeProducts.map(item=>(
 
-                products.map(item=>(
 
+                    <div
 
+                        className="inventory-card"
 
-                <div
-
-                    className="inventory-card"
-
-                    key={item.inventory_id}
-
-                >
-
-
-
-
-
-
-                    <div className="inventory-status">
-
-
-                        {
-
-                        item.status === "SOLD"
-
-                        ?
-
-                        "💰 SOLD"
-
-                        :
-
-                        "🟢 ACTIVE"
-
-                        }
-
-
-                    </div>
-
-
-
-
-
-
-
-
-                    <h2>
-
-                        {item.product || item.name}
-
-                    </h2>
-
-
-
-
-
-
-
-
-                    <p>
-
-                        🏪 {item.retailer || "Unknown"}
-
-                    </p>
-
-
-
-
-
-
-
-
-                    <div className="inventory-row">
-
-
-                        <span>
-
-                            Bought
-
-                        </span>
-
-
-                        <strong>
-
-                            ${item.purchase_price}
-
-                        </strong>
-
-
-                    </div>
-
-
-
-
-
-
-
-
-                    <div className="inventory-row">
-
-
-                        <span>
-
-                            Expected Sale
-
-                        </span>
-
-
-                        <strong>
-
-                            ${item.expected_sale_price}
-
-                        </strong>
-
-
-                    </div>
-
-
-
-
-
-
-
-
-                    <div className="inventory-row">
-
-
-                        <span>
-
-                            Profit
-
-                        </span>
-
-
-                        <strong className="profit">
-
-                            +${item.projected_profit}
-
-                        </strong>
-
-
-                    </div>
-
-
-
-
-
-
-
-
-
-                    {
-
-                    item.status !== "SOLD" &&
-
-                    <button
-
-                        className="buy-button"
-
-                        onClick={() =>
-
-                            sellItem(item)
-
-                        }
+                        key={item.inventory_id}
 
                     >
 
-                        <ShoppingBag/>
 
+                        <div className="inventory-status">
 
-                        Mark Sold
+                            🟢 ACTIVE
 
-
-                    </button>
-
-                    }
+                        </div>
 
 
 
 
+                        <h2>
 
-                </div>
+                            {item.product || item.name}
 
+                        </h2>
+
+
+
+
+                        <p>
+
+                            🏪 {item.retailer || "Unknown"}
+
+                        </p>
+
+
+
+
+
+                        <div className="inventory-row">
+
+                            <span>
+                                Bought
+                            </span>
+
+                            <strong>
+                                ${item.purchase_price}
+                            </strong>
+
+                        </div>
+
+
+
+
+
+                        <div className="inventory-row">
+
+                            <span>
+                                Expected Sale
+                            </span>
+
+                            <strong>
+                                ${item.expected_sale_price}
+                            </strong>
+
+                        </div>
+
+
+
+
+
+                        <div className="inventory-row">
+
+                            <span>
+                                Profit
+                            </span>
+
+                            <strong className="profit">
+
+                                +${item.projected_profit}
+
+                            </strong>
+
+                        </div>
+
+
+
+
+
+                        <button
+
+                            className="buy-button"
+
+                            onClick={()=>sellItem(item)}
+
+                        >
+
+                            <ShoppingBag/>
+
+                            Mark Sold
+
+
+                        </button>
+
+
+                    </div>
 
 
                 ))
 
-
             }
-
-
 
 
             </div>
@@ -646,14 +454,177 @@ function InventoryPage(){
 
 
 
-        </div>
 
+
+
+            <button
+
+                className="primary-button"
+
+                onClick={()=>setShowHistory(!showHistory)}
+
+            >
+
+                🏆
+
+                {
+
+                    showHistory
+
+                    ? 
+
+                    " Hide Flip History"
+
+                    :
+
+                    ` View Flip History (${soldProducts.length})`
+
+                }
+
+
+            </button>
+
+
+
+
+
+
+
+
+
+            {
+
+                showHistory &&
+
+
+                <section>
+
+
+                    <h2>
+
+                        🏆 Flip History
+
+                    </h2>
+
+
+
+                    <div className="inventory-grid">
+
+
+                    {
+
+                        soldProducts.map(item=>(
+
+
+                            <div
+
+                                className="inventory-card"
+
+                                key={item.inventory_id}
+
+                            >
+
+
+                                <div className="inventory-status">
+
+                                    💰 SOLD
+
+                                </div>
+
+
+
+
+                                <h2>
+
+                                    {item.product || item.name}
+
+                                </h2>
+
+
+
+
+                                <p>
+
+                                    🏪 {item.retailer || "Unknown"}
+
+                                </p>
+
+
+
+
+
+                                <div className="inventory-row">
+
+                                    <span>
+                                        Bought
+                                    </span>
+
+                                    <strong>
+                                        ${item.purchase_price}
+                                    </strong>
+
+                                </div>
+
+
+
+
+
+                                <div className="inventory-row">
+
+                                    <span>
+                                        Sold For
+                                    </span>
+
+                                    <strong>
+
+                                        ${item.sale_price || item.expected_sale_price}
+
+                                    </strong>
+
+                                </div>
+
+
+
+
+
+                                <div className="inventory-row">
+
+                                    <span>
+                                        Profit
+                                    </span>
+
+                                    <strong className="profit">
+
+                                        +${item.actual_profit || item.projected_profit}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+                        ))
+
+                    }
+
+
+                    </div>
+
+
+                </section>
+
+
+            }
+
+
+        </div>
 
     );
 
 
 }
-
 
 
 export default InventoryPage;

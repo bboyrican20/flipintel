@@ -14,3 +14,327 @@ body {
   background:#0b1020;
   color:white;
 }
+
+
+
+/* FlipIntel Camera Scanner */
+
+.barcode-camera {
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:20px;
+}
+
+
+.camera-header {
+    width:600px;
+    max-width:90%;
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:6px;
+}
+
+
+.camera-status {
+    width:600px;
+    max-width:90%;
+    font-size:13px;
+    opacity:.75;
+    margin-bottom:12px;
+}
+
+
+#barcode-reader {
+    width:600px !important;
+    max-width:90%;
+    border-radius:16px;
+    overflow:hidden;
+    background:#050914;
+    border:1px solid rgba(255,255,255,.15);
+    padding:8px;
+}
+
+
+#barcode-reader video {
+    width:100% !important;
+    height:360px !important;
+    object-fit:cover !important;
+    border-radius:12px;
+}
+
+
+/* hide html5 junk */
+#barcode-reader__dashboard_section_swaplink,
+#barcode-reader__status_span {
+    display:none !important;
+}
+
+
+#barcode-reader button {
+    margin-top:12px;
+}
+
+
+.barcode-camera {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#barcode-reader {
+    margin-bottom: 10px;
+}
+
+
+/* =========================================
+   FlipIntel Scanner Upgrades
+   Premium Dark UI Styling
+========================================= */
+
+
+/* Product Found Card */
+
+.scanner-box .scanner-box {
+    margin-top: 20px;
+    padding: 22px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+
+.scanner-box .scanner-box h3 {
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+
+.scanner-box .scanner-box strong {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+
+.scanner-box .scanner-box p {
+    margin-top: 8px;
+    color: #94a3b8;
+}
+
+
+
+/* Quick Price Buttons */
+
+.quick-price-buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin: 15px 0;
+
+}
+
+
+
+.quick-price-buttons button {
+
+
+    background: rgba(30,41,59,.8);
+
+    color: #cbd5e1;
+
+    border: 1px solid rgba(148,163,184,.2);
+
+    padding: 10px 20px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: .2s ease;
+
+}
+
+
+
+.quick-price-buttons button:hover {
+
+
+    background: rgba(16,185,129,.15);
+
+    border-color: #10b981;
+
+    color: #10b981;
+
+    transform: translateY(-2px);
+
+}
+
+
+
+
+
+/* Retailer Dropdown */
+
+select {
+
+
+    width: 100%;
+
+    height: 52px;
+
+    margin-top: 12px;
+
+    margin-bottom: 18px;
+
+    padding: 0 16px;
+
+
+    background: rgba(15,23,42,.85);
+
+
+    color: #e2e8f0;
+
+
+    border: 1px solid rgba(148,163,184,.2);
+
+
+    border-radius: 12px;
+
+
+    font-size: 15px;
+
+
+    outline: none;
+
+
+}
+
+
+
+select:focus {
+
+
+    border-color: #10b981;
+
+    box-shadow: 0 0 0 3px rgba(16,185,129,.15);
+
+}
+
+
+
+
+
+/* Scanner Inputs Upgrade */
+
+.scanner-box input {
+
+
+    background: rgba(15,23,42,.75);
+
+
+    border: 1px solid rgba(148,163,184,.15);
+
+
+    color: white;
+
+
+}
+
+
+
+.scanner-box input::placeholder {
+
+
+    color: #64748b;
+
+
+}
+
+
+
+/* Buttons Match FlipIntel Theme */
+
+.primary-button {
+
+
+    box-shadow: 0 8px 20px rgba(16,185,129,.18);
+
+}
+
+
+
+.primary-button:hover {
+
+
+    transform: translateY(-2px);
+
+}
+
+
+
+
+
+/* Product Detection Message */
+
+.scanner-success {
+
+
+    margin-top: 15px;
+
+
+    padding: 12px 16px;
+
+
+    background: rgba(16,185,129,.12);
+
+
+    border: 1px solid rgba(16,185,129,.3);
+
+
+    color: #34d399;
+
+
+    border-radius: 12px;
+
+
+    font-weight: 600;
+
+
+}
+
+
+
+
+
+/* Cleaner Camera Spacing */
+
+.barcode-camera {
+
+
+    margin-top: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+/* Mobile Protection */
+
+@media(max-width:768px){
+
+
+    .quick-price-buttons {
+
+
+        flex-wrap: wrap;
+
+    }
+
+
+}

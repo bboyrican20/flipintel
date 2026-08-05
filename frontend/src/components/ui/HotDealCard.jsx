@@ -3,6 +3,7 @@ import axios from "axios";
 
 import DealAI from "./DealAI";
 import AISummary from "./AISummary";
+import ConfidenceMeter from "./ConfidenceMeter";
 import AIGrade from "./AIGrade";
 import RiskAnalysis from "./RiskAnalysis";
 import FlipStrategy from "./FlipStrategy";
@@ -413,6 +414,18 @@ function HotDealCard({ product, onBuy }) {
                     <AISummary
 
                         summary={aiAnalysis?.summary}
+
+                    />
+
+
+
+
+
+
+
+                    <ConfidenceMeter
+
+                        confidence={aiAnalysis?.confidence}
 
                     />
 

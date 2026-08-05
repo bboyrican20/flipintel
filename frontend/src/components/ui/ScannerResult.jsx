@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 
 import ProductImage from "./ProductImage";
+import ScannerAIReasoning from "./ScannerAIReasoning";
+import ScannerFlipScore from "./ScannerFlipScore";
 
 
 function ScannerResult({
@@ -19,43 +21,93 @@ function ScannerResult({
 
 
     const confidence =
-    result.confidence?.confidence
-    ??
-    0;
+        result.confidence?.confidence
+        ??
+        result.confidence
+        ??
+        result.analysis?.confidence
+        ??
+        0;
+
 
 
     const marketplace =
-        result.marketplace_intelligence;
+        result.marketplace_intelligence
+        ??
+        result.marketplace
+        ??
+        {};
+
 
 
     const flipDecision =
-    result.analysis?.recommendation
-    ||
-    result.decision?.action
-    ||
-    "RESEARCH";
+        result.analysis?.recommendation
+        ??
+        result.recommendation
+        ??
+        result.decision?.action
+        ??
+        "RESEARCH";
+
 
 
     const risk =
-        result.confidence?.risk ||
-        result.decision?.risk ||
+        result.confidence?.risk
+        ??
+        result.analysis?.risk
+        ??
+        result.decision?.risk
+        ??
         "LOW";
 
 
+
     const roi =
-    result.roi
-    ??
-    0;
+        result.roi
+        ??
+        result.analysis?.roi
+        ??
+        result.metrics?.roi
+        ??
+        result.analysis?.metrics?.roi
+        ??
+        0;
+
 
 
     const profit =
-    result.profit
-    ??
-    0;
+        result.profit
+        ??
+        result.analysis?.profit
+        ??
+        result.metrics?.profit
+        ??
+        result.analysis?.metrics?.profit
+        ??
+        0;
+
 
 
     const maxBuyPrice =
-        result.decision?.max_buy_price;
+        result.decision?.max_buy_price
+        ??
+        result.analysis?.max_buy_price;
+
+
+
+    const reasoning =
+        result.analysis?.reasoning
+        ??
+        result.analysis?.reasons
+        ??
+        result.reasoning
+        ??
+        result.reasons
+        ??
+        [];
+
+
+
 
 
 
@@ -64,37 +116,68 @@ function ScannerResult({
         <section className="ai-scanner-result">
 
 
+
+
+
             <div className="scanner-result-header">
 
-                <span>
-                    🤖 AI SCAN COMPLETE
-                </span>
 
+    <span>
 
-                <span className="confidence">
+        🤖 AI SCAN COMPLETE
 
-                    {confidence}% Confidence
-
-                </span>
-
-            </div>
+    </span>
 
 
 
+    <span className="confidence">
+
+        {confidence}% Confidence
+
+    </span>
 
 
-            <div className="scanner-product">
+</div>
 
 
-                <ProductImage
 
-                    image={result.image}
 
-                    title={result.product}
 
-                    brand={result.brand}
+<ScannerFlipScore
 
-                />
+    score={
+
+        result.analysis?.score
+        ??
+        result.analysis?.confidence
+        ??
+        confidence
+
+    }
+
+/>
+
+
+
+
+
+
+
+<div className="scanner-product">
+
+
+
+    <ProductImage
+
+        image={result.image}
+
+        title={result.product}
+
+        brand={result.brand}
+
+    />
+
+
 
 
 
@@ -102,17 +185,26 @@ function ScannerResult({
 
 
                     <h2>
+
                         {result.product}
+
                     </h2>
+
+
 
 
                     <p className="category">
 
+
                         {result.brand}
+
                         {" • "}
+
                         {result.category}
 
+
                     </p>
+
 
 
 
@@ -123,49 +215,82 @@ function ScannerResult({
                         <div>
 
                             <span>
+
                                 Market Value
+
                             </span>
 
 
                             <strong>
 
-                                ${result.market_price?.toFixed(2)}
+                                ${
+
+                                    Number(
+                                        result.market_price
+                                        ??
+                                        result.analysis?.metrics?.expected_sale
+                                        ??
+                                        0
+
+                                    ).toFixed(2)
+
+                                }
 
                             </strong>
+
 
                         </div>
 
 
 
 
+
+
+
                         <div>
 
+
                             <span>
+
                                 Profit
+
                             </span>
+
 
 
                             <strong className="profit">
 
-                                +${profit.toFixed(2)}
+
+                                +${Number(profit).toFixed(2)}
+
 
                             </strong>
 
+
                         </div>
+
+
+
 
 
 
 
                         <div>
 
+
                             <span>
+
                                 ROI
+
                             </span>
+
 
 
                             <strong className="roi">
 
-                                {roi.toFixed(2)}%
+
+                                {Number(roi).toFixed(2)}%
+
 
                             </strong>
 
@@ -173,7 +298,10 @@ function ScannerResult({
                         </div>
 
 
+
+
                     </div>
+
 
 
                 </div>
@@ -187,7 +315,10 @@ function ScannerResult({
 
 
 
+
+
             <div className="decision-engine">
+
 
 
                 <h3>
@@ -198,15 +329,24 @@ function ScannerResult({
 
 
 
+
+
+
                 <div className="decision-grid">
+
+
+
 
 
                     <div>
 
                         <ShieldCheck size={18}/>
 
+
                         <span>
+
                             Decision
+
                         </span>
 
 
@@ -223,12 +363,17 @@ function ScannerResult({
 
 
 
+
+
                     <div>
 
                         <TrendingUp size={18}/>
 
+
                         <span>
+
                             Confidence
+
                         </span>
 
 
@@ -238,7 +383,10 @@ function ScannerResult({
 
                         </strong>
 
+
                     </div>
+
+
 
 
 
@@ -246,10 +394,14 @@ function ScannerResult({
 
                     <div>
 
+
                         <Clock size={18}/>
 
+
                         <span>
+
                             Flip Window
+
                         </span>
 
 
@@ -259,7 +411,10 @@ function ScannerResult({
 
                         </strong>
 
+
                     </div>
+
+
 
 
 
@@ -267,8 +422,11 @@ function ScannerResult({
 
                     <div>
 
+
                         <span>
+
                             Risk
+
                         </span>
 
 
@@ -282,10 +440,28 @@ function ScannerResult({
                     </div>
 
 
+
+
                 </div>
 
 
             </div>
+
+
+
+
+
+
+
+
+
+            <ScannerAIReasoning
+
+                reasoning={reasoning}
+
+            />
+
+
 
 
 
@@ -296,13 +472,20 @@ function ScannerResult({
             <div className="ai-breakdown-card">
 
 
+
                 <h3>
+
 
                     <Brain size={20}/>
 
+
                     AI Deal Breakdown
 
+
                 </h3>
+
+
+
 
 
 
@@ -310,71 +493,112 @@ function ScannerResult({
                 <div className="ai-breakdown-grid">
 
 
+
+
+
                     <div>
 
                         <BarChart3 size={18}/>
 
+
                         <span>
+
                             Profit Potential
+
                         </span>
 
 
                         <strong>
+
                             {profit >= 100 ? "HIGH" : "MEDIUM"}
+
                         </strong>
+
 
                     </div>
 
 
 
 
+
+
+
                     <div>
+
 
                         <Flame size={18}/>
 
+
                         <span>
+
                             Market Demand
+
                         </span>
 
 
                         <strong>
 
+
                             {
+
                                 marketplace?.confidence >= 90
+
                                 ?
+
                                 "HIGH"
+
                                 :
+
                                 "MEDIUM"
+
                             }
 
+
                         </strong>
+
 
                     </div>
 
 
 
 
+
+
+
                     <div>
 
+
                         <span>
+
                             🏷️ Brand Strength
+
                         </span>
 
 
                         <strong>
+
 
                             {
+
                                 result.brand
+
                                 ?
+
                                 "STRONG"
+
                                 :
+
                                 "UNKNOWN"
+
                             }
+
 
                         </strong>
 
 
                     </div>
+
+
 
 
 
@@ -382,16 +606,23 @@ function ScannerResult({
 
                     <div>
 
+
                         <span>
+
                             📦 Resale Speed
+
                         </span>
 
 
                         <strong>
+
                             FAST
+
                         </strong>
 
+
                     </div>
+
 
 
 
@@ -402,29 +633,43 @@ function ScannerResult({
 
 
 
+
+
+
                 {
+
                     maxBuyPrice &&
+
 
                     <div className="max-buy-price">
 
+
                         <span>
+
                             Maximum Buy Price
+
                         </span>
 
 
                         <strong>
 
-                            ${maxBuyPrice.toFixed(2)}
+                            ${Number(maxBuyPrice).toFixed(2)}
 
                         </strong>
 
+
                     </div>
+
 
                 }
 
 
 
+
+
             </div>
+
+
 
 
 
@@ -442,19 +687,31 @@ function ScannerResult({
 
             >
 
-                <PackagePlus/>
+
+
+                <PackagePlus />
+
 
 
                 {
+
                     adding
+
                     ?
+
                     "Adding..."
+
                     :
+
                     "ADD TO INVENTORY"
+
                 }
 
 
+
             </button>
+
+
 
 
 
@@ -464,6 +721,7 @@ function ScannerResult({
     );
 
 }
+
 
 
 export default ScannerResult;
